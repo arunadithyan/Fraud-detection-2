@@ -34,16 +34,15 @@ st.markdown(f"""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
-  /* ── Force light mode everywhere ── */
+  /* ── Force light mode — everything ── */
   html, body, [class*="css"], [data-testid="stAppViewContainer"],
   [data-testid="stApp"], .main, .block-container,
-  [data-testid="stVerticalBlock"] {{
+  [data-testid="stVerticalBlock"], [data-testid="stForm"],
+  [data-testid="stHorizontalBlock"], section.main {{
     background-color: {RS_OFFWHITE} !important;
     color: #111827 !important;
     font-family: 'Inter', sans-serif !important;
   }}
-
-  /* Kill dark mode media query overrides */
   @media (prefers-color-scheme: dark) {{
     html, body, [class*="css"] {{
       background-color: {RS_OFFWHITE} !important;
@@ -52,105 +51,144 @@ st.markdown(f"""
   }}
 
   #MainMenu, footer, header {{ visibility: hidden; }}
-  .block-container {{ padding: 0 2rem 2rem 2rem !important; max-width: 1400px; }}
+
+  /* ── Responsive padding ── */
+  .block-container {{
+    padding: 0 1rem 2rem 1rem !important;
+    max-width: 1400px;
+  }}
+  @media (min-width: 768px) {{
+    .block-container {{ padding: 0 2rem 2rem 2rem !important; }}
+  }}
 
   /* ── Banner ── */
   .top-banner {{
     background: linear-gradient(135deg, {RS_NAVY} 0%, {RS_BLUE} 70%);
     border-bottom: 4px solid {RS_YELLOW};
-    padding: 1.2rem 2.5rem;
-    margin: -1rem -2rem 2rem -2rem;
+    padding: 0.9rem 1rem;
+    margin: -1rem -1rem 1.5rem -1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }}
+  @media (min-width: 768px) {{
+    .top-banner {{ padding: 1.2rem 2.5rem; margin: -1rem -2rem 2rem -2rem; }}
+  }}
+  .banner-left {{ display: flex; align-items: center; gap: 0.8rem; }}
   .banner-logo {{
     background: {RS_YELLOW};
-    border-radius: 8px;
-    padding: 7px 14px;
+    border-radius: 7px;
+    padding: 6px 11px;
     font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: {RS_NAVY};
-    margin-right: 1.2rem;
     white-space: nowrap;
+    flex-shrink: 0;
   }}
-  .banner-title {{ color: white; font-size: 1.25rem; font-weight: 700; }}
-  .banner-sub {{ color: rgba(255,255,255,0.6); font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }}
-  .banner-right {{ text-align: right; color: rgba(255,255,255,0.55); font-size: 0.72rem; line-height: 1.7; }}
-  .banner-right strong {{ color: {RS_YELLOW}; font-weight: 700; display: block; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; }}
+  .banner-title {{ color: white; font-size: 1rem; font-weight: 700; line-height: 1.3; }}
+  .banner-sub {{
+    color: rgba(255,255,255,0.6);
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+    display: none;
+  }}
+  @media (min-width: 480px) {{
+    .banner-sub {{ display: block; }}
+    .banner-title {{ font-size: 1.2rem; }}
+  }}
+  .banner-right {{
+    text-align: right;
+    color: rgba(255,255,255,0.55);
+    font-size: 0.65rem;
+    line-height: 1.6;
+    display: none;
+  }}
+  @media (min-width: 640px) {{
+    .banner-right {{ display: block; }}
+  }}
+  .banner-right strong {{
+    color: {RS_YELLOW}; font-weight: 700; display: block;
+    font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase;
+  }}
 
   /* ── Section ── */
   .sec-eyebrow {{ font-size: 0.63rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: {RS_BLUE}; margin-bottom: 0.3rem; }}
-  .sec-title {{ font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: {RS_NAVY}; }}
-  .sec-rule {{ width: 40px; height: 3px; background: {RS_YELLOW}; border-radius: 2px; margin: 0.5rem 0 1.5rem 0; }}
+  .sec-title {{ font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: {RS_NAVY}; }}
+  @media (min-width: 768px) {{ .sec-title {{ font-size: 1.4rem; }} }}
+  .sec-rule {{ width: 40px; height: 3px; background: {RS_YELLOW}; border-radius: 2px; margin: 0.5rem 0 1.2rem 0; }}
 
   /* ── Score panel ── */
   .score-panel {{
     background: linear-gradient(135deg, {RS_NAVY} 0%, {RS_BLUE} 100%);
-    border-radius: 14px;
-    padding: 2rem;
+    border-radius: 12px;
+    padding: 1.4rem;
     color: white;
     box-shadow: 0 8px 32px rgba(0,48,135,0.22);
     border: 1px solid rgba(245,194,0,0.25);
   }}
+  @media (min-width: 768px) {{ .score-panel {{ padding: 2rem; }} }}
   .score-eyebrow {{ font-size: 0.62rem; letter-spacing: 2.5px; text-transform: uppercase; color: {RS_YELLOW}; font-weight: 700; margin-bottom: 0.4rem; }}
-  .score-number {{ font-family: 'Playfair Display', serif; font-size: 3.8rem; font-weight: 700; line-height: 1; color: white; }}
-  .score-denom {{ font-size: 1.1rem; color: rgba(255,255,255,0.45); }}
+  .score-number {{ font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; line-height: 1; color: white; }}
+  @media (min-width: 768px) {{ .score-number {{ font-size: 3.8rem; }} }}
+  .score-denom {{ font-size: 1rem; color: rgba(255,255,255,0.45); }}
   .score-bar-bg {{ background: rgba(255,255,255,0.15); border-radius: 4px; height: 7px; margin: 1rem 0; overflow: hidden; }}
 
-  /* ── Meter boxes ── */
-  .meter-row {{ display: flex; gap: 0.8rem; margin: 1rem 0; }}
-  .meter-box {{ flex: 1; background: rgba(255,255,255,0.08); border-radius: 8px; padding: 0.8rem; border: 1px solid rgba(255,255,255,0.1); }}
-  .meter-title {{ font-size: 0.62rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 0.3rem; }}
-  .meter-val {{ font-size: 1.5rem; font-weight: 700; color: white; }}
+  /* ── Meter boxes — stack on mobile ── */
+  .meter-row {{ display: flex; gap: 0.6rem; margin: 0.8rem 0; flex-wrap: wrap; }}
+  .meter-box {{ flex: 1; min-width: 100px; background: rgba(255,255,255,0.08); border-radius: 8px; padding: 0.7rem; border: 1px solid rgba(255,255,255,0.1); }}
+  .meter-title {{ font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 0.3rem; }}
+  .meter-val {{ font-size: 1.3rem; font-weight: 700; color: white; }}
+  @media (min-width: 768px) {{ .meter-val {{ font-size: 1.5rem; }} }}
 
   /* ── SHAP reasons ── */
-  .reason-card {{ background: white; border: 1px solid {RS_LGRAY}; border-left: 4px solid {RS_YELLOW}; border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 0.5rem; font-size: 0.82rem; color: #1F2937; font-weight: 500; }}
+  .reason-card {{ background: white; border: 1px solid {RS_LGRAY}; border-left: 4px solid {RS_YELLOW}; border-radius: 8px; padding: 0.7rem 0.9rem; margin-bottom: 0.5rem; font-size: 0.8rem; color: #1F2937; font-weight: 500; }}
   .reason-up   {{ border-left-color: {CRITICAL}; }}
   .reason-down {{ border-left-color: {FASTTRACK}; }}
 
   /* ── Cards ── */
-  .card {{ background: white; border: 1px solid {RS_LGRAY}; border-radius: 10px; padding: 1.3rem 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }}
-  .card h4 {{ color: {RS_NAVY}; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.5rem; }}
-  .card p {{ color: {RS_GRAY}; font-size: 0.8rem; line-height: 1.6; margin: 0; }}
+  .card {{ background: white; border: 1px solid {RS_LGRAY}; border-radius: 10px; padding: 1.1rem 1.2rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }}
+  .card h4 {{ color: {RS_NAVY}; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem; }}
+  .card p {{ color: {RS_GRAY}; font-size: 0.79rem; line-height: 1.6; margin: 0; }}
 
   /* ── Form section header ── */
   .form-hdr {{
     background: {RS_BLUE};
     color: white;
-    padding: 0.45rem 0.9rem;
+    padding: 0.4rem 0.8rem;
     border-radius: 5px;
-    font-size: 0.68rem;
+    font-size: 0.66rem;
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    margin: 1.2rem 0 0.7rem 0;
+    margin: 1rem 0 0.6rem 0;
   }}
 
-  /* ── Action box ── */
-  .action-box {{ border-radius: 10px; padding: 1rem 1.2rem; margin-top: 1.2rem; border: 1px solid; }}
-
   /* ── Summary table ── */
-  .stbl {{ width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 0.5rem; }}
-  .stbl th {{ background: {RS_BLUE}; color: white; padding: 0.5rem 0.7rem; text-align: left; font-size: 0.68rem; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600; }}
-  .stbl td {{ padding: 0.45rem 0.7rem; border-bottom: 1px solid {RS_LGRAY}; color: #374151; }}
+  .stbl {{ width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 0.5rem; }}
+  .stbl th {{ background: {RS_BLUE}; color: white; padding: 0.45rem 0.6rem; text-align: left; font-size: 0.66rem; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600; }}
+  .stbl td {{ padding: 0.4rem 0.6rem; border-bottom: 1px solid {RS_LGRAY}; color: #374151; word-break: break-word; }}
   .stbl tr:nth-child(even) td {{ background: #F9FAFB; }}
 
-  /* ── PDF drop zone — nuclear light-mode override ── */
-  .pdf-zone {{ background: white; border: 2px dashed {RS_LGRAY}; border-radius: 12px; padding: 2rem; text-align: center; color: {RS_GRAY}; }}
-
+  /* ── PDF uploader — nuclear light override ── */
   [data-testid="stFileUploadDropzone"],
   [data-testid="stFileUploadDropzone"] > div,
   [data-testid="stFileUploadDropzone"] section,
-  .stFileUploader,
-  .stFileUploader > div,
-  .stFileUploader label,
-  div[data-testid="stFileUploaderDropzone"] {{
+  .stFileUploader, .stFileUploader > div, .stFileUploader label,
+  div[data-testid="stFileUploaderDropzone"],
+  [data-testid="stFileUploadDropzone"] * {{
     background: white !important;
     background-color: white !important;
     color: {RS_GRAY} !important;
     border-color: {RS_LGRAY} !important;
+  }}
+  [data-testid="stFileUploadDropzone"] {{
+    border: 2px dashed {RS_LGRAY} !important;
+    border-radius: 10px !important;
   }}
   [data-testid="stFileUploadDropzone"] button {{
     background: {RS_BLUE} !important;
@@ -158,14 +196,15 @@ st.markdown(f"""
     border-radius: 6px !important;
     border: none !important;
   }}
-  [data-testid="stFileUploadDropzone"] span,
-  [data-testid="stFileUploadDropzone"] p,
-  [data-testid="stFileUploadDropzone"] small {{
-    color: {RS_GRAY} !important;
-  }}
 
-  /* ── Arch flow ── */
-  .arch-box {{ background: white; border: 1px solid {RS_LGRAY}; border-radius: 10px; padding: 1.3rem 1.8rem; }}
+  /* ── Arch flow box ── */
+  .arch-box {{ background: white; border: 1px solid {RS_LGRAY}; border-radius: 10px; padding: 1rem; overflow-x: auto; }}
+
+  /* ── Arch flow — stack on mobile ── */
+  .arch-flow {{ display: flex; align-items: center; gap: 0.3rem; flex-wrap: nowrap; justify-content: center; min-width: 500px; }}
+  .arch-step {{ text-align: center; flex: 1; }}
+  .arch-step-box {{ padding: 0.55rem 0.35rem; border-radius: 7px; font-size: 0.68rem; font-weight: 700; color: white; line-height: 1.3; }}
+  .arch-arrow {{ color: {RS_YELLOW}; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; }}
 
   /* ── Buttons ── */
   .stButton > button {{
@@ -182,11 +221,14 @@ st.markdown(f"""
   }}
   .stButton > button:hover {{ opacity: 0.92 !important; }}
 
-  /* ── Tabs ── */
+  /* ── Tabs — scrollable on mobile ── */
   .stTabs [data-baseweb="tab-list"] {{
-    gap: 0.5rem;
+    gap: 0.3rem;
     border-bottom: 2px solid {RS_LGRAY};
     background: transparent !important;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
   }}
   .stTabs [data-baseweb="tab"] {{
     background: white !important;
@@ -194,8 +236,12 @@ st.markdown(f"""
     border: 1px solid {RS_LGRAY} !important;
     border-radius: 6px 6px 0 0 !important;
     font-weight: 600 !important;
-    font-size: 0.82rem !important;
-    padding: 0.5rem 1.2rem !important;
+    font-size: 0.75rem !important;
+    padding: 0.45rem 0.8rem !important;
+    white-space: nowrap;
+  }}
+  @media (min-width: 640px) {{
+    .stTabs [data-baseweb="tab"] {{ font-size: 0.82rem !important; padding: 0.5rem 1.2rem !important; }}
   }}
   .stTabs [aria-selected="true"] {{
     background: {RS_BLUE} !important;
@@ -203,7 +249,7 @@ st.markdown(f"""
     border-color: {RS_BLUE} !important;
   }}
 
-  /* ── Selectbox, number input ── */
+  /* ── Form widgets ── */
   div[data-baseweb="select"] > div {{
     border-radius: 6px !important;
     border-color: {RS_LGRAY} !important;
@@ -218,27 +264,9 @@ st.markdown(f"""
     color: #111827 !important;
     font-size: 0.82rem !important;
   }}
-  label {{ color: #374151 !important; font-size: 0.78rem !important; font-weight: 500 !important; }}
+  label {{ color: #374151 !important; font-size: 0.76rem !important; font-weight: 500 !important; }}
 
-  /* ── Footer ── */
-  .footer {{ background: {RS_NAVY}; color: rgba(255,255,255,0.45); text-align: center; padding: 1rem; margin: 2rem -2rem -2rem -2rem; font-size: 0.7rem; letter-spacing: 0.5px; border-top: 2px solid {RS_YELLOW}; }}
-  .footer span {{ color: {RS_YELLOW}; font-weight: 600; }}
-
-  /* ── File uploader — force light ── */
-  [data-testid="stFileUploadDropzone"] {{
-    background: white !important;
-    border: 2px dashed {RS_LGRAY} !important;
-    border-radius: 10px !important;
-  }}
-  [data-testid="stFileUploadDropzone"] * {{
-    color: {RS_GRAY} !important;
-    background: transparent !important;
-  }}
-  section[data-testid="stFileUploadDropzone"] {{
-    background: white !important;
-  }}
-
-  /* ── Number input +/- buttons — force light ── */
+  /* ── Number +/- buttons ── */
   button[data-testid="stNumberInputStepDown"],
   button[data-testid="stNumberInputStepUp"],
   [data-testid="stNumberInput"] button {{
@@ -248,51 +276,59 @@ st.markdown(f"""
     border: 1px solid {RS_LGRAY} !important;
   }}
   button[data-testid="stNumberInputStepDown"]:hover,
-  button[data-testid="stNumberInputStepUp"]:hover,
-  [data-testid="stNumberInput"] button:hover {{
+  button[data-testid="stNumberInputStepUp"]:hover {{
     background: {RS_BLUE} !important;
     background-color: {RS_BLUE} !important;
     color: white !important;
   }}
 
-  /* ── Slider — blue track and thumb ── */
-  [data-testid="stSlider"] > div > div > div {{
-    background: {RS_LGRAY} !important;
-  }}
-  [data-testid="stSlider"] [role="slider"] {{
-    background: {RS_BLUE} !important;
-    border-color: {RS_BLUE} !important;
-  }}
-  [data-testid="stSlider"] > div > div > div > div {{
-    background: {RS_BLUE} !important;
-  }}
-  /* Kill the red/accent color Streamlit uses for slider fill */
-  [data-testid="stSlider"] .st-emotion-cache-1gv3uvj,
-  [data-testid="stSlider"] [class*="slider"] div[style*="background"] {{
-    background: {RS_BLUE} !important;
-  }}
+  /* ── Slider — blue ── */
+  [data-testid="stSlider"] > div > div > div {{ background: {RS_LGRAY} !important; }}
+  [data-testid="stSlider"] [role="slider"] {{ background: {RS_BLUE} !important; border-color: {RS_BLUE} !important; }}
+  [data-testid="stSlider"] > div > div > div > div {{ background: {RS_BLUE} !important; }}
 
-  /* ── Success / info / warning boxes ── */
-  [data-testid="stAlert"] {{
-    background: white !important;
-    color: #111827 !important;
-  }}
+  /* ── Alerts / info ── */
+  [data-testid="stAlert"] {{ background: white !important; color: #111827 !important; }}
 
   /* ── Dataframe ── */
-  [data-testid="stDataFrame"] {{
-    background: white !important;
-  }}
+  [data-testid="stDataFrame"] {{ background: white !important; }}
   .dvn-scroller {{ background: white !important; }}
 
   /* ── Expander ── */
-  [data-testid="stExpander"] {{
-    background: white !important;
-    border: 1px solid {RS_LGRAY} !important;
-    border-radius: 8px !important;
+  [data-testid="stExpander"] {{ background: white !important; border: 1px solid {RS_LGRAY} !important; border-radius: 8px !important; }}
+  [data-testid="stExpander"] summary {{ color: {RS_NAVY} !important; font-weight: 600 !important; }}
+
+  /* ── Footer ── */
+  .footer {{
+    background: {RS_NAVY};
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    padding: 1rem;
+    margin: 2rem -1rem -2rem -1rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.5px;
+    border-top: 2px solid {RS_YELLOW};
+    line-height: 1.8;
   }}
-  [data-testid="stExpander"] summary {{
-    color: {RS_NAVY} !important;
-    font-weight: 600 !important;
+  @media (min-width: 768px) {{ .footer {{ margin: 2rem -2rem -2rem -2rem; font-size: 0.7rem; }} }}
+  .footer span {{ color: {RS_YELLOW}; font-weight: 600; }}
+
+  /* ── Streamlit column gap fix on mobile ── */
+  [data-testid="stHorizontalBlock"] {{
+    gap: 0.5rem !important;
+    flex-wrap: wrap;
+  }}
+  @media (max-width: 640px) {{
+    [data-testid="stHorizontalBlock"] > div {{
+      min-width: 45% !important;
+      flex: 1 1 45% !important;
+    }}
+  }}
+  @media (max-width: 400px) {{
+    [data-testid="stHorizontalBlock"] > div {{
+      min-width: 100% !important;
+      flex: 1 1 100% !important;
+    }}
   }}
 </style>
 """, unsafe_allow_html=True)
@@ -300,11 +336,11 @@ st.markdown(f"""
 # ── Banner ─────────────────────────────────────────────────────────────────────
 st.markdown(f"""
 <div class="top-banner">
-  <div style="display:flex;align-items:center;">
+  <div class="banner-left">
     <div class="banner-logo">RS</div>
     <div>
       <div class="banner-title">Claim Decisioning Engine</div>
-      <div class="banner-sub">Motor Third-Party · AI Fraud &amp; Litigation Triage</div>
+      <div class="banner-sub">Motor TP · AI Fraud &amp; Litigation Triage</div>
     </div>
   </div>
   <div class="banner-right">
@@ -1006,18 +1042,20 @@ with tab2:
     st.markdown("#### Engine Architecture")
     st.markdown(f"""
     <div class="arch-box">
-      <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;justify-content:center;">
-        {''.join(f'<div style="text-align:center;flex:1;min-width:90px;"><div style="background:{c};color:white;padding:0.65rem 0.4rem;border-radius:7px;font-size:0.72rem;font-weight:700;">{t}<br><span style="font-size:0.6rem;opacity:0.75;">{s}</span></div></div><div style="color:{RS_YELLOW};font-size:1.3rem;font-weight:700;">{"" if i==4 else "→"}</div>'
-        for i,(t,s,c) in enumerate([
-            ("FNOL","Claim Received",RS_BLUE),
-            ("Data Spine","Feature Assembly",RS_NAVY),
-            ("Model A + B","Fraud · Litigation","#4338CA"),
-            ("SHAP Layer","Explainability","#0F766E"),
-            ("Routing","Fast·SIU·ADR·Legal",FASTTRACK),
-        ]))}
+      <div style="overflow-x:auto;">
+        <div class="arch-flow">
+          {''.join(f'<div class="arch-step"><div class="arch-step-box" style="background:{c};">{t}<br><span style="font-size:0.58rem;opacity:0.8;">{s}</span></div></div><div class="arch-arrow">{"" if i==4 else "→"}</div>'
+          for i,(t,s,c) in enumerate([
+              ("FNOL","Claim In",RS_BLUE),
+              ("Data Spine","Features","#1E3A8A"),
+              ("Model A+B","Fraud·Lit","#4338CA"),
+              ("SHAP","Explain","#0F766E"),
+              ("Routing","Decision",FASTTRACK),
+          ]))}
+        </div>
       </div>
-      <div style="margin-top:1rem;font-size:0.72rem;color:{RS_GRAY};text-align:center;">
-        Single-insurer scope · No consortium dependency · Human-in-the-loop on every high-risk flag
+      <div style="margin-top:0.8rem;font-size:0.7rem;color:{RS_GRAY};text-align:center;">
+        Single-insurer · No consortium dependency · Human-in-the-loop on every high-risk flag
       </div>
     </div>
     """, unsafe_allow_html=True)
