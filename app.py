@@ -868,7 +868,7 @@ with tab2:
             fig.patch.set_facecolor(RS_OFFWHITE)
             ax.set_facecolor(RS_OFFWHITE)
             bars = ax.barh(imp.index, imp.values, color=RS_BLUE, alpha=0.82, height=0.62)
-            bars[-1].set_color(RS_YELLOW); bars[-1].set_edgecolor(RS_GOLD if True else RS_YELLOW)
+            bars[-1].set_color(RS_YELLOW); bars[-1].set_edgecolor(RS_YELLOW)
             ax.set_xlabel("Importance", fontsize=8, color=RS_GRAY)
             ax.set_title("Top 10 Fraud Drivers", fontsize=10, fontweight='bold', color=RS_NAVY, pad=10)
             ax.tick_params(labelsize=7.5, colors=RS_GRAY)
