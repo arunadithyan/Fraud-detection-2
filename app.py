@@ -137,8 +137,32 @@ st.markdown(f"""
   .stbl td {{ padding: 0.45rem 0.7rem; border-bottom: 1px solid {RS_LGRAY}; color: #374151; }}
   .stbl tr:nth-child(even) td {{ background: #F9FAFB; }}
 
-  /* ── PDF drop zone ── */
+  /* ── PDF drop zone — nuclear light-mode override ── */
   .pdf-zone {{ background: white; border: 2px dashed {RS_LGRAY}; border-radius: 12px; padding: 2rem; text-align: center; color: {RS_GRAY}; }}
+
+  [data-testid="stFileUploadDropzone"],
+  [data-testid="stFileUploadDropzone"] > div,
+  [data-testid="stFileUploadDropzone"] section,
+  .stFileUploader,
+  .stFileUploader > div,
+  .stFileUploader label,
+  div[data-testid="stFileUploaderDropzone"] {{
+    background: white !important;
+    background-color: white !important;
+    color: {RS_GRAY} !important;
+    border-color: {RS_LGRAY} !important;
+  }}
+  [data-testid="stFileUploadDropzone"] button {{
+    background: {RS_BLUE} !important;
+    color: white !important;
+    border-radius: 6px !important;
+    border: none !important;
+  }}
+  [data-testid="stFileUploadDropzone"] span,
+  [data-testid="stFileUploadDropzone"] p,
+  [data-testid="stFileUploadDropzone"] small {{
+    color: {RS_GRAY} !important;
+  }}
 
   /* ── Arch flow ── */
   .arch-box {{ background: white; border: 1px solid {RS_LGRAY}; border-radius: 10px; padding: 1.3rem 1.8rem; }}
@@ -200,8 +224,76 @@ st.markdown(f"""
   .footer {{ background: {RS_NAVY}; color: rgba(255,255,255,0.45); text-align: center; padding: 1rem; margin: 2rem -2rem -2rem -2rem; font-size: 0.7rem; letter-spacing: 0.5px; border-top: 2px solid {RS_YELLOW}; }}
   .footer span {{ color: {RS_YELLOW}; font-weight: 600; }}
 
-  /* Uploaded file widget */
-  [data-testid="stFileUploadDropzone"] {{ background: white !important; border-color: {RS_LGRAY} !important; }}
+  /* ── File uploader — force light ── */
+  [data-testid="stFileUploadDropzone"] {{
+    background: white !important;
+    border: 2px dashed {RS_LGRAY} !important;
+    border-radius: 10px !important;
+  }}
+  [data-testid="stFileUploadDropzone"] * {{
+    color: {RS_GRAY} !important;
+    background: transparent !important;
+  }}
+  section[data-testid="stFileUploadDropzone"] {{
+    background: white !important;
+  }}
+
+  /* ── Number input +/- buttons — force light ── */
+  button[data-testid="stNumberInputStepDown"],
+  button[data-testid="stNumberInputStepUp"],
+  [data-testid="stNumberInput"] button {{
+    background: {RS_LGRAY} !important;
+    background-color: {RS_LGRAY} !important;
+    color: {RS_NAVY} !important;
+    border: 1px solid {RS_LGRAY} !important;
+  }}
+  button[data-testid="stNumberInputStepDown"]:hover,
+  button[data-testid="stNumberInputStepUp"]:hover,
+  [data-testid="stNumberInput"] button:hover {{
+    background: {RS_BLUE} !important;
+    background-color: {RS_BLUE} !important;
+    color: white !important;
+  }}
+
+  /* ── Slider — blue track and thumb ── */
+  [data-testid="stSlider"] > div > div > div {{
+    background: {RS_LGRAY} !important;
+  }}
+  [data-testid="stSlider"] [role="slider"] {{
+    background: {RS_BLUE} !important;
+    border-color: {RS_BLUE} !important;
+  }}
+  [data-testid="stSlider"] > div > div > div > div {{
+    background: {RS_BLUE} !important;
+  }}
+  /* Kill the red/accent color Streamlit uses for slider fill */
+  [data-testid="stSlider"] .st-emotion-cache-1gv3uvj,
+  [data-testid="stSlider"] [class*="slider"] div[style*="background"] {{
+    background: {RS_BLUE} !important;
+  }}
+
+  /* ── Success / info / warning boxes ── */
+  [data-testid="stAlert"] {{
+    background: white !important;
+    color: #111827 !important;
+  }}
+
+  /* ── Dataframe ── */
+  [data-testid="stDataFrame"] {{
+    background: white !important;
+  }}
+  .dvn-scroller {{ background: white !important; }}
+
+  /* ── Expander ── */
+  [data-testid="stExpander"] {{
+    background: white !important;
+    border: 1px solid {RS_LGRAY} !important;
+    border-radius: 8px !important;
+  }}
+  [data-testid="stExpander"] summary {{
+    color: {RS_NAVY} !important;
+    font-weight: 600 !important;
+  }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -318,6 +410,10 @@ def score_claim(claim):
     df_l = df.reindex(columns=feat_lit,   fill_value=0)
     fp = float(model_fraud.predict_proba(df_f)[:,1][0])
     lp = float(model_lit.predict_proba(df_l)[:,1][0])
+    # Calibrate litigation: proxy label inflates probabilities — scale down
+    # Litigation proxy hits ~60% base rate vs real ~15% MACT rate → scale by 0.25
+    lp = float(np.clip(lp * 0.25, 0.0, 0.95))
+    fp = float(np.clip(fp, 0.0, 0.95))
     sev   = SEVERITY_MAP.get(claim.get('VehiclePrice','₹8–12 Lakh'), 1.0)
     score = round(min((0.6*fp + 0.4*lp)*sev*100, 100), 1)
     route, tkey = route_claim(fp, lp, score)
@@ -654,7 +750,7 @@ for k, v in DEFAULTS.items():
         st.session_state[k] = v
 
 # ── Tabs ───────────────────────────────────────────────────────────────────────
-tab1, tab2, tab3 = st.tabs(["⚖️  Score Claim", "📊  Model Insights", "📄  PDF Auto-Fill"])
+tab1, tab2, tab3, tab4 = st.tabs(["⚖️  Score Claim", "📊  Model Insights", "📄  PDF Auto-Fill", "ℹ️  About"])
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 1 — SCORE CLAIM
@@ -950,9 +1046,11 @@ with tab3:
     st.markdown(f"""
     <div class="card">
       <h4>📄 How it works</h4>
-      <p>Upload any motor TP claim document — survey report, FNOL form, claim intimation letter, or police report.
-      The engine reads the PDF using Claude's vision API, extracts all available claim fields,
-      and pre-fills the Score Claim form automatically. Switch to the <strong>Score Claim</strong> tab and click Run.</p>
+      <p>Upload any structured motor TP claim form — FNOL intimation, survey report, or claim letter.
+      The engine reads the PDF using <strong>pdfplumber</strong>, extracts all available fields using
+      keyword and pattern matching, and pre-fills the Score Claim form automatically.
+      Switch to the <strong>Score Claim</strong> tab, review the pre-filled values, and click Run.
+      Works best on structured forms — use the sample PDFs in your repo to test.</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1041,7 +1139,80 @@ with tab3:
             with st.expander("Raw JSON from document"):
                 st.json(extracted)
 
-# ── Footer ─────────────────────────────────────────────────────────────────────
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 4 — ABOUT
+# ══════════════════════════════════════════════════════════════════════════════
+with tab4:
+    st.markdown('<div class="sec-eyebrow">Sundaram Pitch Fest 2026</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sec-title">About the Engine</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sec-rule"></div>', unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2, gap="large")
+    with col1:
+        for icon, title, body in [
+            ("🎯","The Problem",
+             "India's Motor TP book carries ₹96,257 Cr of outstanding liability (FY25) across 10.7 lakh open cases. "
+             "Fraud leakage, MACT litigation overload, and manual triage drain margin — 4.07 lakh cases are 3+ years old."),
+            ("⚙️","Our Solution",
+             "A single-insurer AI Claim Decisioning Engine: two XGBoost models scoring fraud probability and litigation risk "
+             "at FNOL, combined into a cost-sensitive composite score that auto-routes every claim to the cheapest correct path."),
+            ("🏛️","Why Single-Insurer",
+             "Deployable on Royal Sundaram's own historical data — no IIB consortium dependency, no competitor coordination. "
+             "The graph network layer deepens with every claim processed, creating a proprietary, compounding moat."),
+        ]:
+            st.markdown(f"""
+            <div class="card">
+              <h4>{icon} {title}</h4>
+              <p>{body}</p>
+            </div>""", unsafe_allow_html=True)
+
+    with col2:
+        for icon, title, body in [
+            ("🔍","Explainability",
+             "Every flag carries SHAP-derived top-3 reasons in plain language — so SIU officers, claims managers, "
+             "and MACT tribunals can act on the output. No black box; every decision is fully auditable."),
+            ("🗓️","Implementation Roadmap",
+             "Phased 24-month rollout: P0 data foundation → P1 fraud shadow mode (6 mo) → P2 litigation model (12 mo) "
+             "→ P3 network/graph layer → P4 live routing with drift monitoring and feedback loop."),
+            ("🚀","Future Vision",
+             "Phase 3+: graph neural networks over garage–lawyer entity graph, underwriting-stage risk pricing "
+             "via Vahan/MoRTH signals, and federated cross-insurer learning without sharing raw claim data."),
+        ]:
+            st.markdown(f"""
+            <div class="card">
+              <h4>{icon} {title}</h4>
+              <p>{body}</p>
+            </div>""", unsafe_allow_html=True)
+
+    st.markdown("---")
+    # Tech stack
+    st.markdown(f"""
+    <div class="card">
+      <h4>🛠️ Technology Stack</h4>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.5rem;">
+        {''.join(f'<span style="background:{RS_OFFWHITE};border:1px solid {RS_LGRAY};border-radius:5px;padding:0.3rem 0.7rem;font-size:0.78rem;font-weight:600;color:{RS_NAVY};">{t}</span>'
+        for t in ['XGBoost','SHAP','pdfplumber','scikit-learn','Streamlit','Python 3.14','pandas','reportlab'])}
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Team panel
+    st.markdown(f"""
+    <div style="background:{RS_NAVY};border-radius:12px;padding:1.5rem 2rem;margin-top:0.5rem;">
+      <div style="font-size:0.63rem;letter-spacing:2px;text-transform:uppercase;color:{RS_YELLOW};font-weight:700;margin-bottom:1rem;">
+        Team Apex Counsel · IIT Kharagpur
+      </div>
+      <div style="display:flex;gap:2rem;flex-wrap:wrap;">
+        {''.join(f'<div><div style="font-weight:700;font-size:0.92rem;color:white;">{n}</div><div style="font-size:0.75rem;color:rgba(255,255,255,0.5);">IIT Kharagpur · School of Law</div></div>'
+        for n in ['Arunadithyan S','Azhagappan G','G Abiimukeshwar'])}
+      </div>
+      <div style="margin-top:1rem;font-size:0.72rem;color:rgba(255,255,255,0.4);">
+        Operations · Risk &amp; Process Excellence Track &nbsp;|&nbsp; Sundaram Pitch Fest 2026 · Round 2
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
 st.markdown(f"""
 <div class="footer">
   <span>Royal Sundaram General Insurance Co. Ltd.</span> &nbsp;·&nbsp;
