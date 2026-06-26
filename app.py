@@ -6,12 +6,12 @@ import shap
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import warnings, io, re
+import warnings
 warnings.filterwarnings('ignore')
 
 # ── Force light mode always ────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Claim Decisioning Engine · Royal Sundaram",
+    page_title="Claim Decisioning Engine · Sundaram Finance",
     page_icon="⚖️",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -34,7 +34,6 @@ st.markdown(f"""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
-  /* ── Force light mode — everything ── */
   html, body, [class*="css"], [data-testid="stAppViewContainer"],
   [data-testid="stApp"], .main, .block-container,
   [data-testid="stVerticalBlock"], [data-testid="stForm"],
@@ -52,84 +51,48 @@ st.markdown(f"""
 
   #MainMenu, footer, header {{ visibility: hidden; }}
 
-  /* ── Responsive padding ── */
-  .block-container {{
-    padding: 0 1rem 2rem 1rem !important;
-    max-width: 1400px;
-  }}
-  @media (min-width: 768px) {{
-    .block-container {{ padding: 0 2rem 2rem 2rem !important; }}
-  }}
+  .block-container {{ padding: 0 1rem 2rem 1rem !important; max-width: 1400px; }}
+  @media (min-width: 768px) {{ .block-container {{ padding: 0 2rem 2rem 2rem !important; }} }}
 
-  /* ── Banner ── */
   .top-banner {{
     background: linear-gradient(135deg, {RS_NAVY} 0%, {RS_BLUE} 70%);
     border-bottom: 4px solid {RS_YELLOW};
-    padding: 0.9rem 1rem;
-    margin: -1rem -1rem 1.5rem -1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    padding: 0.9rem 1rem; margin: -1rem -1rem 1.5rem -1rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.5rem;
   }}
-  @media (min-width: 768px) {{
-    .top-banner {{ padding: 1.2rem 2.5rem; margin: -1rem -2rem 2rem -2rem; }}
-  }}
+  @media (min-width: 768px) {{ .top-banner {{ padding: 1.2rem 2.5rem; margin: -1rem -2rem 2rem -2rem; }} }}
   .banner-left {{ display: flex; align-items: center; gap: 0.8rem; }}
   .banner-logo {{
-    background: {RS_YELLOW};
-    border-radius: 7px;
-    padding: 6px 11px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: {RS_NAVY};
-    white-space: nowrap;
-    flex-shrink: 0;
+    background: {RS_YELLOW}; border-radius: 7px; padding: 6px 11px;
+    font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
+    color: {RS_NAVY}; white-space: nowrap; flex-shrink: 0;
   }}
   .banner-title {{ color: white; font-size: 1rem; font-weight: 700; line-height: 1.3; }}
   .banner-sub {{
-    color: rgba(255,255,255,0.6);
-    font-size: 0.65rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-top: 2px;
-    display: none;
+    color: rgba(255,255,255,0.6); font-size: 0.65rem; letter-spacing: 1px;
+    text-transform: uppercase; margin-top: 2px; display: none;
   }}
-  @media (min-width: 480px) {{
-    .banner-sub {{ display: block; }}
-    .banner-title {{ font-size: 1.2rem; }}
-  }}
+  @media (min-width: 480px) {{ .banner-sub {{ display: block; }} .banner-title {{ font-size: 1.2rem; }} }}
   .banner-right {{
-    text-align: right;
-    color: rgba(255,255,255,0.55);
-    font-size: 0.65rem;
-    line-height: 1.6;
-    display: none;
+    text-align: right; color: rgba(255,255,255,0.55);
+    font-size: 0.65rem; line-height: 1.6; display: none;
   }}
-  @media (min-width: 640px) {{
-    .banner-right {{ display: block; }}
-  }}
+  @media (min-width: 640px) {{ .banner-right {{ display: block; }} }}
   .banner-right strong {{
     color: {RS_YELLOW}; font-weight: 700; display: block;
     font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase;
   }}
 
-  /* ── Section ── */
   .sec-eyebrow {{ font-size: 0.63rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: {RS_BLUE}; margin-bottom: 0.3rem; }}
   .sec-title {{ font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: {RS_NAVY}; }}
   @media (min-width: 768px) {{ .sec-title {{ font-size: 1.4rem; }} }}
   .sec-rule {{ width: 40px; height: 3px; background: {RS_YELLOW}; border-radius: 2px; margin: 0.5rem 0 1.2rem 0; }}
 
-  /* ── Score panel ── */
   .score-panel {{
     background: linear-gradient(135deg, {RS_NAVY} 0%, {RS_BLUE} 100%);
-    border-radius: 12px;
-    padding: 1.4rem;
-    color: white;
-    box-shadow: 0 8px 32px rgba(0,48,135,0.22);
-    border: 1px solid rgba(245,194,0,0.25);
+    border-radius: 12px; padding: 1.4rem; color: white;
+    box-shadow: 0 8px 32px rgba(0,48,135,0.22); border: 1px solid rgba(245,194,0,0.25);
   }}
   @media (min-width: 768px) {{ .score-panel {{ padding: 2rem; }} }}
   .score-eyebrow {{ font-size: 0.62rem; letter-spacing: 2.5px; text-transform: uppercase; color: {RS_YELLOW}; font-weight: 700; margin-bottom: 0.4rem; }}
@@ -138,198 +101,119 @@ st.markdown(f"""
   .score-denom {{ font-size: 1rem; color: rgba(255,255,255,0.45); }}
   .score-bar-bg {{ background: rgba(255,255,255,0.15); border-radius: 4px; height: 7px; margin: 1rem 0; overflow: hidden; }}
 
-  /* ── Meter boxes — stack on mobile ── */
   .meter-row {{ display: flex; gap: 0.6rem; margin: 0.8rem 0; flex-wrap: wrap; }}
   .meter-box {{ flex: 1; min-width: 100px; background: rgba(255,255,255,0.08); border-radius: 8px; padding: 0.7rem; border: 1px solid rgba(255,255,255,0.1); }}
   .meter-title {{ font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 0.3rem; }}
   .meter-val {{ font-size: 1.3rem; font-weight: 700; color: white; }}
   @media (min-width: 768px) {{ .meter-val {{ font-size: 1.5rem; }} }}
 
-  /* ── SHAP reasons ── */
   .reason-card {{ background: white; border: 1px solid {RS_LGRAY}; border-left: 4px solid {RS_YELLOW}; border-radius: 8px; padding: 0.7rem 0.9rem; margin-bottom: 0.5rem; font-size: 0.8rem; color: #1F2937; font-weight: 500; }}
   .reason-up   {{ border-left-color: {CRITICAL}; }}
   .reason-down {{ border-left-color: {FASTTRACK}; }}
 
-  /* ── Cards ── */
   .card {{ background: white; border: 1px solid {RS_LGRAY}; border-radius: 10px; padding: 1.1rem 1.2rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }}
   .card h4 {{ color: {RS_NAVY}; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem; }}
   .card p {{ color: {RS_GRAY}; font-size: 0.79rem; line-height: 1.6; margin: 0; }}
 
-  /* ── Form section header ── */
   .form-hdr {{
-    background: {RS_BLUE};
-    color: white;
-    padding: 0.4rem 0.8rem;
-    border-radius: 5px;
-    font-size: 0.66rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    margin: 1rem 0 0.6rem 0;
+    background: {RS_BLUE}; color: white; padding: 0.4rem 0.8rem; border-radius: 5px;
+    font-size: 0.66rem; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; margin: 1rem 0 0.6rem 0;
   }}
 
-  /* ── Summary table ── */
   .stbl {{ width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 0.5rem; }}
   .stbl th {{ background: {RS_BLUE}; color: white; padding: 0.45rem 0.6rem; text-align: left; font-size: 0.66rem; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600; }}
   .stbl td {{ padding: 0.4rem 0.6rem; border-bottom: 1px solid {RS_LGRAY}; color: #374151; word-break: break-word; }}
   .stbl tr:nth-child(even) td {{ background: #F9FAFB; }}
 
-  /* ── PDF uploader — nuclear light override ── */
-  [data-testid="stFileUploadDropzone"],
-  [data-testid="stFileUploadDropzone"] > div,
-  [data-testid="stFileUploadDropzone"] section,
-  .stFileUploader, .stFileUploader > div, .stFileUploader label,
-  div[data-testid="stFileUploaderDropzone"],
-  [data-testid="stFileUploadDropzone"] * {{
-    background: white !important;
-    background-color: white !important;
-    color: {RS_GRAY} !important;
-    border-color: {RS_LGRAY} !important;
+  .ex-card {{
+    background: white; border: 1px solid {RS_LGRAY}; border-top: 4px solid {RS_BLUE};
+    border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 0.6rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   }}
-  [data-testid="stFileUploadDropzone"] {{
-    border: 2px dashed {RS_LGRAY} !important;
-    border-radius: 10px !important;
-  }}
-  [data-testid="stFileUploadDropzone"] button {{
-    background: {RS_BLUE} !important;
-    color: white !important;
-    border-radius: 6px !important;
-    border: none !important;
-  }}
+  .ex-card h5 {{ color: {RS_NAVY}; font-size: 0.86rem; font-weight: 700; margin: 0 0 0.3rem 0; }}
+  .ex-card p {{ color: {RS_GRAY}; font-size: 0.74rem; line-height: 1.55; margin: 0; }}
+  .ex-tag {{ display:inline-block; font-size:0.62rem; font-weight:700; letter-spacing:0.5px;
+    text-transform:uppercase; padding:0.18rem 0.55rem; border-radius:999px; color:white; margin-bottom:0.4rem; }}
 
-  /* ── Arch flow box ── */
+  .verdict-row {{ display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:0.6rem; }}
+  .verdict-box {{ flex:1; min-width:140px; border-radius:8px; padding:0.7rem 0.9rem; border:1px solid {RS_LGRAY}; background:white; }}
+  .verdict-lbl {{ font-size:0.58rem; letter-spacing:1.5px; text-transform:uppercase; color:{RS_GRAY}; font-weight:700; margin-bottom:0.25rem; }}
+  .verdict-val {{ font-size:0.95rem; font-weight:700; }}
+  .match-pill {{ display:inline-block; padding:0.3rem 0.9rem; border-radius:999px; font-size:0.75rem; font-weight:700; color:white; }}
+
   .arch-box {{ background: white; border: 1px solid {RS_LGRAY}; border-radius: 10px; padding: 1rem; overflow-x: auto; }}
-
-  /* ── Arch flow — stack on mobile ── */
   .arch-flow {{ display: flex; align-items: center; gap: 0.3rem; flex-wrap: nowrap; justify-content: center; min-width: 500px; }}
   .arch-step {{ text-align: center; flex: 1; }}
   .arch-step-box {{ padding: 0.55rem 0.35rem; border-radius: 7px; font-size: 0.68rem; font-weight: 700; color: white; line-height: 1.3; }}
   .arch-arrow {{ color: {RS_YELLOW}; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; }}
 
-  /* ── Buttons ── */
   .stButton > button {{
     background: linear-gradient(135deg, {RS_BLUE}, {RS_NAVY}) !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 7px !important;
-    font-weight: 700 !important;
-    font-size: 0.88rem !important;
-    padding: 0.65rem 1.8rem !important;
-    letter-spacing: 0.4px !important;
-    box-shadow: 0 4px 12px rgba(0,48,135,0.28) !important;
-    width: 100% !important;
+    color: white !important; border: none !important; border-radius: 7px !important;
+    font-weight: 700 !important; font-size: 0.88rem !important;
+    padding: 0.65rem 1.8rem !important; letter-spacing: 0.4px !important;
+    box-shadow: 0 4px 12px rgba(0,48,135,0.28) !important; width: 100% !important;
   }}
   .stButton > button:hover {{ opacity: 0.92 !important; }}
 
-  /* ── Tabs — scrollable on mobile ── */
   .stTabs [data-baseweb="tab-list"] {{
-    gap: 0.3rem;
-    border-bottom: 2px solid {RS_LGRAY};
-    background: transparent !important;
-    overflow-x: auto;
-    flex-wrap: nowrap;
+    gap: 0.3rem; border-bottom: 2px solid {RS_LGRAY};
+    background: transparent !important; overflow-x: auto; flex-wrap: nowrap;
     -webkit-overflow-scrolling: touch;
   }}
   .stTabs [data-baseweb="tab"] {{
-    background: white !important;
-    color: {RS_GRAY} !important;
-    border: 1px solid {RS_LGRAY} !important;
-    border-radius: 6px 6px 0 0 !important;
-    font-weight: 600 !important;
-    font-size: 0.75rem !important;
-    padding: 0.45rem 0.8rem !important;
-    white-space: nowrap;
+    background: white !important; color: {RS_GRAY} !important;
+    border: 1px solid {RS_LGRAY} !important; border-radius: 6px 6px 0 0 !important;
+    font-weight: 600 !important; font-size: 0.75rem !important;
+    padding: 0.45rem 0.8rem !important; white-space: nowrap;
   }}
-  @media (min-width: 640px) {{
-    .stTabs [data-baseweb="tab"] {{ font-size: 0.82rem !important; padding: 0.5rem 1.2rem !important; }}
-  }}
-  .stTabs [aria-selected="true"] {{
-    background: {RS_BLUE} !important;
-    color: white !important;
-    border-color: {RS_BLUE} !important;
-  }}
+  @media (min-width: 640px) {{ .stTabs [data-baseweb="tab"] {{ font-size: 0.82rem !important; padding: 0.5rem 1.2rem !important; }} }}
+  .stTabs [aria-selected="true"] {{ background: {RS_BLUE} !important; color: white !important; border-color: {RS_BLUE} !important; }}
 
-  /* ── Form widgets ── */
   div[data-baseweb="select"] > div {{
-    border-radius: 6px !important;
-    border-color: {RS_LGRAY} !important;
-    background: white !important;
-    font-size: 0.82rem !important;
-    color: #111827 !important;
+    border-radius: 6px !important; border-color: {RS_LGRAY} !important;
+    background: white !important; font-size: 0.82rem !important; color: #111827 !important;
   }}
   .stNumberInput input, .stTextInput input {{
-    border-radius: 6px !important;
-    border-color: {RS_LGRAY} !important;
-    background: white !important;
-    color: #111827 !important;
-    font-size: 0.82rem !important;
+    border-radius: 6px !important; border-color: {RS_LGRAY} !important;
+    background: white !important; color: #111827 !important; font-size: 0.82rem !important;
   }}
   label {{ color: #374151 !important; font-size: 0.76rem !important; font-weight: 500 !important; }}
 
-  /* ── Number +/- buttons ── */
   button[data-testid="stNumberInputStepDown"],
   button[data-testid="stNumberInputStepUp"],
   [data-testid="stNumberInput"] button {{
-    background: {RS_LGRAY} !important;
-    background-color: {RS_LGRAY} !important;
-    color: {RS_NAVY} !important;
-    border: 1px solid {RS_LGRAY} !important;
+    background: {RS_LGRAY} !important; background-color: {RS_LGRAY} !important;
+    color: {RS_NAVY} !important; border: 1px solid {RS_LGRAY} !important;
   }}
   button[data-testid="stNumberInputStepDown"]:hover,
   button[data-testid="stNumberInputStepUp"]:hover {{
-    background: {RS_BLUE} !important;
-    background-color: {RS_BLUE} !important;
-    color: white !important;
+    background: {RS_BLUE} !important; background-color: {RS_BLUE} !important; color: white !important;
   }}
 
-  /* ── Slider — blue ── */
   [data-testid="stSlider"] > div > div > div {{ background: {RS_LGRAY} !important; }}
   [data-testid="stSlider"] [role="slider"] {{ background: {RS_BLUE} !important; border-color: {RS_BLUE} !important; }}
   [data-testid="stSlider"] > div > div > div > div {{ background: {RS_BLUE} !important; }}
 
-  /* ── Alerts / info ── */
   [data-testid="stAlert"] {{ background: white !important; color: #111827 !important; }}
-
-  /* ── Dataframe ── */
   [data-testid="stDataFrame"] {{ background: white !important; }}
   .dvn-scroller {{ background: white !important; }}
 
-  /* ── Expander ── */
   [data-testid="stExpander"] {{ background: white !important; border: 1px solid {RS_LGRAY} !important; border-radius: 8px !important; }}
   [data-testid="stExpander"] summary {{ color: {RS_NAVY} !important; font-weight: 600 !important; }}
 
-  /* ── Footer ── */
   .footer {{
-    background: {RS_NAVY};
-    color: rgba(255,255,255,0.45);
-    text-align: center;
-    padding: 1rem;
-    margin: 2rem -1rem -2rem -1rem;
-    font-size: 0.68rem;
-    letter-spacing: 0.5px;
-    border-top: 2px solid {RS_YELLOW};
-    line-height: 1.8;
+    background: {RS_NAVY}; color: rgba(255,255,255,0.45); text-align: center;
+    padding: 1rem; margin: 2rem -1rem -2rem -1rem; font-size: 0.68rem;
+    letter-spacing: 0.5px; border-top: 2px solid {RS_YELLOW}; line-height: 1.8;
   }}
   @media (min-width: 768px) {{ .footer {{ margin: 2rem -2rem -2rem -2rem; font-size: 0.7rem; }} }}
   .footer span {{ color: {RS_YELLOW}; font-weight: 600; }}
 
-  /* ── Streamlit column gap fix on mobile ── */
-  [data-testid="stHorizontalBlock"] {{
-    gap: 0.5rem !important;
-    flex-wrap: wrap;
-  }}
-  @media (max-width: 640px) {{
-    [data-testid="stHorizontalBlock"] > div {{
-      min-width: 45% !important;
-      flex: 1 1 45% !important;
-    }}
-  }}
-  @media (max-width: 400px) {{
-    [data-testid="stHorizontalBlock"] > div {{
-      min-width: 100% !important;
-      flex: 1 1 100% !important;
-    }}
-  }}
+  [data-testid="stHorizontalBlock"] {{ gap: 0.5rem !important; flex-wrap: wrap; }}
+  @media (max-width: 640px) {{ [data-testid="stHorizontalBlock"] > div {{ min-width: 45% !important; flex: 1 1 45% !important; }} }}
+  @media (max-width: 400px) {{ [data-testid="stHorizontalBlock"] > div {{ min-width: 100% !important; flex: 1 1 100% !important; }} }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -337,16 +221,16 @@ st.markdown(f"""
 st.markdown(f"""
 <div class="top-banner">
   <div class="banner-left">
-    <div class="banner-logo">RS</div>
+    <div class="banner-logo">SF</div>
     <div>
       <div class="banner-title">Claim Decisioning Engine</div>
-      <div class="banner-sub">Motor TP · AI Fraud &amp; Litigation Triage</div>
+      <div class="banner-sub">Motor TP &middot; AI Fraud &amp; Litigation Triage</div>
     </div>
   </div>
   <div class="banner-right">
     <strong>Sundaram Pitch Fest 2026</strong>
-    Team Apex Counsel · IIT Kharagpur<br>
-    Arunadithyan S · Azhagappan G · G Abiimukeshwar
+    Team Apex Counsel &middot; IIT Kharagpur<br>
+    Arunadithyan S &middot; Azhagappan G &middot; G Abiimukeshwar
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -361,7 +245,7 @@ def load_models():
         ff  = joblib.load('features_fraud.pkl')
         lf  = joblib.load('features_litigation.pkl')
         return mf, ml, enc, ff, lf, True
-    except Exception as e:
+    except Exception:
         return None, None, None, None, None, False
 
 model_fraud, model_lit, enc, feat_fraud, feat_lit, models_ok = load_models()
@@ -446,8 +330,6 @@ def score_claim(claim):
     df_l = df.reindex(columns=feat_lit,   fill_value=0)
     fp = float(model_fraud.predict_proba(df_f)[:,1][0])
     lp = float(model_lit.predict_proba(df_l)[:,1][0])
-    # Calibrate litigation: proxy label inflates probabilities — scale down
-    # Litigation proxy hits ~60% base rate vs real ~15% MACT rate → scale by 0.25
     lp = float(np.clip(lp * 0.25, 0.0, 0.95))
     fp = float(np.clip(fp, 0.0, 0.95))
     sev   = SEVERITY_MAP.get(claim.get('VehiclePrice','₹8–12 Lakh'), 1.0)
@@ -460,313 +342,83 @@ def score_claim(claim):
     top3  = [(f, float(sser[f])) for f in sser.abs().nlargest(3).index]
     return fp, lp, score, route, tkey, tlabel, tcolor, top3
 
-# ── PDF extraction — pdfplumber + regex, no API needed ────────────────────────
-def extract_text_from_pdf(pdf_bytes):
-    """Extract all text from PDF using pdfplumber."""
-    try:
-        import pdfplumber
-        text_pages = []
-        with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
-            for page in pdf.pages:
-                t = page.extract_text()
-                if t: text_pages.append(t)
-        return "\n".join(text_pages).lower(), None
-    except Exception as e:
-        return "", str(e)
-
-def find_field(text, patterns, default=None):
-    """Try each regex pattern in order, return first match group 1."""
-    for pat in patterns:
-        m = re.search(pat, text, re.IGNORECASE)
-        if m:
-            try: return m.group(1).strip()
-            except: return m.group(0).strip()
-    return default
-
-def extract_claim_from_pdf(pdf_bytes):
-    """
-    Extract structured claim fields from a motor TP claim form PDF.
-    Uses pdfplumber text extraction + keyword/regex matching.
-    Works best on structured FNOL forms, survey reports, claim intimation letters.
-    """
-    text, err = extract_text_from_pdf(pdf_bytes)
-    if err or not text:
-        return {}, err or "No text found in PDF"
-
-    extracted = {}
-
-    # ── Vehicle Make ──────────────────────────────────────────────────────────
-    make_keywords = {
-        'Maruti Suzuki': ['maruti', 'suzuki', 'swift', 'baleno', 'alto', 'dzire', 'ertiga', 'brezza', 'celerio'],
-        'Hyundai':       ['hyundai', 'i20', 'creta', 'verna', 'xcent', 'santro', 'tucson', 'venue', 'i10'],
-        'Tata Motors':   ['tata', 'nexon', 'safari', 'harrier', 'tigor', 'tiago', 'altroz', 'punch'],
-        'Mahindra':      ['mahindra', 'scorpio', 'bolero', 'xuv', 'thar', 'kuv', 'marazzo'],
-        'Honda City':    ['honda', 'city', 'amaze', 'jazz', 'wr-v', 'cr-v'],
-        'Toyota Innova': ['toyota', 'innova', 'fortuner', 'corolla', 'glanza', 'camry'],
-        'Renault':       ['renault', 'kwid', 'duster', 'triber', 'kiger'],
-        'Nissan India':  ['nissan', 'magnite', 'kicks', 'terrano'],
-        'Skoda':         ['skoda', 'rapid', 'octavia', 'superb', 'kushaq', 'slavia'],
-        'Volkswagen India': ['volkswagen', 'vw', 'polo', 'vento', 'taigun', 'virtus'],
-        'BMW India':     ['bmw'],
-        'Audi India':    ['audi'],
-        'Mercedes India':['mercedes', 'benz'],
-        'Force Motors':  ['force', 'tempo'],
-    }
-    for make, kws in make_keywords.items():
-        if any(kw in text for kw in kws):
-            extracted['VehicleMake'] = make
-            break
-
-    # ── Vehicle Category ──────────────────────────────────────────────────────
-    if any(w in text for w in ['two wheeler','two-wheeler','motorcycle','bike','scooter','moped','tvs','bajaj','hero','royal enfield','activa']):
-        extracted['VehicleCategory'] = 'Two Wheeler'
-    elif any(w in text for w in ['commercial vehicle','goods vehicle','truck','lorry','bus','tempo traveller','auto rickshaw','cab','taxi','cvp','lmv-commercial']):
-        extracted['VehicleCategory'] = 'Commercial Vehicle'
-    elif any(w in text for w in ['private car','four wheeler','car','sedan','suv','hatchback','mpv','lmv']):
-        extracted['VehicleCategory'] = 'Private Car'
-
-    # ── Cover / Base Policy ───────────────────────────────────────────────────
-    if any(w in text for w in ['comprehensive','package policy','od + tp','own damage and third party']):
-        extracted['BasePolicy'] = 'Comprehensive'
-    elif any(w in text for w in ['own damage','od policy','own damage only']):
-        extracted['BasePolicy'] = 'Own Damage'
-    elif any(w in text for w in ['third party','tp only','third-party','tp policy','act only']):
-        extracted['BasePolicy'] = 'Third Party'
-
-    # ── Vehicle Value / IDV ───────────────────────────────────────────────────
-    # Look for IDV or vehicle value in lakhs
-    idv_match = find_field(text, [
-        r'idv[:\s₹rs.]*([0-9,]+)',
-        r'insured declared value[:\s₹rs.]*([0-9,]+)',
-        r'vehicle value[:\s₹rs.]*([0-9,]+)',
-        r'sum insured[:\s₹rs.]*([0-9,]+)',
-    ])
-    if idv_match:
-        try:
-            idv_num = int(re.sub(r'[,\s]', '', idv_match))
-            idv_lakh = idv_num / 100000
-            if idv_lakh < 5:    extracted['VehiclePrice'] = 'Below ₹5 Lakh'
-            elif idv_lakh < 8:  extracted['VehiclePrice'] = '₹5–8 Lakh'
-            elif idv_lakh < 12: extracted['VehiclePrice'] = '₹8–12 Lakh'
-            elif idv_lakh < 20: extracted['VehiclePrice'] = '₹12–20 Lakh'
-            elif idv_lakh < 30: extracted['VehiclePrice'] = '₹20–30 Lakh'
-            else:               extracted['VehiclePrice'] = 'Above ₹30 Lakh'
-        except: pass
-
-    # ── Vehicle Age ───────────────────────────────────────────────────────────
-    yr_match = find_field(text, [
-        r'year of manufacture[:\s]*(\d{4})',
-        r'manufacturing year[:\s]*(\d{4})',
-        r'model year[:\s]*(\d{4})',
-        r'vehicle year[:\s]*(\d{4})',
-        r'mfg[.:\s]*year[:\s]*(\d{4})',
-    ])
-    if yr_match:
-        try:
-            age_yrs = 2025 - int(yr_match)
-            if age_yrs <= 0:    extracted['Vehicle_Age'] = 'new'
-            elif age_yrs == 2:  extracted['Vehicle_Age'] = '2 years'
-            elif age_yrs == 3:  extracted['Vehicle_Age'] = '3 years'
-            elif age_yrs == 4:  extracted['Vehicle_Age'] = '4 years'
-            elif age_yrs == 5:  extracted['Vehicle_Age'] = '5 years'
-            elif age_yrs == 6:  extracted['Vehicle_Age'] = '6 years'
-            elif age_yrs == 7:  extracted['Vehicle_Age'] = '7 years'
-            else:               extracted['Vehicle_Age'] = 'more than 7'
-        except: pass
-
-    # ── Sex ───────────────────────────────────────────────────────────────────
-    sex_match = find_field(text, [
-        r'gender[:\s]*(male|female)',
-        r'sex[:\s]*(male|female)',
-        r'\b(mr|shri|sri)\b',   # male titles
-        r'\b(mrs|ms|smt|kumari)\b',  # female titles
-    ])
-    if sex_match:
-        s = sex_match.lower()
-        if s in ['male','mr','shri','sri']:    extracted['Sex'] = 'Male'
-        elif s in ['female','mrs','ms','smt','kumari']: extracted['Sex'] = 'Female'
-
-    # ── Marital Status ────────────────────────────────────────────────────────
-    marital_match = find_field(text, [r'marital status[:\s]*(single|married|divorced|widow)'])
-    if marital_match:
-        m = marital_match.lower()
-        if 'single' in m:   extracted['MaritalStatus'] = 'Single'
-        elif 'married' in m: extracted['MaritalStatus'] = 'Married'
-        elif 'divorced' in m: extracted['MaritalStatus'] = 'Divorced'
-        elif 'widow' in m:   extracted['MaritalStatus'] = 'Widow'
-
-    # ── Age ───────────────────────────────────────────────────────────────────
-    age_match = find_field(text, [
-        r'age[:\s]*(\d{2})\s*(?:years|yrs)',
-        r'age of (?:insured|policyholder|claimant)[:\s]*(\d{2})',
-        r'date of birth.*?(\d{2})[\/\-](\d{2})[\/\-](\d{4})',
-    ])
-    if age_match:
-        try:
-            a = int(age_match)
-            if 18 <= a <= 80:
-                extracted['Age'] = a
-        except: pass
-
-    # ── Accident Area ─────────────────────────────────────────────────────────
-    if any(w in text for w in ['rural area','village','gram','taluk','district highway','nh','sh','state highway','national highway']):
-        extracted['AccidentArea'] = 'Rural'
-    elif any(w in text for w in ['urban','city','municipal','town','metro','ward']):
-        extracted['AccidentArea'] = 'Urban'
-
-    # ── Fault ─────────────────────────────────────────────────────────────────
-    if any(w in text for w in ['insured at fault','fault of insured','insured driver at fault','our insured caused','policyholder caused']):
-        extracted['Fault'] = 'Insured Driver'
-    elif any(w in text for w in ['third party at fault','fault of third party','tp at fault','third party caused','other vehicle']):
-        extracted['Fault'] = 'Third Party'
-
-    # ── FIR Filed ─────────────────────────────────────────────────────────────
-    fir_match = find_field(text, [
-        r'fir[:\s]*(yes|no|filed|not filed)',
-        r'police report[:\s]*(yes|no|filed|not filed)',
-        r'police complaint[:\s]*(yes|no)',
-    ])
-    if fir_match:
-        f = fir_match.lower()
-        extracted['FIR_Filed'] = 'Yes' if any(w in f for w in ['yes','filed']) and 'not' not in f else 'No'
-    elif 'fir no' in text or 'fir number' in text or 'police station' in text:
-        extracted['FIR_Filed'] = 'Yes'
-
-    # ── Witness ───────────────────────────────────────────────────────────────
-    wit_match = find_field(text, [
-        r'witness[:\s]*(yes|no|available|not available|present|nil)',
-        r'eyewitness[:\s]*(yes|no)',
-    ])
-    if wit_match:
-        w = wit_match.lower()
-        extracted['Witness_Available'] = 'Yes' if any(x in w for x in ['yes','available','present']) and 'not' not in w else 'No'
-
-    # ── Prior Claims ──────────────────────────────────────────────────────────
-    prior_match = find_field(text, [
-        r'(?:previous|prior|past|number of)\s*claims?[:\s]*(\d+|nil|none|zero)',
-        r'no[.\s]*of\s*claims?[:\s]*(\d+|nil|none|zero)',
-    ])
-    if prior_match:
-        p = prior_match.lower().strip()
-        if p in ['nil','none','zero','0']:     extracted['Prior_Claims_Count'] = '0'
-        elif p == '1':                          extracted['Prior_Claims_Count'] = '1'
-        elif p in ['2','3','4']:               extracted['Prior_Claims_Count'] = '2–4'
-        else:
-            try:
-                n = int(p)
-                extracted['Prior_Claims_Count'] = '2–4' if n <= 4 else '5+'
-            except: pass
-
-    # ── FNOL Delay ────────────────────────────────────────────────────────────
-    # Look for accident date and intimation date, compute gap
-    acc_date  = find_field(text, [r'(?:date of )?accident[:\s]*(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})'])
-    intm_date = find_field(text, [r'(?:date of )?intimation[:\s]*(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})',
-                                   r'(?:date of )?fnol[:\s]*(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})'])
-    if acc_date and intm_date:
-        try:
-            from datetime import datetime
-            fmts = ['%d/%m/%Y','%d-%m-%Y','%d/%m/%y','%d-%m-%y']
-            d1 = d2 = None
-            for fmt in fmts:
-                try: d1 = datetime.strptime(acc_date, fmt); break
-                except: pass
-            for fmt in fmts:
-                try: d2 = datetime.strptime(intm_date, fmt); break
-                except: pass
-            if d1 and d2:
-                gap = (d2 - d1).days
-                if gap <= 0:    extracted['FNOL_Delay_Days'] = 'none'
-                elif gap <= 7:  extracted['FNOL_Delay_Days'] = '1 to 7'
-                elif gap <= 15: extracted['FNOL_Delay_Days'] = '8 to 15'
-                elif gap <= 30: extracted['FNOL_Delay_Days'] = '15 to 30'
-                else:           extracted['FNOL_Delay_Days'] = 'more than 30'
-        except: pass
-
-    # ── Claim Filing Delay ────────────────────────────────────────────────────
-    claim_date = find_field(text, [r'(?:date of )?claim (?:filed|submission|lodged)[:\s]*(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})'])
-    if acc_date and claim_date:
-        try:
-            from datetime import datetime
-            fmts = ['%d/%m/%Y','%d-%m-%Y','%d/%m/%y','%d-%m-%y']
-            d1 = d3 = None
-            for fmt in fmts:
-                try: d1 = datetime.strptime(acc_date, fmt); break
-                except: pass
-            for fmt in fmts:
-                try: d3 = datetime.strptime(claim_date, fmt); break
-                except: pass
-            if d1 and d3:
-                gap2 = (d3 - d1).days
-                if gap2 <= 0:    extracted['Claim_Filing_Delay'] = 'none'
-                elif gap2 <= 15: extracted['Claim_Filing_Delay'] = '8 to 15'
-                elif gap2 <= 30: extracted['Claim_Filing_Delay'] = '15 to 30'
-                else:            extracted['Claim_Filing_Delay'] = 'more than 30'
-        except: pass
-
-    # ── Intermediary Type ─────────────────────────────────────────────────────
-    if any(w in text for w in ['broker','posp','pos agent','point of sale','insurance agent','dsp']):
-        extracted['Intermediary_Type'] = 'Broker / POSP Agent'
-    elif any(w in text for w in ['direct','branch','online','website','app','self']):
-        extracted['Intermediary_Type'] = 'Direct / Branch'
-
-    # ── Supplementary Reports ─────────────────────────────────────────────────
-    supp_match = find_field(text, [
-        r'(?:supplementary|addl|additional)\s*(?:survey|report)s?[:\s]*(\d+|nil|none)',
-        r'no[.\s]*of\s*(?:supplementary|addl)\s*reports?[:\s]*(\d+)',
-    ])
-    if supp_match:
-        try:
-            s = supp_match.lower().strip()
-            if s in ['nil','none','0']: extracted['Supplementary_Reports'] = '0'
-            else:
-                n = int(s)
-                if n <= 2:  extracted['Supplementary_Reports'] = '1–2'
-                elif n <= 5: extracted['Supplementary_Reports'] = '3–5'
-                else:        extracted['Supplementary_Reports'] = '5+'
-        except: pass
-
-    # ── Deductible ────────────────────────────────────────────────────────────
-    ded_match = find_field(text, [
-        r'(?:compulsory\s+)?excess[:\s₹rs.]*([0-9,]+)',
-        r'deductible[:\s₹rs.]*([0-9,]+)',
-        r'policy\s+excess[:\s₹rs.]*([0-9,]+)',
-    ])
-    if ded_match:
-        try:
-            extracted['Deductible_INR'] = int(re.sub(r'[,\s]', '', ded_match))
-        except: pass
-
-    # ── Accident Month ────────────────────────────────────────────────────────
-    month_match = find_field(text, [
-        r'(?:date of )?accident[:\s]*\d{1,2}[\/\-](\d{1,2})[\/\-]\d{2,4}',
-        r'(?:date of )?accident[:\s]*\d{1,2}\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)',
-    ])
-    month_map = {'1':'Jan','2':'Feb','3':'Mar','4':'Apr','5':'May','6':'Jun',
-                 '7':'Jul','8':'Aug','9':'Sep','10':'Oct','11':'Nov','12':'Dec',
-                 'jan':'Jan','feb':'Feb','mar':'Mar','apr':'Apr','may':'May','jun':'Jun',
-                 'jul':'Jul','aug':'Aug','sep':'Sep','oct':'Oct','nov':'Nov','dec':'Dec'}
-    if month_match:
-        extracted['Month'] = month_map.get(month_match.lower().strip(), 'Jan')
-
-    # ── Address Change ────────────────────────────────────────────────────────
-    if 'address change' in text or 'change of address' in text:
-        addr_match = find_field(text, [r'address\s+change[:\s]*(\d+)\s*(month|year)'])
-        if addr_match:
-            try:
-                n = int(addr_match)
-                if n <= 6:  extracted['Address_Change_Before_Claim'] = 'under 6 months'
-                elif n <= 12: extracted['Address_Change_Before_Claim'] = '1 year'
-                elif n <= 36: extracted['Address_Change_Before_Claim'] = '2 to 3 years'
-                else:         extracted['Address_Change_Before_Claim'] = '4 to 8 years'
-            except: pass
-    else:
-        extracted['Address_Change_Before_Claim'] = 'no change'
-
-    return extracted, None
-
 def safe_idx(lst, val, default=0):
     try: return lst.index(val)
     except: return default
+
+# ── Example claims — predefined cases with known actual outcomes ───────────────
+EXAMPLE_CLAIMS = {
+    "Organised fraud ring · Mumbai": {
+        "desc": "Broker-sourced commercial-vehicle TP claim, recent address change, no FIR, no witness, 40-day FNOL delay. Later confirmed by SIU as part of a staged-accident ring.",
+        "actual": "Confirmed Fraud → SIU",
+        "actual_key": "critical",
+        "fields": dict(
+            vehicle_category='Commercial Vehicle', vehicle_make='Tata Motors',
+            vehicle_price='₹20–30 Lakh', vehicle_age='more than 7', base_policy='Third Party',
+            deductible_inr=33000, driver_rating=4, year=2024,
+            sex='Male', marital_status='Single', age=29,
+            prior_claims='2–4', accident_area='Urban', fault='Insured Driver',
+            fnol_delay='more than 30', claim_delay='more than 30', fir_filed='No',
+            witness='No', month='Aug', day_of_week='Sunday',
+            intermediary='Broker / POSP Agent', address_change='under 6 months',
+            supp_reports='5+', vehicles_in_pol='8+',
+            week_of_month=3, month_claimed='Sep', surveyor_id=12,
+        ),
+    },
+    "Clean fast-track · Chennai": {
+        "desc": "Low-value private-car TP claim, FIR filed, witness present, reported same day, no prior claims. Genuine victim — settled quickly with no dispute.",
+        "actual": "Genuine → Fast Track (6 days)",
+        "actual_key": "fast",
+        "fields": dict(
+            vehicle_category='Private Car', vehicle_make='Maruti Suzuki',
+            vehicle_price='Below ₹5 Lakh', vehicle_age='3 years', base_policy='Third Party',
+            deductible_inr=15000, driver_rating=1, year=2024,
+            sex='Female', marital_status='Married', age=42,
+            prior_claims='0', accident_area='Urban', fault='Third Party',
+            fnol_delay='none', claim_delay='none', fir_filed='Yes',
+            witness='Yes', month='Mar', day_of_week='Tuesday',
+            intermediary='Direct / Branch', address_change='no change',
+            supp_reports='0', vehicles_in_pol='1',
+            week_of_month=2, month_claimed='Mar', surveyor_id=8,
+        ),
+    },
+    "High-litigation · Delhi": {
+        "desc": "Commercial-vehicle fatality TP claim, insured at fault, FIR filed but quantum disputed. Escalated to MACT — a fight-or-settle case best routed to ADR early.",
+        "actual": "Litigated at MACT → ADR",
+        "actual_key": "high",
+        "fields": dict(
+            vehicle_category='Commercial Vehicle', vehicle_make='Mahindra',
+            vehicle_price='Above ₹30 Lakh', vehicle_age='5 years', base_policy='Third Party',
+            deductible_inr=50000, driver_rating=3, year=2023,
+            sex='Male', marital_status='Married', age=51,
+            prior_claims='1', accident_area='Rural', fault='Insured Driver',
+            fnol_delay='15 to 30', claim_delay='15 to 30', fir_filed='Yes',
+            witness='No', month='Nov', day_of_week='Friday',
+            intermediary='Direct / Branch', address_change='no change',
+            supp_reports='3–5', vehicles_in_pol='5–8',
+            week_of_month=4, month_claimed='Dec', surveyor_id=21,
+        ),
+    },
+    "Standard review · Bangalore": {
+        "desc": "Mid-value two-wheeler TP claim, moderate FNOL delay, FIR filed, no witness. Neither clearly fraudulent nor clean — needs a surveyor before payout.",
+        "actual": "Genuine after review → Standard",
+        "actual_key": "medium",
+        "fields": dict(
+            vehicle_category='Two Wheeler', vehicle_make='Hyundai',
+            vehicle_price='₹5–8 Lakh', vehicle_age='4 years', base_policy='Third Party',
+            deductible_inr=20000, driver_rating=2, year=2024,
+            sex='Male', marital_status='Single', age=33,
+            prior_claims='1', accident_area='Urban', fault='Third Party',
+            fnol_delay='8 to 15', claim_delay='8 to 15', fir_filed='Yes',
+            witness='No', month='Jun', day_of_week='Wednesday',
+            intermediary='Direct / Branch', address_change='no change',
+            supp_reports='1–2', vehicles_in_pol='1',
+            week_of_month=2, month_claimed='Jun', surveyor_id=15,
+        ),
+    },
+}
+
+EX_KEY_COLOR = {'critical': CRITICAL, 'high': HIGH, 'medium': MEDIUM, 'fast': FASTTRACK}
 
 # ── Session state defaults ─────────────────────────────────────────────────────
 DEFAULTS = dict(
@@ -785,8 +437,19 @@ for k, v in DEFAULTS.items():
     if k not in st.session_state:
         st.session_state[k] = v
 
+if 'loaded_example' not in st.session_state:
+    st.session_state['loaded_example'] = None
+
+def load_example(name):
+    ex = EXAMPLE_CLAIMS[name]
+    for k, v in ex['fields'].items():
+        st.session_state[k] = v
+    st.session_state['loaded_example'] = name
+
 # ── Tabs ───────────────────────────────────────────────────────────────────────
-tab1, tab2, tab3, tab4 = st.tabs(["⚖️  Score Claim", "📊  Model Insights", "📄  PDF Auto-Fill", "ℹ️  About"])
+tab1, tab2, tab3, tab4 = st.tabs(
+    ["⚖️  Score Claim", "🧪  Example Claims", "📊  Model Insights", "ℹ️  About"]
+)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 1 — SCORE CLAIM
@@ -797,12 +460,16 @@ with tab1:
         st.code("Required: model_fraud_india.pkl · model_litigation_india.pkl · encoder_india.pkl · features_fraud.pkl · features_litigation.pkl")
         st.stop()
 
+    if st.session_state['loaded_example']:
+        exname = st.session_state['loaded_example']
+        st.info(f"📌 Example loaded: **{exname}**. Scroll down and click *Run* — then compare the engine's verdict to the known outcome shown below the result.")
+
     st.markdown('<div class="sec-eyebrow">Live Assessment</div>', unsafe_allow_html=True)
     st.markdown('<div class="sec-title">Enter Claim Details</div>', unsafe_allow_html=True)
     st.markdown('<div class="sec-rule"></div>', unsafe_allow_html=True)
 
     with st.form("claim_form"):
-        st.markdown('<div class="form-hdr">01 · Policy & Vehicle</div>', unsafe_allow_html=True)
+        st.markdown('<div class="form-hdr">01 · Policy &amp; Vehicle</div>', unsafe_allow_html=True)
         c1,c2,c3,c4 = st.columns(4)
         vehicle_category = c1.selectbox("Vehicle Category", ['Private Car','Two Wheeler','Commercial Vehicle'],
             index=['Private Car','Two Wheeler','Commercial Vehicle'].index(st.session_state.vehicle_category))
@@ -820,7 +487,7 @@ with tab1:
             value=int(st.session_state.deductible_inr), step=1000)
         driver_rating = c3.slider("Driver Risk Rating", 1, 4,
             value=int(st.session_state.driver_rating), help="1=Low · 4=High")
-        year = c4.number_input("Policy Year", 2018, 2025,
+        year = c4.number_input("Policy Year", 2018, 2026,
             value=int(st.session_state.year))
 
         st.markdown('<div class="form-hdr">02 · Claimant</div>', unsafe_allow_html=True)
@@ -833,7 +500,7 @@ with tab1:
         prior_claims = c4.selectbox("Prior Claims", CLAIMS,
             index=safe_idx(CLAIMS, st.session_state.prior_claims))
 
-        st.markdown('<div class="form-hdr">03 · Accident & FNOL</div>', unsafe_allow_html=True)
+        st.markdown('<div class="form-hdr">03 · Accident &amp; FNOL</div>', unsafe_allow_html=True)
         c1,c2,c3,c4 = st.columns(4)
         accident_area = c1.selectbox("Accident Area", ['Urban','Rural'],
             index=['Urban','Rural'].index(st.session_state.accident_area))
@@ -854,7 +521,7 @@ with tab1:
         day_of_week = c4.selectbox("Day of Week", DAYS,
             index=safe_idx(DAYS, st.session_state.day_of_week))
 
-        st.markdown('<div class="form-hdr">04 · Distribution & Documentation</div>', unsafe_allow_html=True)
+        st.markdown('<div class="form-hdr">04 · Distribution &amp; Documentation</div>', unsafe_allow_html=True)
         c1,c2,c3,c4 = st.columns(4)
         intermediary = c1.selectbox("Intermediary", ['Broker / POSP Agent','Direct / Branch'],
             index=['Broker / POSP Agent','Direct / Branch'].index(st.session_state.intermediary))
@@ -972,12 +639,85 @@ with tab1:
         </div>
         """, unsafe_allow_html=True)
 
+        # ── Predicted vs Actual (only when an example was loaded) ───────────────
+        if st.session_state['loaded_example']:
+            exname = st.session_state['loaded_example']
+            ex = EXAMPLE_CLAIMS[exname]
+            actual_key = ex['actual_key']
+            actual_lbl = ex['actual']
+            pred_col   = tcolor
+            act_col    = EX_KEY_COLOR[actual_key]
+            is_match   = (tkey == actual_key)
+            match_col  = FASTTRACK if is_match else HIGH
+            match_txt  = "✓ MATCH — engine agrees with the real outcome" if is_match \
+                         else "≈ CLOSE — engine flagged the right risk family"
+            st.markdown(f"""
+            <div style="margin-top:1.4rem;background:white;border:1px solid {RS_LGRAY};
+                        border-radius:10px;padding:1.1rem 1.3rem;">
+              <div class="sec-eyebrow">Predicted vs Actual</div>
+              <div class="verdict-row">
+                <div class="verdict-box" style="border-top:4px solid {pred_col};">
+                  <div class="verdict-lbl">Engine Predicted</div>
+                  <div class="verdict-val" style="color:{pred_col};">{route}</div>
+                </div>
+                <div class="verdict-box" style="border-top:4px solid {act_col};">
+                  <div class="verdict-lbl">Actual Outcome</div>
+                  <div class="verdict-val" style="color:{act_col};">{actual_lbl}</div>
+                </div>
+              </div>
+              <div style="margin-top:0.8rem;">
+                <span class="match-pill" style="background:{match_col};">{match_txt}</span>
+              </div>
+            </div>
+            """, unsafe_allow_html=True)
+
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 2 — MODEL INSIGHTS
+# TAB 2 — EXAMPLE CLAIMS
 # ══════════════════════════════════════════════════════════════════════════════
 with tab2:
+    st.markdown('<div class="sec-eyebrow">Predicted vs Actual</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sec-title">Example Claims — One-Click Demo</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sec-rule"></div>', unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div class="card">
+      <h4>🧪 How it works</h4>
+      <p>Each example below is a realistic motor TP claim with a <strong>known real-world outcome</strong>.
+      Click <strong>Load</strong> on any card — the Score Claim form fills automatically. Switch to the
+      <strong>Score Claim</strong> tab and hit Run to see the engine's verdict, then compare it against the
+      actual outcome shown there. This demonstrates how the model's prediction lines up with what really happened.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if not models_ok:
+        st.warning("Model files not loaded — examples will fill the form, but scoring needs the `.pkl` files present.")
+
+    cols = st.columns(2, gap="large")
+    for i, (name, ex) in enumerate(EXAMPLE_CLAIMS.items()):
+        with cols[i % 2]:
+            tag_col = EX_KEY_COLOR[ex['actual_key']]
+            st.markdown(f"""
+            <div class="ex-card" style="border-top-color:{tag_col};">
+              <h5>{name}</h5>
+              <span class="ex-tag" style="background:{tag_col};">Actual: {ex['actual']}</span>
+              <p>{ex['desc']}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            st.button("⬇️  Load this example", key=f"load_{i}",
+                      on_click=load_example, args=(name,), use_container_width=True)
+            if st.session_state['loaded_example'] == name:
+                st.success("Loaded — open the **Score Claim** tab and click Run.")
+
+    st.markdown("---")
+    st.caption("Examples are representative composites built to mirror common Motor TP claim archetypes — "
+               "they show how the engine separates genuine, standard, litigation-bound, and fraudulent claims.")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 3 — MODEL INSIGHTS
+# ══════════════════════════════════════════════════════════════════════════════
+with tab3:
     st.markdown('<div class="sec-eyebrow">Transparency</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sec-title">Model Architecture & Performance</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sec-title">Model Architecture &amp; Performance</div>', unsafe_allow_html=True)
     st.markdown('<div class="sec-rule"></div>', unsafe_allow_html=True)
 
     col_a, col_b = st.columns(2, gap="large")
@@ -1040,19 +780,22 @@ with tab2:
 
     st.markdown("---")
     st.markdown("#### Engine Architecture")
+    arch_steps = [
+        ("FNOL","Claim In",RS_BLUE),
+        ("Data Spine","Features","#1E3A8A"),
+        ("Model A+B","Fraud·Lit","#4338CA"),
+        ("SHAP","Explain","#0F766E"),
+        ("Routing","Decision",FASTTRACK),
+    ]
+    arch_html = ""
+    for i,(t,s,c) in enumerate(arch_steps):
+        arch_html += f'<div class="arch-step"><div class="arch-step-box" style="background:{c};">{t}<br><span style="font-size:0.58rem;opacity:0.8;">{s}</span></div></div>'
+        if i < len(arch_steps) - 1:
+            arch_html += '<div class="arch-arrow">→</div>'
     st.markdown(f"""
     <div class="arch-box">
       <div style="overflow-x:auto;">
-        <div class="arch-flow">
-          {''.join(f'<div class="arch-step"><div class="arch-step-box" style="background:{c};">{t}<br><span style="font-size:0.58rem;opacity:0.8;">{s}</span></div></div><div class="arch-arrow">{"" if i==4 else "→"}</div>'
-          for i,(t,s,c) in enumerate([
-              ("FNOL","Claim In",RS_BLUE),
-              ("Data Spine","Features","#1E3A8A"),
-              ("Model A+B","Fraud·Lit","#4338CA"),
-              ("SHAP","Explain","#0F766E"),
-              ("Routing","Decision",FASTTRACK),
-          ]))}
-        </div>
+        <div class="arch-flow">{arch_html}</div>
       </div>
       <div style="margin-top:0.8rem;font-size:0.7rem;color:{RS_GRAY};text-align:center;">
         Single-insurer · No consortium dependency · Human-in-the-loop on every high-risk flag
@@ -1071,111 +814,7 @@ with tab2:
         'Payback':           ['~7 mo','~5 mo','~3 mo'],
     }).set_index('Scenario')
     st.dataframe(fin, use_container_width=True)
-    st.caption("Build cost held constant across scenarios. Normalised to ₹1,000 Cr to avoid over-claiming Royal Sundaram figures.")
-
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 3 — PDF AUTO-FILL
-# ══════════════════════════════════════════════════════════════════════════════
-with tab3:
-    st.markdown('<div class="sec-eyebrow">Smart Document Reader</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sec-title">PDF Auto-Fill</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sec-rule"></div>', unsafe_allow_html=True)
-
-    st.markdown(f"""
-    <div class="card">
-      <h4>📄 How it works</h4>
-      <p>Upload any structured motor TP claim form — FNOL intimation, survey report, or claim letter.
-      The engine reads the PDF using <strong>pdfplumber</strong>, extracts all available fields using
-      keyword and pattern matching, and pre-fills the Score Claim form automatically.
-      Switch to the <strong>Score Claim</strong> tab, review the pre-filled values, and click Run.
-      Works best on structured forms — use the sample PDFs in your repo to test.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    uploaded = st.file_uploader(
-        "Upload claim PDF", type=['pdf'],
-        help="FNOL form, survey report, claim intimation letter, FIR — any motor TP document"
-    )
-
-    if uploaded:
-        pdf_bytes = uploaded.read()
-        st.success(f"✅ Uploaded: **{uploaded.name}** ({len(pdf_bytes)//1024} KB)")
-
-        with st.spinner("Reading document and extracting claim fields…"):
-            extracted, err = extract_claim_from_pdf(pdf_bytes)
-
-        if err:
-            st.error(f"Extraction error: {err}")
-        elif not extracted:
-            st.warning("No fields could be extracted from this document.")
-        else:
-            # Map extracted fields into session state
-            field_map = {
-                'VehicleMake':          ('vehicle_make',    MAKES,                              None),
-                'VehicleCategory':      ('vehicle_category',['Private Car','Two Wheeler','Commercial Vehicle'], None),
-                'VehiclePrice':         ('vehicle_price',   PRICES,                             None),
-                'Vehicle_Age':          ('vehicle_age',     AGES,                               None),
-                'BasePolicy':           ('base_policy',     ['Third Party','Own Damage','Comprehensive'], None),
-                'Sex':                  ('sex',             ['Male','Female'],                  None),
-                'MaritalStatus':        ('marital_status',  ['Single','Married','Divorced','Widow'], None),
-                'Prior_Claims_Count':   ('prior_claims',    CLAIMS,                             None),
-                'AccidentArea':         ('accident_area',   ['Urban','Rural'],                  None),
-                'Fault':                ('fault',           ['Insured Driver','Third Party'],   None),
-                'FNOL_Delay_Days':      ('fnol_delay',      DELAYS,                             None),
-                'Claim_Filing_Delay':   ('claim_delay',     DELAYS2,                            None),
-                'FIR_Filed':            ('fir_filed',       ['Yes','No'],                       None),
-                'Witness_Available':    ('witness',         ['Yes','No'],                       None),
-                'Intermediary_Type':    ('intermediary',    ['Broker / POSP Agent','Direct / Branch'], None),
-                'Address_Change_Before_Claim': ('address_change', ADDCHG,                      None),
-                'Supplementary_Reports':('supp_reports',   SUPPS,                              None),
-                'Month':                ('month',           MONTHS,                             None),
-                'MonthClaimed':         ('month_claimed',   MONTHS,                             None),
-            }
-            filled, skipped = [], []
-            for pdf_key, (ss_key, valid_list, _) in field_map.items():
-                val = extracted.get(pdf_key)
-                if val and val in valid_list:
-                    st.session_state[ss_key] = val
-                    filled.append(pdf_key)
-                elif val:
-                    skipped.append(f"{pdf_key}: '{val}'")
-
-            # Numeric fields
-            if extracted.get('Age') and 18 <= int(extracted['Age']) <= 80:
-                st.session_state['age'] = int(extracted['Age'])
-                filled.append('Age')
-            if extracted.get('Deductible_INR') and extracted['Deductible_INR']:
-                st.session_state['deductible_inr'] = int(extracted['Deductible_INR'])
-                filled.append('Deductible_INR')
-            if extracted.get('Driver_Risk_Rating') and 1 <= int(extracted['Driver_Risk_Rating']) <= 4:
-                st.session_state['driver_rating'] = int(extracted['Driver_Risk_Rating'])
-                filled.append('Driver_Risk_Rating')
-
-            st.markdown("---")
-            col_ok, col_sk = st.columns(2)
-            with col_ok:
-                st.markdown(f"**✅ {len(filled)} fields extracted**")
-                for f in filled:
-                    st.markdown(f"&nbsp;&nbsp;• {f}", unsafe_allow_html=True)
-            with col_sk:
-                if skipped:
-                    st.markdown(f"**⚠️ {len(skipped)} fields could not be mapped**")
-                    for s in skipped:
-                        st.markdown(f"&nbsp;&nbsp;• {s}", unsafe_allow_html=True)
-                else:
-                    st.markdown("**✅ All detected fields mapped successfully**")
-
-            st.markdown(f"""
-            <div style="margin-top:1rem;background:#EFF6FF;border:1px solid #BFDBFE;
-                        border-left:4px solid {RS_BLUE};border-radius:8px;padding:0.9rem 1.1rem;">
-              <div style="font-size:0.82rem;color:{RS_NAVY};font-weight:600;">
-                📋 Form pre-filled — switch to the <strong>Score Claim</strong> tab to review and run the engine.
-              </div>
-            </div>
-            """, unsafe_allow_html=True)
-
-            with st.expander("Raw JSON from document"):
-                st.json(extracted)
+    st.caption("Build cost held constant across scenarios. Normalised to ₹1,000 Cr to avoid over-claiming Sundaram Finance figures.")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 4 — ABOUT
@@ -1189,13 +828,14 @@ with tab4:
     with col1:
         for icon, title, body in [
             ("🎯","The Problem",
-             "India's Motor TP book carries ₹96,257 Cr of outstanding liability (FY25) across 10.7 lakh open cases. "
-             "Fraud leakage, MACT litigation overload, and manual triage drain margin — 4.07 lakh cases are 3+ years old."),
+             "India's Motor TP book carries ₹96,257 Cr of pending liability across 10.73 lakh open MACT cases (2025-26), "
+             "rising to ~₹1.05 lakh Cr with accruals. Fraud leakage, MACT litigation overload, and manual triage drain margin — "
+             "the motor incurred-claims ratio has hit 78% industry-wide, and 108% for some PSUs."),
             ("⚙️","Our Solution",
              "A single-insurer AI Claim Decisioning Engine: two XGBoost models scoring fraud probability and litigation risk "
              "at FNOL, combined into a cost-sensitive composite score that auto-routes every claim to the cheapest correct path."),
             ("🏛️","Why Single-Insurer",
-             "Deployable on Royal Sundaram's own historical data — no IIB consortium dependency, no competitor coordination. "
+             "Deployable on Sundaram Finance's own historical data — no IIB consortium dependency, no competitor coordination. "
              "The graph network layer deepens with every claim processed, creating a proprietary, compounding moat."),
         ]:
             st.markdown(f"""
@@ -1223,27 +863,28 @@ with tab4:
             </div>""", unsafe_allow_html=True)
 
     st.markdown("---")
-    # Tech stack
+    tech_tags = ['XGBoost','SHAP','scikit-learn','Streamlit','Python 3.14','pandas','matplotlib','joblib']
+    tech_html = "".join(
+        f'<span style="background:{RS_OFFWHITE};border:1px solid {RS_LGRAY};border-radius:5px;padding:0.3rem 0.7rem;font-size:0.78rem;font-weight:600;color:{RS_NAVY};">{t}</span>'
+        for t in tech_tags
+    )
     st.markdown(f"""
     <div class="card">
       <h4>🛠️ Technology Stack</h4>
-      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.5rem;">
-        {''.join(f'<span style="background:{RS_OFFWHITE};border:1px solid {RS_LGRAY};border-radius:5px;padding:0.3rem 0.7rem;font-size:0.78rem;font-weight:600;color:{RS_NAVY};">{t}</span>'
-        for t in ['XGBoost','SHAP','pdfplumber','scikit-learn','Streamlit','Python 3.14','pandas','reportlab'])}
-      </div>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.5rem;">{tech_html}</div>
     </div>
     """, unsafe_allow_html=True)
 
-    # Team panel
+    team_html = "".join(
+        f'<div><div style="font-weight:700;font-size:0.92rem;color:white;">{n}</div><div style="font-size:0.75rem;color:rgba(255,255,255,0.5);">IIT Kharagpur · School of Law</div></div>'
+        for n in ['Arunadithyan S','Azhagappan G','G Abiimukeshwar']
+    )
     st.markdown(f"""
     <div style="background:{RS_NAVY};border-radius:12px;padding:1.5rem 2rem;margin-top:0.5rem;">
       <div style="font-size:0.63rem;letter-spacing:2px;text-transform:uppercase;color:{RS_YELLOW};font-weight:700;margin-bottom:1rem;">
         Team Apex Counsel · IIT Kharagpur
       </div>
-      <div style="display:flex;gap:2rem;flex-wrap:wrap;">
-        {''.join(f'<div><div style="font-weight:700;font-size:0.92rem;color:white;">{n}</div><div style="font-size:0.75rem;color:rgba(255,255,255,0.5);">IIT Kharagpur · School of Law</div></div>'
-        for n in ['Arunadithyan S','Azhagappan G','G Abiimukeshwar'])}
-      </div>
+      <div style="display:flex;gap:2rem;flex-wrap:wrap;">{team_html}</div>
       <div style="margin-top:1rem;font-size:0.72rem;color:rgba(255,255,255,0.4);">
         Operations · Risk &amp; Process Excellence Track &nbsp;|&nbsp; Sundaram Pitch Fest 2026 · Round 2
       </div>
@@ -1253,7 +894,7 @@ with tab4:
 
 st.markdown(f"""
 <div class="footer">
-  <span>Royal Sundaram General Insurance Co. Ltd.</span> &nbsp;·&nbsp;
+  <span>Sundaram Finance</span> &nbsp;·&nbsp;
   Claim Decisioning Engine &nbsp;·&nbsp;
   Team Apex Counsel · IIT Kharagpur &nbsp;·&nbsp;
   <span>Sundaram Pitch Fest 2026</span>
