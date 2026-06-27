@@ -1115,10 +1115,14 @@ st.markdown(f"""
 st.markdown("""
 <style>
 
-/* ---------- HERO OVERRIDE ---------- */
+/* ===========================
+   Desktop Only (>=1025px)
+   =========================== */
+
+@media (min-width:1025px){
 
 .hero{
-    grid-template-columns:58% 42% !important;
+    grid-template-columns:65% 35% !important;
     gap:3rem !important;
     align-items:center !important;
 }
@@ -1127,12 +1131,16 @@ st.markdown("""
     width:100% !important;
     min-width:520px !important;
     gap:1rem !important;
+    align-self:stretch !important;
 }
 
 .s-card{
     min-height:190px !important;
     padding:1.6rem !important;
     border-radius:18px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:space-between !important;
 }
 
 .s-card .ico{
@@ -1150,15 +1158,6 @@ st.markdown("""
     font-size:.92rem !important;
 }
 
-@media(max-width:1024px){
-.hero{
-grid-template-columns:1fr !important;
-}
-
-.hero-right{
-grid-template-columns:1fr 1fr !important;
-min-width:unset !important;
-}
 }
 
 </style>
