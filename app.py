@@ -1111,3 +1111,55 @@ st.markdown(f"""
   <span>Team Apex Counsel · IIT Kharagpur · <b>Sundaram Pitch Fest 2026</b></span>
 </div>
 """, unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+
+/* ---------- HERO OVERRIDE ---------- */
+
+.hero{
+    grid-template-columns:58% 42% !important;
+    gap:3rem !important;
+    align-items:center !important;
+}
+
+.hero-right{
+    width:100% !important;
+    min-width:520px !important;
+    gap:1rem !important;
+}
+
+.s-card{
+    min-height:190px !important;
+    padding:1.6rem !important;
+    border-radius:18px !important;
+}
+
+.s-card .ico{
+    width:56px !important;
+    height:56px !important;
+    font-size:1.4rem !important;
+}
+
+.s-card .val{
+    font-size:2.4rem !important;
+    font-weight:800 !important;
+}
+
+.s-card .lbl{
+    font-size:.92rem !important;
+}
+
+@media(max-width:1024px){
+.hero{
+grid-template-columns:1fr !important;
+}
+
+.hero-right{
+grid-template-columns:1fr 1fr !important;
+min-width:unset !important;
+}
+}
+
+</style>
+""", unsafe_allow_html=True)
