@@ -86,11 +86,11 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
     height:100%;
     object-fit:contain;
 }}
-.topnav-name{{font-size:0.95rem;font-weight:700;color:{INK};letter-spacing:-0.01em;}}
-.topnav-sub{{font-size:0.72rem;color:{MUTED};margin-top:1px;}}
+.topnav-name{{font-size:1.25rem;font-weight:900;color:{INK};letter-spacing:-0.01em;}}
+.topnav-sub{{font-size:0.92rem;color:{MUTED};margin-top:1px;}}
 .topnav-right{{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;justify-content:flex-end;}}
 .nav-tag{{
-  font-size:0.68rem;font-weight:600;padding:0.22rem 0.65rem;border-radius:6px;
+  font-size:0.88rem;font-weight:600;padding:0.22rem 0.65rem;border-radius:6px;
   background:{ACCENT_L};color:{ACCENT};letter-spacing:0.2px;white-space:nowrap;
 }}
 .live-dot{{
