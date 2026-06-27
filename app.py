@@ -627,7 +627,6 @@ st.markdown(f"""
         <span class="nav-tag">Sundaram Pitch Fest 2026</span>
         <span class="nav-tag">Team Apex Counsel · IIT KGP</span>
     </div>
-</div>
 """, unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
