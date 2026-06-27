@@ -256,7 +256,7 @@ st.markdown(f"""
 
   /* ---------- buttons ---------- */
   .stButton > button {{
-    background:{ACCENT} !important; color:#fff !important; border:none !important;
+    background:#0D9488 !important; color:#fff !important; border:none !important;
     border-radius:12px !important; font-weight:700 !important; font-size:0.9rem !important;
     padding:0.8rem 1.6rem !important; letter-spacing:0.1px !important; width:100% !important;
     min-height:48px !important; box-shadow:0 4px 14px rgba(37,99,235,0.28) !important;
@@ -680,7 +680,7 @@ with tab1:
         surveyor_id = c3.number_input("Surveyor ID", 1, 50, value=int(st.session_state.surveyor_id))
 
         st.markdown("<div style='height:0.8rem'></div>", unsafe_allow_html=True)
-        submitted = st.form_submit_button("⚖️  Run Claim Decisioning Engine")
+        submitted = st.form_submit_button("⚖️ Run Claim Decisioning")
 
     if submitted:
         policy_type = POLICY_TYPE_MAP.get((vehicle_category, base_policy), 'Private Car - Third Party')
