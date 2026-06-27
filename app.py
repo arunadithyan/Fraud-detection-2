@@ -613,22 +613,14 @@ def load_example(name):
 
 st.markdown(f"""
 <div class="topnav">
-
     <div class="topnav-brand">
-
-        <div class="topnav-logo">
-            <img src="https://lh3.googleusercontent.com/d/1OgrQt6YTB4Ibq21SuhXcUoMEe-uGFJ-z" alt="Sundaram Finance">
-        </div>
-
-        <div>
-            <div class="topnav-name">
-                Claim Decisioning Model
-            </div>
-
+       <div class="topnav-logo">
+         <img src="https://lh3.googleusercontent.com/d/1OgrQt6YTB4Ibq21SuhXcUoMEe-uGFJ-z">
+                </div>
+            <div class="topnav-name">Claim Decisioning Model</div>
             <div class="topnav-sub">
                 Motor Third-Party · AI Triage Platform
             </div>
-        </div>
 
     </div>
 
@@ -637,7 +629,6 @@ st.markdown(f"""
         <span class="nav-tag">Sundaram Pitch Fest 2026</span>
         <span class="nav-tag">Team Apex Counsel · IIT KGP</span>
     </div>
-
 </div>
 """, unsafe_allow_html=True)
 
