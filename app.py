@@ -356,6 +356,7 @@ button[data-testid="stNumberInputStepDown"]:hover,button[data-testid="stNumberIn
 }}
 .ent-footer b{{color:{INK2};font-weight:600;}}
 
+
 /* ════ BREAKPOINTS ════ */
 @media(max-width:1024px){{
   .hero{{grid-template-columns:1fr;}}
@@ -1122,7 +1123,7 @@ st.markdown("""
 @media (min-width:1025px){
 
 .hero{
-    grid-template-columns:65% 35% !important;
+    grid-template-columns:55% 45% !important;
     gap:3rem !important;
     align-items:center !important;
 }
