@@ -251,14 +251,15 @@ def load_models():
 model_fraud, model_lit, enc, feat_fraud, feat_lit, models_ok = load_models()
 
 # ── Constants ──────────────────────────────────────────────────────────────────
-severity_map = {
-'Below ₹5 Lakh':0.70,
-'₹5–8 Lakh':0.85,
-'₹8–12 Lakh':1.00,
-'₹12–20 Lakh':1.10,
-'₹20–30 Lakh':1.20,
-'Above ₹30 Lakh':1.30
+SEVERITY_MAP = {
+'Below ₹5 Lakh':0.5,
+'₹5–8 Lakh':0.7,
+'₹8–12 Lakh':0.85,
+'₹12–20 Lakh':1.0,
+'₹20–30 Lakh':1.2,
+'Above ₹30 Lakh':1.5
 }
+
 LIT_DROP = ['FNOL_Delay_Days','FIR_Filed','Fault','Prior_Claims_Count','Claim_Filing_Delay']
 
 MONTHS   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
