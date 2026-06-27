@@ -807,6 +807,7 @@ with tab1:
 
         with col_r:
             # SHAP drivers
+            st.space()
             st.markdown(f"<div style='font-size:0.76rem;font-weight:700;color:{INK2};letter-spacing:0.5px;text-transform:uppercase;margin-bottom:0.6rem;'>Top Fraud Risk Drivers</div>", unsafe_allow_html=True)
             for feat, val in reasons:
                 direction = "↑ Raises" if val > 0 else "↓ Lowers"
