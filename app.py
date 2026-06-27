@@ -615,7 +615,7 @@ st.markdown("""
 <div class="topnav">
     <div class="topnav-brand">
         <div class="topnav-logo">
-            <img src="https://lh3.googleusercontent.com/d/1OgrQt6YTB4Ibq21SuhXcUoMEe-uGFJ-z" alt="Logo">
+            <img src="https://lh3.googleusercontent.com/d/1EthMJwQYhVdeYtWICOJNXA-IACirkfap" alt="Logo">
         </div>
         <div>
             <div class="topnav-name">Claim Decisioning Model</div>
