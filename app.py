@@ -69,7 +69,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
   border-bottom:1px solid {BORDER};
 }}
 .topnav-brand{{display:flex;align-items:center;gap:0.65rem;}}
-.topnav-logo{
+.topnav-logo{{
     width:70px;
     height:70px;
     display:flex;
@@ -80,12 +80,12 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
     border-radius:12px;
     padding:6px;
     border:1px solid rgba(0,0,0,.08);
-}
-.topnav-logo img{
+}}
+.topnav-logo img{{
     width:100%;
     height:100%;
     object-fit:contain;
-}
+}}
 .topnav-name{{font-size:0.95rem;font-weight:700;color:{INK};letter-spacing:-0.01em;}}
 .topnav-sub{{font-size:0.72rem;color:{MUTED};margin-top:1px;}}
 .topnav-right{{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;justify-content:flex-end;}}
