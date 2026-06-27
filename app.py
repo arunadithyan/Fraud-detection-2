@@ -69,11 +69,23 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
   border-bottom:1px solid {BORDER};
 }}
 .topnav-brand{{display:flex;align-items:center;gap:0.65rem;}}
-.topnav-logo{{
-  width:34px;height:34px;border-radius:9px;
-  background:{ACCENT};display:flex;align-items:center;justify-content:center;
-  font-size:0.95rem;font-weight:800;color:#fff;letter-spacing:-0.5px;flex-shrink:0;
-}}
+.topnav-logo{
+    width:70px;
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:white;
+    border-radius:12px;
+    padding:6px;
+    border:1px solid rgba(0,0,0,.08);
+}
+.topnav-logo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
 .topnav-name{{font-size:0.95rem;font-weight:700;color:{INK};letter-spacing:-0.01em;}}
 .topnav-sub{{font-size:0.72rem;color:{MUTED};margin-top:1px;}}
 .topnav-right{{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;justify-content:flex-end;}}
@@ -601,9 +613,11 @@ def load_example(name):
 st.markdown(f"""
 <div class="topnav">
   <div class="topnav-brand">
-    <div class="topnav-logo">SF</div>
+    <div class="topnav-logo">
+            <img src="<img src="https://lh3.googleusercontent.com/d/1OgrQt6YTB4Ibq21SuhXcUoMEe-uGFJ-z">
+            </div>
     <div>
-      <div class="topnav-name">Claim Decisioning Engine</div>
+      <div class="topnav-name">Claim Decisioning Model</div>
       <div class="topnav-sub">Motor Third-Party · AI Triage Platform</div>
     </div>
   </div>
