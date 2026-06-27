@@ -615,7 +615,7 @@ st.markdown("""
     <div class="topnav-brand">
 
         <div class="topnav-logo">
-            <img src="https://drive.google.com/thumbnail?id=1OgrQt6YTB4Ibq21SuhXcUoMEe-uGFJ-z&sz=w1000">
+            <img src="https://lh3.googleusercontent.com/d/1OgrQt6YTB4Ibq21SuhXcUoMEe-uGFJ-z">
         </div>
 
         <div>
