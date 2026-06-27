@@ -330,7 +330,7 @@ def score_claim(claim):
     df_l = df.reindex(columns=feat_lit,   fill_value=0)
     fp = float(model_fraud.predict_proba(df_f)[:,1][0])
     lp = float(model_lit.predict_proba(df_l)[:,1][0])
-    lp = float(np.clip(lp * 0.25, 0.0, 0.95))
+    lp = float(np.clip(lp, 0.0, 0.95))
     fp = float(np.clip(fp, 0.0, 0.95))
     sev   = SEVERITY_MAP.get(claim.get('VehiclePrice','₹8–12 Lakh'), 1.0)
     score = round(min((0.6*fp + 0.4*lp)*sev*100, 100), 1)
