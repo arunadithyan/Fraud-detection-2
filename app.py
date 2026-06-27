@@ -251,9 +251,13 @@ def load_models():
 model_fraud, model_lit, enc, feat_fraud, feat_lit, models_ok = load_models()
 
 # ── Constants ──────────────────────────────────────────────────────────────────
-SEVERITY_MAP = {
-    'Below ₹5 Lakh': 0.5, '₹5–8 Lakh': 0.7, '₹8–12 Lakh': 0.85,
-    '₹12–20 Lakh': 1.0,   '₹20–30 Lakh': 1.2, 'Above ₹30 Lakh': 1.5,
+severity_map = {
+'Below ₹5 Lakh':0.70,
+'₹5–8 Lakh':0.85,
+'₹8–12 Lakh':1.00,
+'₹12–20 Lakh':1.10,
+'₹20–30 Lakh':1.20,
+'Above ₹30 Lakh':1.30
 }
 LIT_DROP = ['FNOL_Delay_Days','FIR_Filed','Fault','Prior_Claims_Count','Claim_Filing_Delay']
 
@@ -406,34 +410,34 @@ EXAMPLE_CLAIMS = {
         ),
     },
 
-    "Example 3 · Confirmed Fraud": {
-        "desc": "Repeat high-risk claim profile matching known fraudulent behaviour. Referred to SIU and confirmed as fraud.",
-        "actual": "Confirmed Fraud → SIU",
-        "actual_key": "critical",
-        "fields": dict(
-            vehicle_category="Two Wheeler",
-            vehicle_make="Hyundai",
-            vehicle_price="Above ₹30 Lakh",
-            vehicle_age="more than 7",
-            base_policy="Third Party",
-            deductible_inr=33000,
-            driver_rating=4,
-            sex="Male",
-            marital_status="Married",
-            age=43,
-            prior_claims="5+",
-            accident_area="Urban",
-            fault="Third Party",
-            fnol_delay="more than 30",
-            claim_delay="more than 30",
-            fir_filed="No",
-            witness="No",
-            intermediary="Broker / POSP Agent",
-            address_change="no change",
-            supp_reports="3–5",
-            vehicles_in_pol="1",
-        ),
-    },
+    "Example 3 · ADR / Legal Prep": {
+    "desc": "High-value third-party claim with moderate fraud risk but elevated litigation potential. Routed to the Legal/ADR team for early settlement preparation.",
+    "actual": "Genuine → ADR / Legal Prep",
+    "actual_key": "high",
+    "fields": dict(
+        vehicle_category="Private Car",
+        vehicle_make="Toyota Innova",
+        vehicle_price="₹20–30 Lakh",
+        vehicle_age="5 years",
+        base_policy="Comprehensive",
+        deductible_inr=25000,
+        driver_rating=2,
+        sex="Male",
+        marital_status="Married",
+        age=45,
+        prior_claims="1",
+        accident_area="Urban",
+        fault="Third Party",
+        fnol_delay="15 to 30",
+        claim_delay="15 to 30",
+        fir_filed="Yes",
+        witness="Yes",
+        intermediary="Direct / Branch",
+        address_change="no change",
+        supp_reports="1–2",
+        vehicles_in_pol="1",
+    ),
+},
 
     "Example 4 · Standard Processing": {
         "desc": "Moderate-risk private car claim with some previous claims. Requires standard surveyor review before settlement.",
