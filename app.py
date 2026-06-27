@@ -13,7 +13,7 @@ warnings.filterwarnings('ignore')
 #  PAGE CONFIG
 # ══════════════════════════════════════════════════════════════════════════════
 st.set_page_config(
-    page_title="Claim Decisioning Engine · Sundaram Finance",
+    page_title="Claim Decisioning Model · Sundaram Finance",
     page_icon="⚖️",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -50,7 +50,7 @@ st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap');
 
-/* ── reset & base ── */
+/*  reset & base  */
 html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"],
 .main,.block-container,[data-testid="stVerticalBlock"],[data-testid="stForm"],
 [data-testid="stHorizontalBlock"],section.main{{
@@ -62,7 +62,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
 *{{-webkit-tap-highlight-color:transparent;box-sizing:border-box;}}
 .block-container{{padding:0 clamp(1rem,4vw,3rem) 4rem!important;max-width:1400px;margin:0 auto;}}
 
-/* ── TOP NAV ── */
+/*  TOP NAV  */
 .topnav{{
   display:flex;align-items:center;justify-content:space-between;
   padding:0.9rem 0 1.2rem;margin-bottom:0.4rem;
@@ -86,7 +86,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
   box-shadow:0 0 0 2px #fff,0 0 0 4px {SUCCESS}40;display:inline-block;margin-right:4px;
 }}
 
-/* ── HERO ── */
+/*  HERO  */
 .hero{{
   display:grid;grid-template-columns:1fr auto;gap:2rem;
   align-items:start;padding:2rem 0 1.6rem;
@@ -110,7 +110,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
 .hero-meta b{{color:{INK2};font-weight:600;}}
 .hero-right{{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;min-width:300px;}}
 
-/* ── STAT CARD (hero right + result) ── */
+/*  STAT CARD (hero right + result)  */
 .s-card{{
   background:{CARD};border:1px solid {BORDER};border-radius:14px;
   padding:1rem 1.05rem;position:relative;overflow:hidden;
@@ -131,16 +131,16 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
 .s-card .val{{font-size:clamp(1.3rem,3vw,1.7rem);font-weight:800;color:{INK};letter-spacing:-0.03em;line-height:1;}}
 .s-card .lbl{{font-size:0.72rem;color:{MUTED};font-weight:500;margin-top:0.25rem;line-height:1.3;}}
 
-/* ── DIVIDER ── */
+/*  DIVIDER  */
 .divider{{height:1px;background:{BORDER};margin:1.8rem 0;}}
 
-/* ── SECTION HEAD ── */
+/*  SECTION HEAD  */
 .sec-head{{margin:0 0 1rem;}}
 .sec-head .eye{{font-size:0.62rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:{ACCENT};margin-bottom:0.3rem;}}
 .sec-head h2{{font-size:clamp(1.1rem,2.5vw,1.35rem);font-weight:800;color:{INK};letter-spacing:-0.02em;margin:0;}}
 .sec-head p{{font-size:0.84rem;color:{INK2};margin:0.3rem 0 0;line-height:1.5;}}
 
-/* ── WIZARD FORM ── */
+/*  WIZARD FORM  */
 .wiz-sec{{
   background:{CARD};border:1px solid {BORDER};border-radius:16px;
   padding:1.4rem 1.5rem;margin-bottom:0.8rem;
@@ -155,7 +155,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
 .wiz-title{{font-size:0.92rem;font-weight:700;color:{INK};}}
 .wiz-sub{{font-size:0.73rem;color:{MUTED};margin-top:1px;}}
 
-/* ── RESULT GAUGE ── */
+/*  RESULT GAUGE  */
 .gauge-wrap{{
   background:{SLATE};border-radius:18px;
   padding:clamp(1.2rem,3.5vw,1.8rem);
@@ -188,7 +188,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
 .route-box .rv{{font-size:1rem;font-weight:800;color:#fff;letter-spacing:-0.01em;}}
 .rpill{{display:inline-flex;align-items:center;padding:0.3rem 0.85rem;border-radius:999px;font-size:0.72rem;font-weight:700;color:#fff;margin-top:0.5rem;}}
 
-/* ── SHAP DRIVERS ── */
+/*  SHAP DRIVERS  */
 .driver{{
   display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
   background:{CARD};border:1px solid {BORDER};border-radius:11px;
@@ -201,7 +201,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
 .driver-shap{{font-size:0.66rem;font-weight:700;color:{MUTED};white-space:nowrap;flex-shrink:0;
   background:{BG};border:1px solid {BORDER};border-radius:6px;padding:0.15rem 0.45rem;}}
 
-/* ── RESULT BOTTOM — action + table ── */
+/*  RESULT BOTTOM — action + table  */
 .res-bottom{{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-top:0.9rem;}}
 .act-card{{
   border-radius:14px;padding:1.2rem 1.25rem;border:1px solid;border-left:4px solid;
@@ -228,7 +228,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
 .clm-tbl td:first-child{{color:{INK2};font-weight:500;font-size:0.7rem;width:42%;}}
 .clm-tbl td:last-child{{font-weight:700;color:{INK};text-align:right;}}
 
-/* ── VERDICT (predicted vs actual) ── */
+/*  VERDICT (predicted vs actual)  */
 .verdict{{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-top:0.8rem;}}
 .verdict-box{{background:{CARD};border:1px solid {BORDER};border-top:3px solid;border-radius:12px;padding:0.9rem 1rem;}}
 .verdict-box .vk{{font-size:0.58rem;letter-spacing:1.2px;text-transform:uppercase;color:{MUTED};font-weight:700;}}
@@ -239,7 +239,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
   font-size:0.8rem;font-weight:600;
 }}
 
-/* ── EXAMPLE CARDS ── */
+/*  EXAMPLE CARDS  */
 .ex-grid{{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;}}
 .ex-card{{
   background:{CARD};border:1px solid {BORDER};border-radius:16px;
@@ -263,7 +263,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
 }}
 .ex-desc{{font-size:0.77rem;color:{INK2};line-height:1.55;margin:0;}}
 
-/* ── MODEL INSIGHTS CARDS ── */
+/*  MODEL INSIGHTS CARDS  */
 .insight-card{{
   background:{CARD};border:1px solid {BORDER};border-radius:16px;
   padding:1.3rem 1.4rem;margin-bottom:0;
@@ -272,14 +272,14 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
 .insight-card h4{{font-size:0.9rem;font-weight:700;color:{INK};margin:0 0 0.5rem;letter-spacing:-0.01em;}}
 .insight-card p{{font-size:0.8rem;color:{INK2};line-height:1.6;margin:0;}}
 
-/* ── ARCH FLOW ── */
+/*  ARCH FLOW  */
 .flow{{display:flex;align-items:stretch;gap:0.4rem;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;}}
 .flow-step{{flex:1 1 0;min-width:90px;border-radius:11px;padding:0.75rem 0.5rem;text-align:center;color:#fff;}}
 .flow-step .ft{{font-size:0.76rem;font-weight:700;}}
 .flow-step .fs{{font-size:0.58rem;opacity:0.82;margin-top:0.12rem;}}
 .flow-arr{{display:flex;align-items:center;color:{MUTED};font-size:1rem;flex-shrink:0;}}
 
-/* ── ABOUT CARDS ── */
+/*  ABOUT CARDS  */
 .about-card{{
   background:{CARD};border:1px solid {BORDER};border-radius:14px;
   padding:1.2rem 1.3rem;margin-bottom:0.7rem;
@@ -288,7 +288,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
 .about-card h4{{font-size:0.88rem;font-weight:700;color:{INK};margin:0 0 0.45rem;}}
 .about-card p{{font-size:0.79rem;color:{INK2};line-height:1.62;margin:0;}}
 
-/* ── BUTTONS ── */
+/*  BUTTONS  */
 .stButton>button{{
   background:{ACCENT}!important;color:#fff!important;border:none!important;
   border-radius:11px!important;font-weight:700!important;font-size:0.88rem!important;
@@ -306,7 +306,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
 }}
 .stForm [data-testid="stFormSubmitButton"]>button *{{color:#fff!important;}}
 
-/* ── TABS ── */
+/*  TABS  */
 .stTabs [data-baseweb="tab-list"]{{
   gap:0.25rem;background:{CARD};border:1px solid {BORDER};border-radius:13px;
   padding:0.3rem;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;
@@ -321,7 +321,7 @@ html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"
 .stTabs [aria-selected="true"]{{background:{ACCENT}!important;color:#fff!important;}}
 .stTabs [data-baseweb="tab-highlight"],.stTabs [data-baseweb="tab-border"]{{display:none!important;}}
 
-/* ── INPUTS ── */
+/*  INPUTS  */
 div[data-baseweb="select"]>div{{
   border-radius:10px!important;border-color:{BORDER}!important;background:{CARD}!important;
   font-size:0.84rem!important;color:{INK}!important;min-height:44px!important;
@@ -348,7 +348,7 @@ button[data-testid="stNumberInputStepDown"]:hover,button[data-testid="stNumberIn
 [data-testid="stExpander"]{{background:{CARD}!important;border:1px solid {BORDER}!important;border-radius:12px!important;}}
 [data-testid="stExpander"] summary{{color:{INK}!important;font-weight:600!important;}}
 
-/* ── FOOTER ── */
+/*  FOOTER  */
 .ent-footer{{
   margin-top:2.5rem;padding:1.2rem 0 0.4rem;border-top:1px solid {BORDER};
   display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
@@ -686,7 +686,7 @@ with tab1:
     """, unsafe_allow_html=True)
 
     with st.form("claim_form"):
-        # ── 1: Policy & Vehicle ──
+        #  1: Policy & Vehicle 
         st.markdown('<div class="wiz-sec"><div class="wiz-head"><div class="wiz-n">1</div><div><div class="wiz-title">Policy &amp; Vehicle</div><div class="wiz-sub">Cover, value, and vehicle profile</div></div></div>', unsafe_allow_html=True)
         c1,c2,c3,c4 = st.columns(4)
         vehicle_category = c1.selectbox("Vehicle Category", ['Private Car','Two Wheeler','Commercial Vehicle'],
@@ -702,7 +702,7 @@ with tab1:
         year = c4.number_input("Policy Year", 2018, 2026, value=int(st.session_state.year))
         st.markdown('</div>', unsafe_allow_html=True)
 
-        # ── 2: Claimant ──
+        #  2: Claimant 
         st.markdown('<div class="wiz-sec"><div class="wiz-head"><div class="wiz-n">2</div><div><div class="wiz-title">Claimant</div><div class="wiz-sub">Demographics and claim history</div></div></div>', unsafe_allow_html=True)
         c1,c2,c3,c4 = st.columns(4)
         sex = c1.selectbox("Sex", ['Male','Female'], index=['Male','Female'].index(st.session_state.sex))
@@ -712,7 +712,7 @@ with tab1:
         prior_claims = c4.selectbox("Prior Claims", CLAIMS, index=safe_idx(CLAIMS, st.session_state.prior_claims))
         st.markdown('</div>', unsafe_allow_html=True)
 
-        # ── 3: Accident & FNOL ──
+        #  3: Accident & FNOL 
         st.markdown('<div class="wiz-sec"><div class="wiz-head"><div class="wiz-n">3</div><div><div class="wiz-title">Accident &amp; FNOL</div><div class="wiz-sub">Incident details and reporting timeline</div></div></div>', unsafe_allow_html=True)
         c1,c2,c3,c4 = st.columns(4)
         accident_area = c1.selectbox("Accident Area", ['Urban','Rural'], index=['Urban','Rural'].index(st.session_state.accident_area))
@@ -726,7 +726,7 @@ with tab1:
         day_of_week = c4.selectbox("Day of Week", DAYS, index=safe_idx(DAYS, st.session_state.day_of_week))
         st.markdown('</div>', unsafe_allow_html=True)
 
-        # ── 4: Distribution ──
+        #  4: Distribution 
         st.markdown('<div class="wiz-sec"><div class="wiz-head"><div class="wiz-n">4</div><div><div class="wiz-title">Distribution &amp; Documentation</div><div class="wiz-sub">Channel, reports, and policy spread</div></div></div>', unsafe_allow_html=True)
         c1,c2,c3,c4 = st.columns(4)
         intermediary = c1.selectbox("Intermediary", ['Broker / POSP Agent','Direct / Branch'],
@@ -743,7 +743,7 @@ with tab1:
         st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
         submitted = st.form_submit_button("⚖️  Run Claim Decisioning Engine")
 
-    # ── RESULTS ──
+    #  RESULTS 
     if submitted:
         policy_type = POLICY_TYPE_MAP.get((vehicle_category, base_policy), 'Private Car - Third Party')
         age_band    = age_to_band(age)
@@ -820,7 +820,7 @@ with tab1:
                 </div>
                 """, unsafe_allow_html=True)
 
-        # ── Action + Table ──
+        #  Action + Table 
         action_map = {
             'critical': (CRITICAL, '#FEF2F2', '🔴', 'Refer to SIU immediately. Do not settle. Assign senior investigator and request full documentation audit.'),
             'high':     (HIGH,     '#FFF7ED', '🟠', 'Flag for ADR / Legal team. Prepare fight-or-settle brief. Route to in-house counsel within 48 hours.'),
@@ -856,7 +856,7 @@ with tab1:
         </div>
         """, unsafe_allow_html=True)
 
-        # ── Predicted vs Actual ──
+        #  Predicted vs Actual 
         if st.session_state['loaded_example']:
             ex = EXAMPLE_CLAIMS[st.session_state['loaded_example']]
             act_key = ex['actual_key']; act_lbl = ex['actual']
