@@ -610,12 +610,13 @@ def load_example(name):
 # ══════════════════════════════════════════════════════════════════════════════
 #  TOP NAV
 # ══════════════════════════════════════════════════════════════════════════════
+logo ="1OgrQt6YTB4Ibq21SuhXcUoMEe-uGFJ-z"
 st.markdown("""
 <div class="topnav">
     <div class="topnav-brand">
-
         <div class="topnav-logo">
-            <img src="https://lh3.googleusercontent.com/d/1OgrQt6YTB4Ibq21SuhXcUoMEe-uGFJ-z">
+            <img src="data:image/png;base64,{logo}">
+        </div>
         </div>
 
         <div>
