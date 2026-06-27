@@ -24,10 +24,10 @@ st.set_page_config(
 # ══════════════════════════════════════════════════════════════════════════════
 BG        = "#F7F8FA"
 CARD      = "#FFFFFF"
-INK       = "#111827"   # primary text
+INK       = "#0A0D13"   # primary text
 INK2      = "#4B5563"   # secondary text
 MUTED     = "#9CA3AF"
-ACCENT    = "#2563EB"   # blue accent
+ACCENT    = "#5082EF"   # blue accent
 ACCENT_BG = "#EEF4FF"   # hover / tint
 SUCCESS   = "#16A34A"
 WARNING   = "#F59E0B"
