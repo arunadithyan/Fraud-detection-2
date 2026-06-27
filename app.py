@@ -622,8 +622,6 @@ st.markdown(f"""
                 Motor Third-Party · AI Triage Platform
             </div>
 
-    </div>
-
     <div class="topnav-right">
         <span class="nav-tag"><span class="live-dot"></span>Live Prototype</span>
         <span class="nav-tag">Sundaram Pitch Fest 2026</span>
