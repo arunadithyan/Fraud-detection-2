@@ -24,10 +24,10 @@ st.set_page_config(
 # ══════════════════════════════════════════════════════════════════════════════
 BG        = "#F7F8FA"
 CARD      = "#FFFFFF"
-INK       = "#0A0D13"   # primary text
+INK       = "#111827"   # primary text
 INK2      = "#4B5563"   # secondary text
 MUTED     = "#9CA3AF"
-ACCENT    = "#5082EF"   # blue accent
+ACCENT    = "#2563EB"   # blue accent
 ACCENT_BG = "#EEF4FF"   # hover / tint
 SUCCESS   = "#16A34A"
 WARNING   = "#F59E0B"
@@ -212,11 +212,11 @@ st.markdown(f"""
   .reason .shap {{ color:{MUTED}; font-size:0.72rem; font-weight:600; white-space:nowrap; }}
 
   /* ---------- summary table ---------- */
-  .ent-tbl {{ width:100%; border-collapse:separate; border-spacing:0; font-size:0.8rem; border:1px solid {BORDER}; border-radius:12px; overflow:hidden; }}
-  .ent-tbl th {{ background:{BG}; color:{INK2}; padding:0.6rem 0.85rem; text-align:left; font-size:0.64rem; letter-spacing:0.6px; text-transform:uppercase; font-weight:700; border-bottom:1px solid {BORDER}; }}
-  .ent-tbl td {{ padding:0.55rem 0.85rem; border-bottom:1px solid {BORDER}; color:{INK}; }}
+  .ent-tbl {{ width:100%; border-collapse:separate; border-spacing:0; font-size:0.74rem; border:1px solid {BORDER}; border-radius:12px; overflow:hidden; }}
+  .ent-tbl th {{ background:{BG}; color:{INK2}; padding:0.42rem 0.75rem; text-align:left; font-size:0.6rem; letter-spacing:0.6px; text-transform:uppercase; font-weight:700; border-bottom:1px solid {BORDER}; }}
+  .ent-tbl td {{ padding:0.38rem 0.75rem; border-bottom:1px solid {BORDER}; color:{INK}; line-height:1.35; }}
   .ent-tbl tr:last-child td {{ border-bottom:none; }}
-  .ent-tbl td:first-child {{ color:{INK2}; font-weight:500; }}
+  .ent-tbl td:first-child {{ color:{INK2}; font-weight:500; width:42%; }}
   .ent-tbl td:last-child {{ font-weight:600; text-align:right; }}
 
   /* ---------- action banner ---------- */
@@ -256,17 +256,24 @@ st.markdown(f"""
 
   /* ---------- buttons ---------- */
   .stButton > button {{
-    background:#0D9488 !important; color:#fff !important; border:none !important;
+    background:{ACCENT} !important; color:#ffffff !important; border:none !important;
     border-radius:12px !important; font-weight:700 !important; font-size:0.9rem !important;
     padding:0.8rem 1.6rem !important; letter-spacing:0.1px !important; width:100% !important;
     min-height:48px !important; box-shadow:0 4px 14px rgba(37,99,235,0.28) !important;
     transition: transform .15s ease, box-shadow .15s ease, background .15s ease !important;
   }}
+  .stButton > button *, .stButton > button p, .stButton > button span {{
+    color:#ffffff !important;
+  }}
   .stButton > button:hover {{ background:#1D4ED8 !important; transform:translateY(-1px); box-shadow:0 6px 20px rgba(37,99,235,0.36) !important; }}
   .stButton > button:active {{ transform:translateY(0); }}
   .stForm [data-testid="stFormSubmitButton"] > button {{
-    background: linear-gradient(135deg, {ACCENT}, #1D4ED8) !important;
+    background: {ACCENT} !important; color:#ffffff !important;
     min-height:54px !important; font-size:0.95rem !important;
+  }}
+  .stForm [data-testid="stFormSubmitButton"] > button *,
+  .stForm [data-testid="stFormSubmitButton"] > button p {{
+    color:#ffffff !important;
   }}
 
   /* ---------- tabs ---------- */
@@ -680,7 +687,7 @@ with tab1:
         surveyor_id = c3.number_input("Surveyor ID", 1, 50, value=int(st.session_state.surveyor_id))
 
         st.markdown("<div style='height:0.8rem'></div>", unsafe_allow_html=True)
-        submitted = st.form_submit_button("⚖️ Run Claim Decisioning")
+        submitted = st.form_submit_button("⚖️  Run Claim Decisioning Engine")
 
     if submitted:
         policy_type = POLICY_TYPE_MAP.get((vehicle_category, base_policy), 'Private Car - Third Party')
@@ -744,8 +751,15 @@ with tab1:
                 reason_html += f"""<div class="reason {cls}"><span>{ic} <strong>{feat}</strong> — {direction} fraud risk</span><span class="shap">SHAP {val:+.3f}</span></div>"""
             st.markdown(reason_html, unsafe_allow_html=True)
 
-        # ── Claim summary (full width) ──
-        st.markdown('<div class="section-label">Claim Summary</div>', unsafe_allow_html=True)
+        # ── Recommended Action  +  Claim Summary  (side by side) ──
+        action_map = {
+            'critical': (CRITICAL, '#FEF2F2', '🔴', 'Refer to SIU immediately. Do not settle. Assign senior investigator and request full documentation audit.'),
+            'high':     (HIGH,     '#FFF7ED', '🟠', 'Flag for ADR / Legal team. Prepare fight-or-settle brief. Route to in-house counsel within 48 hours.'),
+            'medium':   (MEDIUM,   '#FFFBEB', '🟡', 'Route to Standard Processing queue. Surveyor review required before payment authorisation.'),
+            'fast':     (FASTTRACK,'#F0FDF4', '🟢', 'Eligible for Fast Track Settlement. Verify documents and initiate payment within 7 working days.'),
+        }
+        ac, abg, aic, atxt = action_map[tkey]
+
         rows = "".join(f"<tr><td>{k}</td><td>{v}</td></tr>"
             for k,v in [
                 ("Vehicle", f"{vehicle_make} · {vehicle_category}"),
@@ -755,25 +769,37 @@ with tab1:
                 ("Witness", witness), ("Prior Claims", prior_claims),
                 ("Fault", fault), ("Intermediary", intermediary),
             ])
-        st.markdown(f'<table class="ent-tbl"><thead><tr><th>Field</th><th style="text-align:right;">Value</th></tr></thead><tbody>{rows}</tbody></table>', unsafe_allow_html=True)
 
-        # ── Recommended action ──
-        action_map = {
-            'critical': (CRITICAL, '#FEF2F2', '🔴', 'Refer to SIU immediately. Do not settle. Assign senior investigator and request full documentation audit.'),
-            'high':     (HIGH,     '#FFF7ED', '🟠', 'Flag for ADR / Legal team. Prepare fight-or-settle brief. Route to in-house counsel within 48 hours.'),
-            'medium':   (MEDIUM,   '#FFFBEB', '🟡', 'Route to Standard Processing queue. Surveyor review required before payment authorisation.'),
-            'fast':     (FASTTRACK,'#F0FDF4', '🟢', 'Eligible for Fast Track Settlement. Verify documents and initiate payment within 7 working days.'),
-        }
-        ac, abg, aic, atxt = action_map[tkey]
-        st.markdown(f"""
-        <div class="action" style="background:{abg};border-color:{ac}33;">
-          <div style="font-size:1.3rem;line-height:1;">{aic}</div>
-          <div>
-            <div class="a-lbl" style="color:{ac};">Recommended Action</div>
-            <div class="a-txt">{atxt}</div>
-          </div>
-        </div>
-        """, unsafe_allow_html=True)
+        col_act, col_tbl = st.columns([1, 1], gap="medium")
+
+        with col_act:
+            st.markdown(f"""
+            <div style="background:{abg};border:1px solid {ac}33;border-left:4px solid {ac};
+                        border-radius:14px;padding:1.2rem 1.3rem;height:100%;box-sizing:border-box;">
+              <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.6rem;">
+                <span style="font-size:1.25rem;line-height:1;">{aic}</span>
+                <span style="font-size:0.62rem;letter-spacing:1.4px;text-transform:uppercase;
+                             font-weight:700;color:{ac};">Recommended Action</span>
+              </div>
+              <div style="font-size:0.86rem;color:{INK};font-weight:500;line-height:1.6;">{atxt}</div>
+              <div style="margin-top:1rem;padding-top:0.9rem;border-top:1px solid {ac}22;">
+                <div style="font-size:0.62rem;color:{INK2};letter-spacing:0.5px;text-transform:uppercase;font-weight:700;margin-bottom:0.35rem;">Priority</div>
+                <span class="pill" style="background:{tcolor};font-size:0.76rem;">{tlabel}</span>
+              </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        with col_tbl:
+            st.markdown(f"""
+            <div style="border:1px solid {BORDER};border-radius:14px;overflow:hidden;height:100%;">
+              <div style="padding:0.6rem 0.75rem;background:{BG};border-bottom:1px solid {BORDER};">
+                <span style="font-size:0.72rem;font-weight:700;color:{INK};letter-spacing:-0.01em;">Claim Summary</span>
+              </div>
+              <table class="ent-tbl" style="border:none;border-radius:0;">
+                <tbody>{rows}</tbody>
+              </table>
+            </div>
+            """, unsafe_allow_html=True)
 
         # ── Predicted vs Actual ──
         if st.session_state['loaded_example']:
