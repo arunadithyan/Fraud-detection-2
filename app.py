@@ -20,387 +20,374 @@ st.set_page_config(
 )
 
 # ══════════════════════════════════════════════════════════════════════════════
-#  DESIGN TOKENS  (enterprise palette — Stripe / Linear / Vercel inspired)
+#  DESIGN TOKENS
 # ══════════════════════════════════════════════════════════════════════════════
-BG        = "#F7F8FA"
+BG        = "#F9FAFB"
 CARD      = "#FFFFFF"
-INK       = "#111827"   # primary text
-INK2      = "#4B5563"   # secondary text
-MUTED     = "#9CA3AF"
-ACCENT    = "#2563EB"   # blue accent
-ACCENT_BG = "#EEF4FF"   # hover / tint
-SUCCESS   = "#16A34A"
-WARNING   = "#F59E0B"
+INK       = "#0F172A"
+INK2      = "#475569"
+MUTED     = "#94A3B8"
+ACCENT    = "#4F46E5"   # indigo
+ACCENT_L  = "#EEF2FF"
+SUCCESS   = "#059669"
+WARNING   = "#D97706"
 DANGER    = "#DC2626"
-BORDER    = "#E5E7EB"
+BORDER    = "#E2E8F0"
+SLATE     = "#1E293B"
 
-# Routing/priority colours (kept semantically identical to original logic)
 CRITICAL  = "#DC2626"
 HIGH      = "#EA580C"
 MEDIUM    = "#D97706"
-FASTTRACK = "#16A34A"
+FASTTRACK = "#059669"
 
-# Aliases used by preserved business logic (names unchanged so logic is untouched)
-RS_BLUE    = ACCENT
-RS_NAVY    = "#0B1220"
-RS_YELLOW  = "#F59E0B"
-RS_WHITE   = "#FFFFFF"
-RS_OFFWHITE= BG
-RS_GRAY    = INK2
-RS_LGRAY   = BORDER
+RS_BLUE = ACCENT; RS_NAVY = SLATE; RS_YELLOW = WARNING
+RS_WHITE = CARD; RS_OFFWHITE = BG; RS_GRAY = INK2; RS_LGRAY = BORDER
 
 # ══════════════════════════════════════════════════════════════════════════════
-#  GLOBAL CSS  (mobile-first, responsive, enterprise design system)
+#  GLOBAL CSS
 # ══════════════════════════════════════════════════════════════════════════════
 st.markdown(f"""
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap');
 
-  /* ---------- base ---------- */
-  html, body, [class*="css"], [data-testid="stAppViewContainer"], [data-testid="stApp"],
-  .main, .block-container, [data-testid="stVerticalBlock"], [data-testid="stForm"],
-  [data-testid="stHorizontalBlock"], section.main {{
-    background-color: {BG} !important;
-    color: {INK} !important;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-  }}
-  @media (prefers-color-scheme: dark) {{
-    html, body, [class*="css"] {{ background-color: {BG} !important; color: {INK} !important; }}
-  }}
-  #MainMenu, footer, header {{ visibility: hidden; }}
+/* ── reset & base ── */
+html,body,[class*="css"],[data-testid="stAppViewContainer"],[data-testid="stApp"],
+.main,.block-container,[data-testid="stVerticalBlock"],[data-testid="stForm"],
+[data-testid="stHorizontalBlock"],section.main{{
+  background:{BG}!important;color:{INK}!important;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif!important;
+}}
+@media(prefers-color-scheme:dark){{html,body,[class*="css"]{{background:{BG}!important;color:{INK}!important;}}}}
+#MainMenu,footer,header{{visibility:hidden;}}
+*{{-webkit-tap-highlight-color:transparent;box-sizing:border-box;}}
+.block-container{{padding:0 clamp(1rem,4vw,3rem) 4rem!important;max-width:1400px;margin:0 auto;}}
 
-  .block-container {{
-    padding: 1rem clamp(0.75rem, 3vw, 2.5rem) 3rem !important;
-    max-width: 1320px;
-  }}
+/* ── TOP NAV ── */
+.topnav{{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.9rem 0 1.2rem;margin-bottom:0.4rem;
+  border-bottom:1px solid {BORDER};
+}}
+.topnav-brand{{display:flex;align-items:center;gap:0.65rem;}}
+.topnav-logo{{
+  width:34px;height:34px;border-radius:9px;
+  background:{ACCENT};display:flex;align-items:center;justify-content:center;
+  font-size:0.95rem;font-weight:800;color:#fff;letter-spacing:-0.5px;flex-shrink:0;
+}}
+.topnav-name{{font-size:0.95rem;font-weight:700;color:{INK};letter-spacing:-0.01em;}}
+.topnav-sub{{font-size:0.72rem;color:{MUTED};margin-top:1px;}}
+.topnav-right{{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;justify-content:flex-end;}}
+.nav-tag{{
+  font-size:0.68rem;font-weight:600;padding:0.22rem 0.65rem;border-radius:6px;
+  background:{ACCENT_L};color:{ACCENT};letter-spacing:0.2px;white-space:nowrap;
+}}
+.live-dot{{
+  width:7px;height:7px;border-radius:50%;background:{SUCCESS};
+  box-shadow:0 0 0 2px #fff,0 0 0 4px {SUCCESS}40;display:inline-block;margin-right:4px;
+}}
 
-  * {{ -webkit-tap-highlight-color: transparent; }}
+/* ── HERO ── */
+.hero{{
+  display:grid;grid-template-columns:1fr auto;gap:2rem;
+  align-items:start;padding:2rem 0 1.6rem;
+}}
+.hero-left .kicker{{
+  display:inline-flex;align-items:center;gap:0.45rem;
+  font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+  color:{ACCENT};margin-bottom:0.8rem;
+}}
+.hero-left h1{{
+  font-family:'DM Serif Display',Georgia,serif;
+  font-size:clamp(1.9rem,4.5vw,3rem);font-weight:400;
+  color:{INK};line-height:1.08;letter-spacing:-0.02em;margin:0 0 0.7rem;
+}}
+.hero-left h1 em{{font-style:italic;color:{ACCENT};}}
+.hero-left p{{
+  font-size:clamp(0.88rem,1.8vw,1rem);color:{INK2};
+  line-height:1.65;max-width:520px;margin:0 0 1.2rem;font-weight:400;
+}}
+.hero-meta{{display:flex;flex-wrap:wrap;gap:0.35rem 1.2rem;font-size:0.72rem;color:{MUTED};}}
+.hero-meta b{{color:{INK2};font-weight:600;}}
+.hero-right{{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;min-width:300px;}}
 
-  /* ---------- typography helpers ---------- */
-  .eyebrow {{
-    font-size: clamp(0.6rem, 1.4vw, 0.68rem); font-weight: 700; letter-spacing: 1.6px;
-    text-transform: uppercase; color: {ACCENT}; margin-bottom: 0.4rem;
-  }}
-  .h-title {{
-    font-size: clamp(1.25rem, 3.4vw, 1.7rem); font-weight: 800; color: {INK};
-    letter-spacing: -0.02em; line-height: 1.2; margin: 0;
-  }}
-  .h-sub {{
-    font-size: clamp(0.85rem, 2vw, 0.95rem); color: {INK2}; font-weight: 400;
-    margin-top: 0.35rem; line-height: 1.5;
-  }}
-  .section-label {{
-    font-size: 0.95rem; font-weight: 700; color: {INK}; letter-spacing: -0.01em;
-    margin: 1.6rem 0 0.8rem;
-  }}
+/* ── STAT CARD (hero right + result) ── */
+.s-card{{
+  background:{CARD};border:1px solid {BORDER};border-radius:14px;
+  padding:1rem 1.05rem;position:relative;overflow:hidden;
+  transition:transform .18s ease,box-shadow .18s ease;
+}}
+.s-card:hover{{transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,23,42,0.08);}}
+.s-card::before{{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0;
+}}
+.s-card.accent::before{{background:{ACCENT};}}
+.s-card.success::before{{background:{SUCCESS};}}
+.s-card.warn::before{{background:{WARNING};}}
+.s-card.purple::before{{background:#7C3AED;}}
+.s-card .ico{{
+  width:34px;height:34px;border-radius:9px;display:flex;align-items:center;
+  justify-content:center;font-size:0.95rem;margin-bottom:0.6rem;
+}}
+.s-card .val{{font-size:clamp(1.3rem,3vw,1.7rem);font-weight:800;color:{INK};letter-spacing:-0.03em;line-height:1;}}
+.s-card .lbl{{font-size:0.72rem;color:{MUTED};font-weight:500;margin-top:0.25rem;line-height:1.3;}}
 
-  /* ---------- HERO ---------- */
-  .hero {{
-    background: linear-gradient(135deg, #0B1220 0%, #1E293B 55%, #2563EB 140%);
-    border-radius: 20px;
-    padding: clamp(1.4rem, 4vw, 2.6rem);
-    margin-bottom: 1.4rem;
-    box-shadow: 0 12px 40px rgba(15,23,42,0.18);
-    position: relative; overflow: hidden;
-  }}
-  .hero::after {{
-    content:""; position:absolute; top:-40%; right:-10%; width:380px; height:380px;
-    background: radial-gradient(circle, rgba(37,99,235,0.45), transparent 70%);
-    border-radius:50%;
-  }}
-  .hero-badge {{
-    display:inline-flex; align-items:center; gap:0.5rem;
-    background: rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18);
-    color:#E0E7FF; padding:0.32rem 0.8rem; border-radius:999px;
-    font-size:0.68rem; font-weight:600; letter-spacing:0.4px; margin-bottom:1rem;
-    backdrop-filter: blur(8px);
-  }}
-  .hero-badge .dot {{ width:7px; height:7px; border-radius:50%; background:{SUCCESS}; box-shadow:0 0 8px {SUCCESS}; }}
-  .hero h1 {{
-    font-size: clamp(1.6rem, 5.5vw, 2.7rem); font-weight: 800; color:#fff;
-    letter-spacing:-0.03em; line-height:1.08; margin:0 0 0.6rem; position:relative;
-  }}
-  .hero p {{
-    font-size: clamp(0.9rem, 2.4vw, 1.08rem); color: rgba(255,255,255,0.72);
-    margin:0; max-width:640px; line-height:1.55; position:relative;
-  }}
-  .hero-meta {{
-    margin-top:1.3rem; display:flex; flex-wrap:wrap; gap:0.5rem 1.4rem; position:relative;
-    font-size:0.74rem; color:rgba(255,255,255,0.55);
-  }}
-  .hero-meta b {{ color:#E0E7FF; font-weight:600; }}
+/* ── DIVIDER ── */
+.divider{{height:1px;background:{BORDER};margin:1.8rem 0;}}
 
-  /* ---------- KPI strip ---------- */
-  .kpi-grid {{
-    display:grid; grid-template-columns: repeat(4, 1fr); gap:0.8rem; margin-bottom:1.4rem;
-  }}
-  .kpi {{
-    background:{CARD}; border:1px solid {BORDER}; border-radius:16px;
-    padding:1.05rem 1.1rem; transition: transform .18s ease, box-shadow .18s ease;
-  }}
-  .kpi:hover {{ transform: translateY(-3px); box-shadow:0 10px 28px rgba(17,24,39,0.08); }}
-  .kpi-ico {{
-    width:38px; height:38px; border-radius:11px; display:flex; align-items:center;
-    justify-content:center; font-size:1.05rem; margin-bottom:0.7rem;
-  }}
-  .kpi-val {{ font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight:800; color:{INK}; letter-spacing:-0.02em; line-height:1; }}
-  .kpi-lbl {{ font-size:0.74rem; color:{INK2}; font-weight:500; margin-top:0.3rem; }}
+/* ── SECTION HEAD ── */
+.sec-head{{margin:0 0 1rem;}}
+.sec-head .eye{{font-size:0.62rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:{ACCENT};margin-bottom:0.3rem;}}
+.sec-head h2{{font-size:clamp(1.1rem,2.5vw,1.35rem);font-weight:800;color:{INK};letter-spacing:-0.02em;margin:0;}}
+.sec-head p{{font-size:0.84rem;color:{INK2};margin:0.3rem 0 0;line-height:1.5;}}
 
-  /* ---------- generic card ---------- */
-  .ent-card {{
-    background:{CARD}; border:1px solid {BORDER}; border-radius:16px;
-    padding:1.3rem 1.4rem; margin-bottom:1rem;
-    box-shadow:0 1px 3px rgba(17,24,39,0.04);
-    transition: box-shadow .18s ease, transform .18s ease;
-  }}
-  .ent-card:hover {{ box-shadow:0 8px 24px rgba(17,24,39,0.07); }}
-  .ent-card h4 {{ font-size:0.92rem; font-weight:700; color:{INK}; margin:0 0 0.5rem; letter-spacing:-0.01em; }}
-  .ent-card p {{ font-size:0.82rem; color:{INK2}; line-height:1.62; margin:0; }}
+/* ── WIZARD FORM ── */
+.wiz-sec{{
+  background:{CARD};border:1px solid {BORDER};border-radius:16px;
+  padding:1.4rem 1.5rem;margin-bottom:0.8rem;
+  box-shadow:0 1px 2px rgba(15,23,42,0.04);
+}}
+.wiz-head{{display:flex;align-items:center;gap:0.7rem;margin-bottom:1.2rem;}}
+.wiz-n{{
+  width:28px;height:28px;border-radius:8px;background:{ACCENT};color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:0.78rem;flex-shrink:0;
+}}
+.wiz-title{{font-size:0.92rem;font-weight:700;color:{INK};}}
+.wiz-sub{{font-size:0.73rem;color:{MUTED};margin-top:1px;}}
 
-  /* ---------- overview feature cards ---------- */
-  .feat-grid {{ display:grid; grid-template-columns: repeat(4, 1fr); gap:0.8rem; }}
-  .feat {{
-    background:{CARD}; border:1px solid {BORDER}; border-radius:16px; padding:1.1rem;
-    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  }}
-  .feat:hover {{ transform: translateY(-3px); box-shadow:0 10px 28px rgba(17,24,39,0.08); border-color:#C7D2FE; }}
-  .feat-ico {{ width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.15rem; margin-bottom:0.75rem; background:{ACCENT_BG}; }}
-  .feat h5 {{ font-size:0.9rem; font-weight:700; color:{INK}; margin:0 0 0.3rem; }}
-  .feat p {{ font-size:0.76rem; color:{INK2}; line-height:1.5; margin:0; }}
+/* ── RESULT GAUGE ── */
+.gauge-wrap{{
+  background:{SLATE};border-radius:18px;
+  padding:clamp(1.2rem,3.5vw,1.8rem);
+  box-shadow:0 16px 48px rgba(15,23,42,0.24);
+  position:relative;overflow:hidden;
+}}
+.gauge-wrap::after{{
+  content:"";position:absolute;bottom:-30%;right:-10%;width:220px;height:220px;
+  background:radial-gradient(circle,rgba(79,70,229,0.35),transparent 70%);
+  border-radius:50%;pointer-events:none;
+}}
+.gauge-eye{{font-size:0.6rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.6rem;}}
+.gauge-score{{
+  font-family:'DM Serif Display',Georgia,serif;
+  font-size:clamp(3rem,10vw,4.5rem);font-weight:400;color:#fff;
+  line-height:1;letter-spacing:-0.02em;
+}}
+.gauge-denom{{font-size:1rem;color:rgba(255,255,255,0.35);font-weight:600;vertical-align:super;font-family:'Inter',sans-serif;}}
+.gauge-bar-track{{background:rgba(255,255,255,0.1);border-radius:6px;height:6px;margin:1rem 0 0.5rem;overflow:hidden;}}
+.gauge-bar{{height:100%;border-radius:6px;transition:width .8s cubic-bezier(.2,.8,.2,1);}}
+.gauge-row{{display:flex;gap:0.6rem;margin-top:0.9rem;}}
+.gauge-chip{{
+  flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);
+  border-radius:10px;padding:0.65rem 0.7rem;
+}}
+.gauge-chip .gk{{font-size:0.56rem;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.45);font-weight:700;}}
+.gauge-chip .gv{{font-size:1.1rem;font-weight:800;color:#fff;margin-top:0.15rem;letter-spacing:-0.02em;}}
+.route-box{{margin-top:0.9rem;padding-top:0.9rem;border-top:1px solid rgba(255,255,255,0.1);}}
+.route-box .rk{{font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);font-weight:700;margin-bottom:0.3rem;}}
+.route-box .rv{{font-size:1rem;font-weight:800;color:#fff;letter-spacing:-0.01em;}}
+.rpill{{display:inline-flex;align-items:center;padding:0.3rem 0.85rem;border-radius:999px;font-size:0.72rem;font-weight:700;color:#fff;margin-top:0.5rem;}}
 
-  /* ---------- form section header ---------- */
-  .wiz-hdr {{
-    display:flex; align-items:center; gap:0.7rem; margin:1.5rem 0 0.9rem;
-  }}
-  .wiz-num {{
-    width:30px; height:30px; border-radius:9px; background:{ACCENT}; color:#fff;
-    display:flex; align-items:center; justify-content:center; font-weight:700;
-    font-size:0.82rem; flex-shrink:0;
-  }}
-  .wiz-ttl {{ font-size:0.95rem; font-weight:700; color:{INK}; }}
-  .wiz-desc {{ font-size:0.74rem; color:{MUTED}; }}
+/* ── SHAP DRIVERS ── */
+.driver{{
+  display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
+  background:{CARD};border:1px solid {BORDER};border-radius:11px;
+  padding:0.65rem 0.85rem;margin-bottom:0.45rem;
+  border-left:3px solid {ACCENT};font-size:0.8rem;font-weight:500;color:{INK};
+}}
+.driver.up{{border-left-color:{DANGER};}}
+.driver.down{{border-left-color:{SUCCESS};}}
+.driver-text{{flex:1;min-width:0;}}
+.driver-shap{{font-size:0.66rem;font-weight:700;color:{MUTED};white-space:nowrap;flex-shrink:0;
+  background:{BG};border:1px solid {BORDER};border-radius:6px;padding:0.15rem 0.45rem;}}
 
-  /* ---------- result dashboard ---------- */
-  .score-hero {{
-    background: linear-gradient(135deg, #0B1220 0%, #1E293B 100%);
-    border-radius:18px; padding: clamp(1.3rem,3.5vw,1.9rem); color:#fff;
-    box-shadow:0 12px 36px rgba(15,23,42,0.2); height:100%;
-  }}
-  .score-hero .lbl {{ font-size:0.64rem; letter-spacing:1.8px; text-transform:uppercase; color:rgba(255,255,255,0.55); font-weight:700; }}
-  .score-hero .num {{ font-size: clamp(2.6rem,9vw,3.6rem); font-weight:800; line-height:1; letter-spacing:-0.03em; margin-top:0.2rem; }}
-  .score-hero .den {{ font-size:1rem; color:rgba(255,255,255,0.4); font-weight:600; }}
-  .bar-bg {{ background:rgba(255,255,255,0.14); border-radius:6px; height:8px; margin:1.1rem 0 0.4rem; overflow:hidden; }}
-  .bar-fill {{ height:100%; border-radius:6px; transition: width .6s cubic-bezier(.2,.8,.2,1); }}
+/* ── RESULT BOTTOM — action + table ── */
+.res-bottom{{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-top:0.9rem;}}
+.act-card{{
+  border-radius:14px;padding:1.2rem 1.25rem;border:1px solid;border-left:4px solid;
+  display:flex;flex-direction:column;
+}}
+.act-head{{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;}}
+.act-ico{{font-size:1rem;line-height:1;}}
+.act-lbl{{font-size:0.58rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;}}
+.act-body{{font-size:0.83rem;font-weight:500;line-height:1.6;flex:1;}}
+.act-foot{{margin-top:0.9rem;padding-top:0.85rem;border-top:1px solid;}}
+.act-foot .pk{{font-size:0.56rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:{INK2};margin-bottom:0.3rem;}}
 
-  .stat-grid {{ display:grid; grid-template-columns: repeat(2,1fr); gap:0.7rem; }}
-  .stat-card {{
-    background:{CARD}; border:1px solid {BORDER}; border-radius:14px; padding:1rem 1.1rem;
-  }}
-  .stat-card .k {{ font-size:0.64rem; letter-spacing:1px; text-transform:uppercase; color:{MUTED}; font-weight:700; }}
-  .stat-card .v {{ font-size:1.45rem; font-weight:800; color:{INK}; margin-top:0.3rem; letter-spacing:-0.02em; }}
-  .pill {{ display:inline-flex; align-items:center; padding:0.3rem 0.85rem; border-radius:999px; font-size:0.74rem; font-weight:700; color:#fff; }}
+.clm-card{{
+  background:{CARD};border:1px solid {BORDER};border-radius:14px;
+  overflow:hidden;display:flex;flex-direction:column;
+}}
+.clm-head{{
+  padding:0.6rem 0.85rem;border-bottom:1px solid {BORDER};
+  font-size:0.72rem;font-weight:700;color:{INK};background:{BG};
+}}
+.clm-tbl{{width:100%;border-collapse:collapse;font-size:0.73rem;}}
+.clm-tbl td{{padding:0.42rem 0.85rem;border-bottom:1px solid {BORDER};vertical-align:middle;}}
+.clm-tbl tr:last-child td{{border-bottom:none;}}
+.clm-tbl td:first-child{{color:{INK2};font-weight:500;font-size:0.7rem;width:42%;}}
+.clm-tbl td:last-child{{font-weight:700;color:{INK};text-align:right;}}
 
-  /* ---------- SHAP reason rows ---------- */
-  .reason {{
-    background:{CARD}; border:1px solid {BORDER}; border-left:3px solid {ACCENT};
-    border-radius:12px; padding:0.75rem 0.95rem; margin-bottom:0.55rem;
-    font-size:0.82rem; color:{INK}; font-weight:500;
-    display:flex; align-items:center; justify-content:space-between; gap:0.5rem;
-  }}
-  .reason.up {{ border-left-color:{DANGER}; }}
-  .reason.down {{ border-left-color:{SUCCESS}; }}
-  .reason .shap {{ color:{MUTED}; font-size:0.72rem; font-weight:600; white-space:nowrap; }}
+/* ── VERDICT (predicted vs actual) ── */
+.verdict{{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-top:0.8rem;}}
+.verdict-box{{background:{CARD};border:1px solid {BORDER};border-top:3px solid;border-radius:12px;padding:0.9rem 1rem;}}
+.verdict-box .vk{{font-size:0.58rem;letter-spacing:1.2px;text-transform:uppercase;color:{MUTED};font-weight:700;}}
+.verdict-box .vv{{font-size:0.96rem;font-weight:800;margin-top:0.25rem;letter-spacing:-0.01em;}}
+.match-banner{{
+  display:flex;align-items:center;gap:0.5rem;margin-top:0.7rem;
+  padding:0.6rem 0.85rem;border-radius:10px;border:1px solid;
+  font-size:0.8rem;font-weight:600;
+}}
 
-  /* ---------- summary table ---------- */
-  .ent-tbl {{ width:100%; border-collapse:separate; border-spacing:0; font-size:0.74rem; border:1px solid {BORDER}; border-radius:12px; overflow:hidden; }}
-  .ent-tbl th {{ background:{BG}; color:{INK2}; padding:0.42rem 0.75rem; text-align:left; font-size:0.6rem; letter-spacing:0.6px; text-transform:uppercase; font-weight:700; border-bottom:1px solid {BORDER}; }}
-  .ent-tbl td {{ padding:0.38rem 0.75rem; border-bottom:1px solid {BORDER}; color:{INK}; line-height:1.35; }}
-  .ent-tbl tr:last-child td {{ border-bottom:none; }}
-  .ent-tbl td:first-child {{ color:{INK2}; font-weight:500; width:42%; }}
-  .ent-tbl td:last-child {{ font-weight:600; text-align:right; }}
+/* ── EXAMPLE CARDS ── */
+.ex-grid{{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;}}
+.ex-card{{
+  background:{CARD};border:1px solid {BORDER};border-radius:16px;
+  padding:1.25rem 1.3rem;cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+}}
+.ex-card:hover{{transform:translateY(-3px);box-shadow:0 12px 32px rgba(15,23,42,0.1);border-color:#C7D2FE;}}
+.ex-card.sel{{border-color:{ACCENT};box-shadow:0 0 0 3px {ACCENT_L};}}
+.ex-card::before{{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;
+}}
+.ex-top{{display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:0.55rem;}}
+.ex-ico{{
+  width:40px;height:40px;border-radius:11px;display:flex;align-items:center;
+  justify-content:center;font-size:1.1rem;flex-shrink:0;margin-top:1px;
+}}
+.ex-card h5{{font-size:0.9rem;font-weight:700;color:{INK};margin:0 0 0.15rem;letter-spacing:-0.01em;}}
+.ex-badge{{
+  display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:0.5px;
+  text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:999px;color:#fff;margin-bottom:0.5rem;
+}}
+.ex-desc{{font-size:0.77rem;color:{INK2};line-height:1.55;margin:0;}}
 
-  /* ---------- action banner ---------- */
-  .action {{
-    border-radius:14px; padding:1.1rem 1.3rem; margin-top:1.2rem;
-    border:1px solid; display:flex; gap:0.85rem; align-items:flex-start;
-  }}
-  .action .a-lbl {{ font-size:0.62rem; letter-spacing:1.4px; text-transform:uppercase; font-weight:700; margin-bottom:0.3rem; }}
-  .action .a-txt {{ font-size:0.85rem; color:{INK}; font-weight:500; line-height:1.55; }}
+/* ── MODEL INSIGHTS CARDS ── */
+.insight-card{{
+  background:{CARD};border:1px solid {BORDER};border-radius:16px;
+  padding:1.3rem 1.4rem;margin-bottom:0;
+  box-shadow:0 1px 2px rgba(15,23,42,0.04);
+}}
+.insight-card h4{{font-size:0.9rem;font-weight:700;color:{INK};margin:0 0 0.5rem;letter-spacing:-0.01em;}}
+.insight-card p{{font-size:0.8rem;color:{INK2};line-height:1.6;margin:0;}}
 
-  /* ---------- verdict (predicted vs actual) ---------- */
-  .verdict-grid {{ display:grid; grid-template-columns: 1fr 1fr; gap:0.7rem; margin-top:0.7rem; }}
-  .verdict-box {{ border:1px solid {BORDER}; border-top:3px solid; border-radius:12px; padding:0.85rem 1rem; background:{CARD}; }}
-  .verdict-box .vk {{ font-size:0.6rem; letter-spacing:1.2px; text-transform:uppercase; color:{MUTED}; font-weight:700; }}
-  .verdict-box .vv {{ font-size:1rem; font-weight:800; margin-top:0.25rem; letter-spacing:-0.01em; }}
+/* ── ARCH FLOW ── */
+.flow{{display:flex;align-items:stretch;gap:0.4rem;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;}}
+.flow-step{{flex:1 1 0;min-width:90px;border-radius:11px;padding:0.75rem 0.5rem;text-align:center;color:#fff;}}
+.flow-step .ft{{font-size:0.76rem;font-weight:700;}}
+.flow-step .fs{{font-size:0.58rem;opacity:0.82;margin-top:0.12rem;}}
+.flow-arr{{display:flex;align-items:center;color:{MUTED};font-size:1rem;flex-shrink:0;}}
 
-  /* ---------- example cards ---------- */
-  .ex-card {{
-    background:{CARD}; border:1px solid {BORDER}; border-radius:16px;
-    padding:1.2rem 1.25rem; margin-bottom:0.6rem; position:relative;
-    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  }}
-  .ex-card:hover {{ transform: translateY(-3px); box-shadow:0 12px 30px rgba(17,24,39,0.1); border-color:#C7D2FE; }}
-  .ex-card.sel {{ border-color:{ACCENT}; box-shadow:0 0 0 3px {ACCENT_BG}; }}
-  .ex-top {{ display:flex; align-items:center; gap:0.7rem; margin-bottom:0.6rem; }}
-  .ex-ico {{ width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }}
-  .ex-card h5 {{ font-size:0.95rem; font-weight:700; color:{INK}; margin:0; letter-spacing:-0.01em; }}
-  .ex-badge {{ display:inline-block; font-size:0.62rem; font-weight:700; letter-spacing:0.4px; text-transform:uppercase; padding:0.22rem 0.6rem; border-radius:999px; color:#fff; margin-bottom:0.5rem; }}
-  .ex-card p {{ font-size:0.78rem; color:{INK2}; line-height:1.55; margin:0; }}
+/* ── ABOUT CARDS ── */
+.about-card{{
+  background:{CARD};border:1px solid {BORDER};border-radius:14px;
+  padding:1.2rem 1.3rem;margin-bottom:0.7rem;
+  border-top:3px solid {ACCENT};
+}}
+.about-card h4{{font-size:0.88rem;font-weight:700;color:{INK};margin:0 0 0.45rem;}}
+.about-card p{{font-size:0.79rem;color:{INK2};line-height:1.62;margin:0;}}
 
-  /* ---------- pipeline / architecture ---------- */
-  .flow {{ display:flex; align-items:stretch; gap:0.4rem; flex-wrap:nowrap; overflow-x:auto; padding-bottom:0.4rem; -webkit-overflow-scrolling:touch; }}
-  .flow-step {{ flex:1 1 0; min-width:96px; border-radius:12px; padding:0.8rem 0.5rem; text-align:center; color:#fff; }}
-  .flow-step .t {{ font-size:0.78rem; font-weight:700; }}
-  .flow-step .s {{ font-size:0.6rem; opacity:0.85; margin-top:0.15rem; }}
-  .flow-arrow {{ display:flex; align-items:center; color:{MUTED}; font-size:1.1rem; flex-shrink:0; }}
+/* ── BUTTONS ── */
+.stButton>button{{
+  background:{ACCENT}!important;color:#fff!important;border:none!important;
+  border-radius:11px!important;font-weight:700!important;font-size:0.88rem!important;
+  padding:0.78rem 1.5rem!important;min-height:48px!important;width:100%!important;
+  letter-spacing:0.05px!important;
+  box-shadow:0 2px 8px rgba(79,70,229,0.3)!important;
+  transition:background .15s,transform .15s,box-shadow .15s!important;
+}}
+.stButton>button *,.stButton>button p,.stButton>button span{{color:#fff!important;}}
+.stButton>button:hover{{background:#4338CA!important;transform:translateY(-1px);box-shadow:0 4px 16px rgba(79,70,229,0.4)!important;}}
+.stButton>button:active{{transform:translateY(0);}}
+.stForm [data-testid="stFormSubmitButton"]>button{{
+  background:{ACCENT}!important;color:#fff!important;
+  min-height:52px!important;font-size:0.92rem!important;
+}}
+.stForm [data-testid="stFormSubmitButton"]>button *{{color:#fff!important;}}
 
-  /* ---------- buttons ---------- */
-  .stButton > button {{
-    background:{ACCENT} !important; color:#ffffff !important; border:none !important;
-    border-radius:12px !important; font-weight:700 !important; font-size:0.9rem !important;
-    padding:0.8rem 1.6rem !important; letter-spacing:0.1px !important; width:100% !important;
-    min-height:48px !important; box-shadow:0 4px 14px rgba(37,99,235,0.28) !important;
-    transition: transform .15s ease, box-shadow .15s ease, background .15s ease !important;
-  }}
-  .stButton > button *, .stButton > button p, .stButton > button span {{
-    color:#ffffff !important;
-  }}
-  .stButton > button:hover {{ background:#1D4ED8 !important; transform:translateY(-1px); box-shadow:0 6px 20px rgba(37,99,235,0.36) !important; }}
-  .stButton > button:active {{ transform:translateY(0); }}
-  .stForm [data-testid="stFormSubmitButton"] > button {{
-    background: {ACCENT} !important; color:#ffffff !important;
-    min-height:54px !important; font-size:0.95rem !important;
-  }}
-  .stForm [data-testid="stFormSubmitButton"] > button *,
-  .stForm [data-testid="stFormSubmitButton"] > button p {{
-    color:#ffffff !important;
-  }}
+/* ── TABS ── */
+.stTabs [data-baseweb="tab-list"]{{
+  gap:0.25rem;background:{CARD};border:1px solid {BORDER};border-radius:13px;
+  padding:0.3rem;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;
+}}
+.stTabs [data-baseweb="tab"]{{
+  background:transparent!important;color:{INK2}!important;border:none!important;
+  border-radius:9px!important;font-weight:600!important;font-size:0.82rem!important;
+  padding:0.58rem 1rem!important;white-space:nowrap;min-height:42px;
+  transition:background .12s,color .12s;
+}}
+.stTabs [data-baseweb="tab"]:hover{{background:{ACCENT_L}!important;color:{ACCENT}!important;}}
+.stTabs [aria-selected="true"]{{background:{ACCENT}!important;color:#fff!important;}}
+.stTabs [data-baseweb="tab-highlight"],.stTabs [data-baseweb="tab-border"]{{display:none!important;}}
 
-  /* ---------- tabs ---------- */
-  .stTabs [data-baseweb="tab-list"] {{
-    gap:0.35rem; background:{CARD}; border:1px solid {BORDER}; border-radius:14px;
-    padding:0.35rem; overflow-x:auto; flex-wrap:nowrap; -webkit-overflow-scrolling:touch;
-  }}
-  .stTabs [data-baseweb="tab"] {{
-    background:transparent !important; color:{INK2} !important; border:none !important;
-    border-radius:10px !important; font-weight:600 !important; font-size:0.82rem !important;
-    padding:0.6rem 1.05rem !important; white-space:nowrap; min-height:44px;
-    transition: background .15s ease, color .15s ease;
-  }}
-  .stTabs [data-baseweb="tab"]:hover {{ background:{ACCENT_BG} !important; color:{ACCENT} !important; }}
-  .stTabs [aria-selected="true"] {{ background:{ACCENT} !important; color:#fff !important; }}
-  .stTabs [data-baseweb="tab-highlight"], .stTabs [data-baseweb="tab-border"] {{ display:none !important; }}
+/* ── INPUTS ── */
+div[data-baseweb="select"]>div{{
+  border-radius:10px!important;border-color:{BORDER}!important;background:{CARD}!important;
+  font-size:0.84rem!important;color:{INK}!important;min-height:44px!important;
+}}
+div[data-baseweb="select"]>div:focus-within{{border-color:{ACCENT}!important;box-shadow:0 0 0 3px {ACCENT_L}!important;}}
+.stNumberInput input,.stTextInput input{{
+  border-radius:10px!important;border-color:{BORDER}!important;background:{CARD}!important;
+  color:{INK}!important;font-size:0.84rem!important;min-height:44px!important;
+}}
+.stNumberInput input:focus,.stTextInput input:focus{{border-color:{ACCENT}!important;box-shadow:0 0 0 3px {ACCENT_L}!important;}}
+label{{color:{INK2}!important;font-size:0.76rem!important;font-weight:600!important;}}
+button[data-testid="stNumberInputStepDown"],button[data-testid="stNumberInputStepUp"],
+[data-testid="stNumberInput"] button{{
+  background:{BG}!important;color:{INK}!important;border:1px solid {BORDER}!important;min-width:38px!important;
+}}
+button[data-testid="stNumberInputStepDown"]:hover,button[data-testid="stNumberInputStepUp"]:hover{{
+  background:{ACCENT}!important;color:#fff!important;
+}}
+[data-testid="stSlider"]>div>div>div{{background:{BORDER}!important;}}
+[data-testid="stSlider"] [role="slider"]{{background:{ACCENT}!important;border-color:{ACCENT}!important;}}
+[data-testid="stSlider"]>div>div>div>div{{background:{ACCENT}!important;}}
+[data-testid="stAlert"]{{background:{CARD}!important;color:{INK}!important;border-radius:12px!important;border:1px solid {BORDER}!important;}}
+[data-testid="stDataFrame"]{{background:{CARD}!important;border-radius:12px;border:1px solid {BORDER}!important;}}
+[data-testid="stExpander"]{{background:{CARD}!important;border:1px solid {BORDER}!important;border-radius:12px!important;}}
+[data-testid="stExpander"] summary{{color:{INK}!important;font-weight:600!important;}}
 
-  /* ---------- inputs ---------- */
-  div[data-baseweb="select"] > div {{
-    border-radius:11px !important; border-color:{BORDER} !important; background:{CARD} !important;
-    font-size:0.86rem !important; color:{INK} !important; min-height:46px !important;
-  }}
-  div[data-baseweb="select"] > div:focus-within {{ border-color:{ACCENT} !important; box-shadow:0 0 0 3px {ACCENT_BG} !important; }}
-  .stNumberInput input, .stTextInput input {{
-    border-radius:11px !important; border-color:{BORDER} !important; background:{CARD} !important;
-    color:{INK} !important; font-size:0.86rem !important; min-height:46px !important;
-  }}
-  .stNumberInput input:focus, .stTextInput input:focus {{ border-color:{ACCENT} !important; box-shadow:0 0 0 3px {ACCENT_BG} !important; }}
-  label {{ color:{INK2} !important; font-size:0.78rem !important; font-weight:600 !important; }}
+/* ── FOOTER ── */
+.ent-footer{{
+  margin-top:2.5rem;padding:1.2rem 0 0.4rem;border-top:1px solid {BORDER};
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:0.5rem;font-size:0.72rem;color:{MUTED};
+}}
+.ent-footer b{{color:{INK2};font-weight:600;}}
 
-  button[data-testid="stNumberInputStepDown"], button[data-testid="stNumberInputStepUp"],
-  [data-testid="stNumberInput"] button {{
-    background:{BG} !important; color:{INK} !important; border:1px solid {BORDER} !important;
-    min-width:40px !important;
-  }}
-  button[data-testid="stNumberInputStepDown"]:hover, button[data-testid="stNumberInputStepUp"]:hover {{
-    background:{ACCENT} !important; color:#fff !important;
-  }}
-
-  [data-testid="stSlider"] > div > div > div {{ background:{BORDER} !important; }}
-  [data-testid="stSlider"] [role="slider"] {{ background:{ACCENT} !important; border-color:{ACCENT} !important; }}
-  [data-testid="stSlider"] > div > div > div > div {{ background:{ACCENT} !important; }}
-
-  [data-testid="stAlert"] {{ background:{CARD} !important; color:{INK} !important; border-radius:12px !important; border:1px solid {BORDER} !important; }}
-  [data-testid="stDataFrame"] {{ background:{CARD} !important; border-radius:12px; }}
-  [data-testid="stExpander"] {{ background:{CARD} !important; border:1px solid {BORDER} !important; border-radius:12px !important; }}
-  [data-testid="stExpander"] summary {{ color:{INK} !important; font-weight:600 !important; }}
-
-  /* ---------- footer ---------- */
-  .ent-footer {{
-    margin-top:2.4rem; padding:1.4rem 0 0.5rem; border-top:1px solid {BORDER};
-    display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
-    gap:0.6rem; font-size:0.74rem; color:{MUTED};
-  }}
-  .ent-footer b {{ color:{INK2}; font-weight:600; }}
-
-  /* ════════ RESPONSIVE BREAKPOINTS ════════ */
-  /* Tablet */
-  @media (max-width: 1024px) {{
-    .kpi-grid {{ grid-template-columns: repeat(2,1fr); }}
-    .feat-grid {{ grid-template-columns: repeat(2,1fr); }}
-  }}
-  /* Large phones */
-  @media (max-width: 768px) {{
-    .block-container {{ padding-top:0.5rem !important; }}
-    .stat-grid {{ grid-template-columns: 1fr; }}
-    .verdict-grid {{ grid-template-columns: 1fr; }}
-    [data-testid="stHorizontalBlock"] {{ flex-wrap:wrap; gap:0.5rem !important; }}
-    [data-testid="stHorizontalBlock"] > div {{ min-width:100% !important; flex:1 1 100% !important; }}
-  }}
-  /* Phones */
-  @media (max-width: 480px) {{
-    .kpi-grid {{ grid-template-columns: 1fr 1fr; gap:0.55rem; }}
-    .feat-grid {{ grid-template-columns: 1fr; }}
-    .hero {{ border-radius:16px; }}
-    .kpi {{ padding:0.85rem; }}
-    .ent-card, .ex-card {{ padding:1rem; }}
-    .stTabs [data-baseweb="tab"] {{ font-size:0.76rem !important; padding:0.55rem 0.8rem !important; }}
-  }}
+/* ════ BREAKPOINTS ════ */
+@media(max-width:1024px){{
+  .hero{{grid-template-columns:1fr;}}
+  .hero-right{{grid-template-columns:repeat(4,1fr);min-width:unset;}}
+  .hero-left p{{max-width:100%;}}
+}}
+@media(max-width:768px){{
+  .block-container{{padding:0 1rem 3rem!important;}}
+  .hero{{padding:1.4rem 0 1rem;gap:1.2rem;}}
+  .hero-right{{grid-template-columns:1fr 1fr;}}
+  .res-bottom{{grid-template-columns:1fr;}}
+  .verdict{{grid-template-columns:1fr;}}
+  .ex-grid{{grid-template-columns:1fr;}}
+  [data-testid="stHorizontalBlock"]{{flex-wrap:wrap;gap:0.5rem!important;}}
+  [data-testid="stHorizontalBlock"]>div{{min-width:100%!important;flex:1 1 100%!important;}}
+  .topnav-right{{display:none;}}
+}}
+@media(max-width:480px){{
+  .block-container{{padding:0 0.75rem 2.5rem!important;}}
+  .hero-right{{grid-template-columns:1fr 1fr;gap:0.5rem;}}
+  .hero-left h1{{font-size:1.75rem;}}
+  .gauge-score{{font-size:3rem;}}
+  .gauge-row{{flex-direction:column;}}
+  .wiz-sec{{padding:1.1rem;}}
+  .s-card{{padding:0.85rem;}}
+  .stTabs [data-baseweb="tab"]{{font-size:0.76rem!important;padding:0.5rem 0.75rem!important;}}
+}}
 </style>
 """, unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
-#  HERO
-# ══════════════════════════════════════════════════════════════════════════════
-st.markdown(f"""
-<div class="hero">
-  <div class="hero-badge"><span class="dot"></span> Sundaram Pitch Fest 2026 · Live Prototype</div>
-  <h1>Claim Decisioning Engine</h1>
-  <p>AI-powered fraud detection &amp; litigation intelligence for Motor Third-Party claims —
-     scoring, explaining, and routing every claim at First Notice of Loss.</p>
-  <div class="hero-meta">
-    <span><b>Team Apex Counsel</b> · IIT Kharagpur</span>
-    <span>Arunadithyan S · Azhagappan G · G Abiimukeshwar</span>
-    <span>Operations · Risk &amp; Process Excellence</span>
-  </div>
-</div>
-""", unsafe_allow_html=True)
-
-# ── KPI strip ──
-st.markdown(f"""
-<div class="kpi-grid">
-  <div class="kpi">
-    <div class="kpi-ico" style="background:{ACCENT_BG};color:{ACCENT};">🧠</div>
-    <div class="kpi-val">XGBoost</div>
-    <div class="kpi-lbl">Fraud Model · cost-sensitive</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-ico" style="background:#FEF3C7;color:{WARNING};">⚖️</div>
-    <div class="kpi-val">Dual-Model</div>
-    <div class="kpi-lbl">Litigation Risk Engine</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-ico" style="background:#DCFCE7;color:{SUCCESS};">📊</div>
-    <div class="kpi-val">15,420</div>
-    <div class="kpi-lbl">Claims Analysed</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-ico" style="background:#EDE9FE;color:#7C3AED;">🔍</div>
-    <div class="kpi-val">SHAP</div>
-    <div class="kpi-lbl">Explainable AI · per claim</div>
-  </div>
-</div>
-""", unsafe_allow_html=True)
-
-# ══════════════════════════════════════════════════════════════════════════════
-#  LOAD MODELS   (UNCHANGED LOGIC)
+#  LOAD MODELS   (UNCHANGED)
 # ══════════════════════════════════════════════════════════════════════════════
 @st.cache_resource(show_spinner="Loading models…")
 def load_models():
@@ -417,11 +404,11 @@ def load_models():
 model_fraud, model_lit, enc, feat_fraud, feat_lit, models_ok = load_models()
 
 # ══════════════════════════════════════════════════════════════════════════════
-#  CONSTANTS  (UNCHANGED LOGIC)
+#  CONSTANTS  (UNCHANGED)
 # ══════════════════════════════════════════════════════════════════════════════
 SEVERITY_MAP = {
-    'Below ₹5 Lakh':0.5, '₹5–8 Lakh':0.7, '₹8–12 Lakh':0.85,
-    '₹12–20 Lakh':1.0, '₹20–30 Lakh':1.2, 'Above ₹30 Lakh':1.5
+    'Below ₹5 Lakh':0.5,'₹5–8 Lakh':0.7,'₹8–12 Lakh':0.85,
+    '₹12–20 Lakh':1.0,'₹20–30 Lakh':1.2,'Above ₹30 Lakh':1.5
 }
 LIT_DROP = ['FNOL_Delay_Days','FIR_Filed','Fault','Prior_Claims_Count','Claim_Filing_Delay']
 MONTHS   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
@@ -548,7 +535,7 @@ EXAMPLE_CLAIMS = {
         ),
     },
     "Example 3 · ADR / Legal Prep": {
-        "desc": "High-value genuine claim with elevated litigation risk. The engine identifies a low likelihood of fraud but a high probability of legal escalation, routing the claim to the ADR/Legal team for early settlement planning and dispute resolution.",
+        "desc": "High-value genuine claim with elevated litigation risk. The engine identifies a low likelihood of fraud but a high probability of legal escalation, routing to ADR/Legal for early settlement planning.",
         "actual": "Genuine → ADR / Legal Prep",
         "actual_key": "high",
         "icon": "⚖️",
@@ -578,11 +565,10 @@ EXAMPLE_CLAIMS = {
         ),
     },
 }
-
 EX_KEY_COLOR = {'critical': CRITICAL, 'high': HIGH, 'medium': MEDIUM, 'fast': FASTTRACK}
 
 # ══════════════════════════════════════════════════════════════════════════════
-#  SESSION STATE  (UNCHANGED LOGIC)
+#  SESSION STATE  (UNCHANGED)
 # ══════════════════════════════════════════════════════════════════════════════
 DEFAULTS = dict(
     vehicle_category='Private Car', vehicle_make=MAKES[0],
@@ -599,7 +585,6 @@ DEFAULTS = dict(
 for k, v in DEFAULTS.items():
     if k not in st.session_state:
         st.session_state[k] = v
-
 if 'loaded_example' not in st.session_state:
     st.session_state['loaded_example'] = None
 
@@ -608,6 +593,69 @@ def load_example(name):
     for k, v in ex['fields'].items():
         st.session_state[k] = v
     st.session_state['loaded_example'] = name
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  TOP NAV
+# ══════════════════════════════════════════════════════════════════════════════
+st.markdown(f"""
+<div class="topnav">
+  <div class="topnav-brand">
+    <div class="topnav-logo">SF</div>
+    <div>
+      <div class="topnav-name">Claim Decisioning Engine</div>
+      <div class="topnav-sub">Motor Third-Party · AI Triage Platform</div>
+    </div>
+  </div>
+  <div class="topnav-right">
+    <span class="nav-tag"><span class="live-dot"></span>Live Prototype</span>
+    <span class="nav-tag">Sundaram Pitch Fest 2026</span>
+    <span class="nav-tag">Team Apex Counsel · IIT KGP</span>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  HERO
+# ══════════════════════════════════════════════════════════════════════════════
+st.markdown(f"""
+<div class="hero">
+  <div class="hero-left">
+    <div class="kicker"><span class="live-dot"></span>Motor TP · FNOL Intelligence</div>
+    <h1>Every claim,<br><em>decided at intake.</em></h1>
+    <p>Two XGBoost models score fraud probability and litigation risk the moment a Motor TP
+       claim arrives — explaining every flag via SHAP and routing it to the lowest-cost resolution path.</p>
+    <div class="hero-meta">
+      <span><b>Arunadithyan S</b></span>
+      <span><b>Azhagappan G</b></span>
+      <span><b>G Abiimukeshwar</b></span>
+      <span>IIT Kharagpur · Operations &amp; Risk Track</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="s-card accent">
+      <div class="ico" style="background:{ACCENT_L};color:{ACCENT};">🧠</div>
+      <div class="val">XGBoost</div>
+      <div class="lbl">Fraud model · cost-sensitive</div>
+    </div>
+    <div class="s-card success">
+      <div class="ico" style="background:#DCFCE7;color:{SUCCESS};">⚖️</div>
+      <div class="val">Dual</div>
+      <div class="lbl">Fraud + litigation scoring</div>
+    </div>
+    <div class="s-card warn">
+      <div class="ico" style="background:#FEF3C7;color:{WARNING};">📊</div>
+      <div class="val">15,420</div>
+      <div class="lbl">Training claims</div>
+    </div>
+    <div class="s-card purple">
+      <div class="ico" style="background:#EDE9FE;color:#7C3AED;">🔍</div>
+      <div class="val">SHAP</div>
+      <div class="lbl">Every flag explained</div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+""", unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 #  TABS
@@ -621,74 +669,80 @@ tab1, tab2, tab3, tab4 = st.tabs(
 # ══════════════════════════════════════════════════════════════════════════════
 with tab1:
     if not models_ok:
-        st.error("Model files not found. Run the training notebook and place `.pkl` files in the same directory as `app.py`.")
-        st.code("Required: model_fraud_india.pkl · model_litigation_india.pkl · encoder_india.pkl · features_fraud.pkl · features_litigation.pkl")
+        st.error("Model files not found. Place `.pkl` files in the same directory as `app.py`.")
+        st.code("model_fraud_india.pkl · model_litigation_india.pkl · encoder_india.pkl · features_fraud.pkl · features_litigation.pkl")
         st.stop()
 
     if st.session_state['loaded_example']:
-        st.info(f"📌 Example loaded: **{st.session_state['loaded_example']}**. Review the pre-filled form below and click **Run** — then compare the engine's verdict to the known outcome.")
+        st.info(f"📌 **{st.session_state['loaded_example']}** pre-loaded. Review values below, then click Run.")
 
-    st.markdown('<div class="eyebrow">Live Assessment</div>', unsafe_allow_html=True)
-    st.markdown('<div class="h-title">Score a Claim</div>', unsafe_allow_html=True)
-    st.markdown('<div class="h-sub">Complete the four sections below. The engine scores fraud and litigation risk, explains every flag, and routes the claim.</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="sec-head">
+      <div class="eye">Live Assessment</div>
+      <h2>Score a Claim</h2>
+      <p>Fill in the four sections. The engine scores, explains, and routes in seconds.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
     with st.form("claim_form"):
-        # ── Section 1 ──
-        st.markdown('<div class="wiz-hdr"><div class="wiz-num">1</div><div><div class="wiz-ttl">Policy &amp; Vehicle</div><div class="wiz-desc">Cover, value, and vehicle profile</div></div></div>', unsafe_allow_html=True)
+        # ── 1: Policy & Vehicle ──
+        st.markdown('<div class="wiz-sec"><div class="wiz-head"><div class="wiz-n">1</div><div><div class="wiz-title">Policy &amp; Vehicle</div><div class="wiz-sub">Cover, value, and vehicle profile</div></div></div>', unsafe_allow_html=True)
         c1,c2,c3,c4 = st.columns(4)
         vehicle_category = c1.selectbox("Vehicle Category", ['Private Car','Two Wheeler','Commercial Vehicle'],
             index=['Private Car','Two Wheeler','Commercial Vehicle'].index(st.session_state.vehicle_category))
         vehicle_make = c2.selectbox("Vehicle Make", MAKES, index=safe_idx(MAKES, st.session_state.vehicle_make))
         vehicle_price = c3.selectbox("Vehicle Value", PRICES, index=safe_idx(PRICES, st.session_state.vehicle_price))
         vehicle_age = c4.selectbox("Vehicle Age", AGES, index=safe_idx(AGES, st.session_state.vehicle_age))
-
         c1,c2,c3,c4 = st.columns(4)
         base_policy = c1.selectbox("Cover Type", ['Third Party','Own Damage','Comprehensive'],
             index=['Third Party','Own Damage','Comprehensive'].index(st.session_state.base_policy))
         deductible_inr = c2.number_input("Deductible (₹)", 5000, 100000, value=int(st.session_state.deductible_inr), step=1000)
         driver_rating = c3.slider("Driver Risk Rating", 1, 4, value=int(st.session_state.driver_rating), help="1=Low · 4=High")
         year = c4.number_input("Policy Year", 2018, 2026, value=int(st.session_state.year))
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        # ── Section 2 ──
-        st.markdown('<div class="wiz-hdr"><div class="wiz-num">2</div><div><div class="wiz-ttl">Claimant</div><div class="wiz-desc">Demographics and claim history</div></div></div>', unsafe_allow_html=True)
+        # ── 2: Claimant ──
+        st.markdown('<div class="wiz-sec"><div class="wiz-head"><div class="wiz-n">2</div><div><div class="wiz-title">Claimant</div><div class="wiz-sub">Demographics and claim history</div></div></div>', unsafe_allow_html=True)
         c1,c2,c3,c4 = st.columns(4)
         sex = c1.selectbox("Sex", ['Male','Female'], index=['Male','Female'].index(st.session_state.sex))
         marital_status = c2.selectbox("Marital Status", ['Single','Married','Divorced','Widow'],
             index=['Single','Married','Divorced','Widow'].index(st.session_state.marital_status))
         age = c3.number_input("Age", 18, 80, value=int(st.session_state.age))
         prior_claims = c4.selectbox("Prior Claims", CLAIMS, index=safe_idx(CLAIMS, st.session_state.prior_claims))
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        # ── Section 3 ──
-        st.markdown('<div class="wiz-hdr"><div class="wiz-num">3</div><div><div class="wiz-ttl">Accident &amp; FNOL</div><div class="wiz-desc">Incident details and reporting timeline</div></div></div>', unsafe_allow_html=True)
+        # ── 3: Accident & FNOL ──
+        st.markdown('<div class="wiz-sec"><div class="wiz-head"><div class="wiz-n">3</div><div><div class="wiz-title">Accident &amp; FNOL</div><div class="wiz-sub">Incident details and reporting timeline</div></div></div>', unsafe_allow_html=True)
         c1,c2,c3,c4 = st.columns(4)
         accident_area = c1.selectbox("Accident Area", ['Urban','Rural'], index=['Urban','Rural'].index(st.session_state.accident_area))
         fault = c2.selectbox("Fault", ['Insured Driver','Third Party'], index=['Insured Driver','Third Party'].index(st.session_state.fault))
         fnol_delay = c3.selectbox("FNOL Delay", DELAYS, index=safe_idx(DELAYS, st.session_state.fnol_delay))
         claim_delay = c4.selectbox("Claim Filing Delay", DELAYS2, index=safe_idx(DELAYS2, st.session_state.claim_delay))
-
         c1,c2,c3,c4 = st.columns(4)
         fir_filed = c1.selectbox("FIR Filed", ['Yes','No'], index=['Yes','No'].index(st.session_state.fir_filed))
         witness = c2.selectbox("Witness Available", ['Yes','No'], index=['Yes','No'].index(st.session_state.witness))
         month = c3.selectbox("Accident Month", MONTHS, index=safe_idx(MONTHS, st.session_state.month))
         day_of_week = c4.selectbox("Day of Week", DAYS, index=safe_idx(DAYS, st.session_state.day_of_week))
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        # ── Section 4 ──
-        st.markdown('<div class="wiz-hdr"><div class="wiz-num">4</div><div><div class="wiz-ttl">Distribution &amp; Documentation</div><div class="wiz-desc">Channel, supporting documents, and policy spread</div></div></div>', unsafe_allow_html=True)
+        # ── 4: Distribution ──
+        st.markdown('<div class="wiz-sec"><div class="wiz-head"><div class="wiz-n">4</div><div><div class="wiz-title">Distribution &amp; Documentation</div><div class="wiz-sub">Channel, reports, and policy spread</div></div></div>', unsafe_allow_html=True)
         c1,c2,c3,c4 = st.columns(4)
         intermediary = c1.selectbox("Intermediary", ['Broker / POSP Agent','Direct / Branch'],
             index=['Broker / POSP Agent','Direct / Branch'].index(st.session_state.intermediary))
         address_change = c2.selectbox("Address Change", ADDCHG, index=safe_idx(ADDCHG, st.session_state.address_change))
         supp_reports = c3.selectbox("Supplementary Reports", SUPPS, index=safe_idx(SUPPS, st.session_state.supp_reports))
         vehicles_in_pol = c4.selectbox("Vehicles in Policy", VEHICLES, index=safe_idx(VEHICLES, st.session_state.vehicles_in_pol))
-
         c1,c2,c3,_ = st.columns(4)
         week_of_month = c1.number_input("Week of Month", 1, 5, value=int(st.session_state.week_of_month))
         month_claimed = c2.selectbox("Month Claimed", MONTHS, index=safe_idx(MONTHS, st.session_state.month_claimed))
         surveyor_id = c3.number_input("Surveyor ID", 1, 50, value=int(st.session_state.surveyor_id))
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        st.markdown("<div style='height:0.8rem'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
         submitted = st.form_submit_button("⚖️  Run Claim Decisioning Engine")
 
+    # ── RESULTS ──
     if submitted:
         policy_type = POLICY_TYPE_MAP.get((vehicle_category, base_policy), 'Private Car - Third Party')
         age_band    = age_to_band(age)
@@ -708,50 +762,63 @@ with tab1:
             Address_Change_Before_Claim=address_change, Vehicles_In_Policy=vehicles_in_pol,
             Year=year, BasePolicy=base_policy,
         )
-        with st.spinner("Scoring across fraud and litigation models…"):
+        with st.spinner("Scoring…"):
             fp, lp, score, route, tkey, tlabel, tcolor, reasons = score_claim(claim)
 
-        st.markdown("<div style='height:0.6rem'></div>", unsafe_allow_html=True)
-        st.markdown('<div class="eyebrow">Score Report</div>', unsafe_allow_html=True)
-        st.markdown('<div class="h-title">Decisioning Output</div>', unsafe_allow_html=True)
-        st.markdown("<div style='height:0.8rem'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+        st.markdown("""
+        <div class="sec-head">
+          <div class="eye">Score Report</div>
+          <h2>Decisioning Output</h2>
+        </div>
+        """, unsafe_allow_html=True)
 
-        col_s, col_d = st.columns([1, 1.5], gap="large")
+        col_g, col_r = st.columns([1, 1.6], gap="large")
 
-        with col_s:
+        with col_g:
             st.markdown(f"""
-            <div class="score-hero">
-              <div class="lbl">Composite Risk Score</div>
-              <div><span class="num">{score}</span><span class="den"> / 100</span></div>
-              <div class="bar-bg"><div class="bar-fill" style="width:{score}%;background:{tcolor};"></div></div>
-              <div style="margin-top:1.1rem;">
-                <span class="pill" style="background:{tcolor};">{tlabel}</span>
+            <div class="gauge-wrap">
+              <div class="gauge-eye">Composite Risk Score</div>
+              <div>
+                <span class="gauge-score">{score}</span>
+                <span class="gauge-denom"> /100</span>
               </div>
-              <div style="margin-top:1.1rem;">
-                <div class="lbl">Routing Decision</div>
-                <div style="font-size:1.15rem;font-weight:800;margin-top:0.3rem;letter-spacing:-0.01em;">{route}</div>
+              <div class="gauge-bar-track">
+                <div class="gauge-bar" style="width:{score}%;background:{tcolor};"></div>
+              </div>
+              <div class="gauge-row">
+                <div class="gauge-chip">
+                  <div class="gk">Fraud Prob</div>
+                  <div class="gv" style="color:{tcolor};">{fp:.1%}</div>
+                </div>
+                <div class="gauge-chip">
+                  <div class="gk">Litigation Risk</div>
+                  <div class="gv" style="color:{ACCENT};">{lp:.1%}</div>
+                </div>
+              </div>
+              <div class="route-box">
+                <div class="rk">Routing Decision</div>
+                <div class="rv">{route}</div>
+                <div><span class="rpill" style="background:{tcolor};">{tlabel}</span></div>
               </div>
             </div>
             """, unsafe_allow_html=True)
 
-        with col_d:
-            st.markdown(f"""
-            <div class="stat-grid">
-              <div class="stat-card"><div class="k">Fraud Probability</div><div class="v" style="color:{tcolor};">{fp:.1%}</div></div>
-              <div class="stat-card"><div class="k">Litigation Risk</div><div class="v" style="color:{ACCENT};">{lp:.1%}</div></div>
-            </div>
-            """, unsafe_allow_html=True)
-
-            st.markdown('<div class="section-label">Top Fraud Risk Drivers</div>', unsafe_allow_html=True)
-            reason_html = ""
+        with col_r:
+            # SHAP drivers
+            st.markdown(f"<div style='font-size:0.76rem;font-weight:700;color:{INK2};letter-spacing:0.5px;text-transform:uppercase;margin-bottom:0.6rem;'>Top Fraud Risk Drivers</div>", unsafe_allow_html=True)
             for feat, val in reasons:
                 direction = "↑ Raises" if val > 0 else "↓ Lowers"
                 cls = "up" if val > 0 else "down"
-                ic = "🔴" if val > 0 else "🟢"
-                reason_html += f"""<div class="reason {cls}"><span>{ic} <strong>{feat}</strong> — {direction} fraud risk</span><span class="shap">SHAP {val:+.3f}</span></div>"""
-            st.markdown(reason_html, unsafe_allow_html=True)
+                ic  = "🔴" if val > 0 else "🟢"
+                st.markdown(f"""
+                <div class="driver {cls}">
+                  <div class="driver-text">{ic} <strong>{feat}</strong> — {direction} fraud risk</div>
+                  <span class="driver-shap">SHAP {val:+.3f}</span>
+                </div>
+                """, unsafe_allow_html=True)
 
-        # ── Recommended Action  +  Claim Summary  (side by side) ──
+        # ── Action + Table ──
         action_map = {
             'critical': (CRITICAL, '#FEF2F2', '🔴', 'Refer to SIU immediately. Do not settle. Assign senior investigator and request full documentation audit.'),
             'high':     (HIGH,     '#FFF7ED', '🟠', 'Flag for ADR / Legal team. Prepare fight-or-settle brief. Route to in-house counsel within 48 hours.'),
@@ -759,70 +826,59 @@ with tab1:
             'fast':     (FASTTRACK,'#F0FDF4', '🟢', 'Eligible for Fast Track Settlement. Verify documents and initiate payment within 7 working days.'),
         }
         ac, abg, aic, atxt = action_map[tkey]
-
-        rows = "".join(f"<tr><td>{k}</td><td>{v}</td></tr>"
-            for k,v in [
-                ("Vehicle", f"{vehicle_make} · {vehicle_category}"),
-                ("Cover",   f"{base_policy} · {vehicle_price}"),
-                ("Claimant",f"{sex}, {age} yrs · {marital_status}"),
-                ("FNOL Delay", fnol_delay), ("FIR Filed", fir_filed),
-                ("Witness", witness), ("Prior Claims", prior_claims),
-                ("Fault", fault), ("Intermediary", intermediary),
-            ])
-
-        col_act, col_tbl = st.columns([1, 1], gap="medium")
-
-        with col_act:
-            st.markdown(f"""
-            <div style="background:{abg};border:1px solid {ac}33;border-left:4px solid {ac};
-                        border-radius:14px;padding:1.2rem 1.3rem;height:100%;box-sizing:border-box;">
-              <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.6rem;">
-                <span style="font-size:1.25rem;line-height:1;">{aic}</span>
-                <span style="font-size:0.62rem;letter-spacing:1.4px;text-transform:uppercase;
-                             font-weight:700;color:{ac};">Recommended Action</span>
-              </div>
-              <div style="font-size:0.86rem;color:{INK};font-weight:500;line-height:1.6;">{atxt}</div>
-              <div style="margin-top:1rem;padding-top:0.9rem;border-top:1px solid {ac}22;">
-                <div style="font-size:0.62rem;color:{INK2};letter-spacing:0.5px;text-transform:uppercase;font-weight:700;margin-bottom:0.35rem;">Priority</div>
-                <span class="pill" style="background:{tcolor};font-size:0.76rem;">{tlabel}</span>
-              </div>
+        rows = "".join(f"<tr><td>{k}</td><td>{v}</td></tr>" for k,v in [
+            ("Vehicle", f"{vehicle_make} · {vehicle_category}"),
+            ("Cover",   f"{base_policy} · {vehicle_price}"),
+            ("Claimant",f"{sex}, {age} yrs · {marital_status}"),
+            ("FNOL Delay", fnol_delay),("FIR Filed", fir_filed),
+            ("Witness", witness),("Prior Claims", prior_claims),
+            ("Fault", fault),("Intermediary", intermediary),
+        ])
+        st.markdown(f"""
+        <div class="res-bottom">
+          <div class="act-card" style="background:{abg};border-color:{ac}33;border-left-color:{ac};">
+            <div class="act-head">
+              <span class="act-ico">{aic}</span>
+              <span class="act-lbl" style="color:{ac};">Recommended Action</span>
             </div>
-            """, unsafe_allow_html=True)
-
-        with col_tbl:
-            st.markdown(f"""
-            <div style="border:1px solid {BORDER};border-radius:14px;overflow:hidden;height:100%;">
-              <div style="padding:0.6rem 0.75rem;background:{BG};border-bottom:1px solid {BORDER};">
-                <span style="font-size:0.72rem;font-weight:700;color:{INK};letter-spacing:-0.01em;">Claim Summary</span>
-              </div>
-              <table class="ent-tbl" style="border:none;border-radius:0;">
-                <tbody>{rows}</tbody>
-              </table>
+            <div class="act-body" style="color:{INK};">{atxt}</div>
+            <div class="act-foot" style="border-top-color:{ac}22;">
+              <div class="pk">Priority Tier</div>
+              <span class="rpill" style="background:{tcolor};">{tlabel}</span>
             </div>
-            """, unsafe_allow_html=True)
+          </div>
+          <div class="clm-card">
+            <div class="clm-head">Claim Summary</div>
+            <table class="clm-tbl"><tbody>{rows}</tbody></table>
+          </div>
+        </div>
+        """, unsafe_allow_html=True)
 
         # ── Predicted vs Actual ──
         if st.session_state['loaded_example']:
             ex = EXAMPLE_CLAIMS[st.session_state['loaded_example']]
-            actual_key = ex['actual_key']; actual_lbl = ex['actual']
-            act_col = EX_KEY_COLOR[actual_key]
-            is_match = (tkey == actual_key)
-            match_col = SUCCESS if is_match else WARNING
-            match_txt = "✓ MATCH — engine agrees with the real outcome" if is_match else "≈ CLOSE — engine flagged the right risk family"
-            st.markdown('<div class="section-label">Predicted vs Actual</div>', unsafe_allow_html=True)
+            act_key = ex['actual_key']; act_lbl = ex['actual']
+            act_col = EX_KEY_COLOR[act_key]
+            is_match = (tkey == act_key)
+            mbg = '#F0FDF4' if is_match else '#FFFBEB'
+            mc  = SUCCESS if is_match else WARNING
+            mtxt = "✓ Match — engine agrees with the real outcome" if is_match else "≈ Close — engine flagged the correct risk family"
             st.markdown(f"""
-            <div class="ent-card">
-              <div class="verdict-grid">
+            <div style="margin-top:0.9rem;">
+              <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:{INK2};margin-bottom:0.6rem;">Predicted vs Actual</div>
+              <div class="verdict">
                 <div class="verdict-box" style="border-top-color:{tcolor};">
                   <div class="vk">Engine Predicted</div>
                   <div class="vv" style="color:{tcolor};">{route}</div>
                 </div>
                 <div class="verdict-box" style="border-top-color:{act_col};">
                   <div class="vk">Actual Outcome</div>
-                  <div class="vv" style="color:{act_col};">{actual_lbl}</div>
+                  <div class="vv" style="color:{act_col};">{act_lbl}</div>
                 </div>
               </div>
-              <div style="margin-top:0.9rem;"><span class="pill" style="background:{match_col};">{match_txt}</span></div>
+              <div class="match-banner" style="background:{mbg};border-color:{mc}33;color:{mc};">
+                {mtxt}
+              </div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -830,206 +886,217 @@ with tab1:
 #  TAB 2 — EXAMPLE CLAIMS
 # ══════════════════════════════════════════════════════════════════════════════
 with tab2:
-    st.markdown('<div class="eyebrow">Predicted vs Actual</div>', unsafe_allow_html=True)
-    st.markdown('<div class="h-title">Example Claims</div>', unsafe_allow_html=True)
-    st.markdown('<div class="h-sub">Each example is a realistic Motor TP claim with a known real-world outcome. Load one, run it on the Score Claim tab, and compare the engine\'s verdict to what actually happened.</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="sec-head">
+      <div class="eye">Predicted vs Actual</div>
+      <h2>Example Claims</h2>
+      <p>Four real archetypes with known outcomes. Load one → score it → compare.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
     if not models_ok:
-        st.warning("Model files not loaded — examples will fill the form, but scoring needs the `.pkl` files present.")
+        st.warning("Model files not loaded — examples fill the form but scoring needs the `.pkl` files.")
 
-    st.markdown("<div style='height:0.6rem'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="ex-grid">', unsafe_allow_html=True)
+    for i, (name, ex) in enumerate(EXAMPLE_CLAIMS.items()):
+        tag = EX_KEY_COLOR[ex['actual_key']]
+        sel = "sel" if st.session_state['loaded_example'] == name else ""
+        ic  = ex.get("icon","📄")
+        # use columns for spacing
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Actually render with st.columns for button support
     cols = st.columns(2, gap="large")
     for i, (name, ex) in enumerate(EXAMPLE_CLAIMS.items()):
         with cols[i % 2]:
-            tag_col = EX_KEY_COLOR[ex['actual_key']]
+            tag = EX_KEY_COLOR[ex['actual_key']]
             sel = "sel" if st.session_state['loaded_example'] == name else ""
-            ic = ex.get("icon", "📄")
+            ic  = ex.get("icon","📄")
             st.markdown(f"""
-            <div class="ex-card {sel}">
+            <div class="ex-card {sel}" style="border-top-color:{tag};">
               <div class="ex-top">
-                <div class="ex-ico" style="background:{tag_col}1A;color:{tag_col};">{ic}</div>
-                <h5>{name}</h5>
+                <div class="ex-ico" style="background:{tag}18;color:{tag};">{ic}</div>
+                <div><h5>{name}</h5></div>
               </div>
-              <span class="ex-badge" style="background:{tag_col};">Actual: {ex['actual']}</span>
-              <p>{ex['desc']}</p>
+              <span class="ex-badge" style="background:{tag};">Actual: {ex['actual']}</span>
+              <p class="ex-desc">{ex['desc']}</p>
             </div>
             """, unsafe_allow_html=True)
             st.button("⬇️  Load this example", key=f"load_{i}",
                       on_click=load_example, args=(name,), use_container_width=True)
             if st.session_state['loaded_example'] == name:
-                st.success("Loaded — open the **Score Claim** tab and click Run.")
+                st.success("Loaded — switch to **Score Claim** tab and click Run.")
 
-    st.markdown("<div style='height:0.4rem'></div>", unsafe_allow_html=True)
-    st.caption("Examples are representative composites built to mirror common Motor TP claim archetypes — "
-               "they show how the engine separates genuine, standard, litigation-bound, and fraudulent claims.")
+    st.caption("Examples mirror common Motor TP claim archetypes — showing how the engine separates genuine, standard, litigation-bound, and fraudulent claims.")
 
 # ══════════════════════════════════════════════════════════════════════════════
 #  TAB 3 — MODEL INSIGHTS
 # ══════════════════════════════════════════════════════════════════════════════
 with tab3:
-    st.markdown('<div class="eyebrow">Transparency</div>', unsafe_allow_html=True)
-    st.markdown('<div class="h-title">Model Insights</div>', unsafe_allow_html=True)
-    st.markdown('<div class="h-sub">Architecture, feature attribution, routing behaviour, and projected business impact.</div>', unsafe_allow_html=True)
-
-    # KPI row
-    st.markdown(f"""
-    <div class="kpi-grid" style="margin-top:1rem;">
-      <div class="kpi"><div class="kpi-ico" style="background:{ACCENT_BG};color:{ACCENT};">🎯</div><div class="kpi-val">0.84</div><div class="kpi-lbl">Fraud ROC-AUC</div></div>
-      <div class="kpi"><div class="kpi-ico" style="background:#FEF3C7;color:{WARNING};">⚖️</div><div class="kpi-val">0.74</div><div class="kpi-lbl">Litigation ROC-AUC</div></div>
-      <div class="kpi"><div class="kpi-ico" style="background:#DCFCE7;color:{SUCCESS};">📊</div><div class="kpi-val">15,420</div><div class="kpi-lbl">Test Claims Evaluated</div></div>
-      <div class="kpi"><div class="kpi-ico" style="background:#EDE9FE;color:#7C3AED;">🔍</div><div class="kpi-val">100%</div><div class="kpi-lbl">Decisions Explained</div></div>
+    st.markdown("""
+    <div class="sec-head">
+      <div class="eye">Transparency</div>
+      <h2>Model Insights</h2>
+      <p>Architecture, feature attribution, routing distribution, and projected financial impact.</p>
     </div>
     """, unsafe_allow_html=True)
 
+    # KPI row
+    kpi_cols = st.columns(4, gap="medium")
+    for col, val, lbl, cls, ico in zip(kpi_cols,
+        ["0.84","0.74","15,420","100%"],
+        ["Fraud ROC-AUC","Litigation ROC-AUC","Test Claims","Decisions Explained"],
+        ["accent","warn","success","purple"],
+        ["🎯","⚖️","📊","🔍"]):
+        ico_bg = {"accent":f"{ACCENT_L};color:{ACCENT}","warn":"#FEF3C7;color:#D97706",
+                  "success":"#DCFCE7;color:#059669","purple":"#EDE9FE;color:#7C3AED"}[cls]
+        col.markdown(f"""
+        <div class="s-card {cls}">
+          <div class="ico" style="background:{ico_bg};">{ico}</div>
+          <div class="val">{val}</div>
+          <div class="lbl">{lbl}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<div style='height:0.8rem'></div>", unsafe_allow_html=True)
     col_a, col_b = st.columns(2, gap="large")
     with col_a:
         st.markdown(f"""
-        <div class="ent-card">
+        <div class="insight-card">
           <h4>🧠 Model A — Fraud Detection</h4>
           <p><strong>Algorithm:</strong> XGBoost · cost-sensitive (scale_pos_weight)<br>
-          <strong>Label:</strong> SIU-confirmed fraud (binary)<br>
-          <strong>Split:</strong> Stratified 80/20 — balanced fraud rate<br>
-          <strong>Metric:</strong> PR-AUC (precision-recall under imbalance)<br>
-          <strong>Explainability:</strong> SHAP TreeExplainer — top-3 reasons per claim, tribunal-ready</p>
+          <strong>Label:</strong> Domain-calibrated fraud signatures (Indian Motor TP patterns)<br>
+          <strong>Split:</strong> Stratified 80/20 — balanced fraud rate in train &amp; test<br>
+          <strong>Metric:</strong> PR-AUC — honest under 6% class imbalance<br>
+          <strong>Explainability:</strong> SHAP TreeExplainer · top-3 reasons per claim</p>
         </div>
         """, unsafe_allow_html=True)
         if models_ok and feat_fraud:
             imp = pd.Series(model_fraud.feature_importances_, index=feat_fraud).sort_values().tail(10)
             fig, ax = plt.subplots(figsize=(5.5, 3.8))
             fig.patch.set_facecolor(CARD); ax.set_facecolor(CARD)
-            bars = ax.barh(imp.index, imp.values, color=ACCENT, alpha=0.9, height=0.62)
+            bars = ax.barh(imp.index, imp.values, color=ACCENT, alpha=0.88, height=0.62)
             bars[-1].set_color(WARNING)
             ax.set_xlabel("Importance", fontsize=8, color=INK2)
             ax.set_title("Top 10 Fraud Drivers", fontsize=10, fontweight='bold', color=INK, pad=10)
             ax.tick_params(labelsize=7.5, colors=INK2)
-            ax.spines[['top','right','left']].set_visible(False)
+            for sp in ['top','right','left']: ax.spines[sp].set_visible(False)
             ax.spines['bottom'].set_color(BORDER)
-            ax.xaxis.grid(True, alpha=0.25, color=BORDER)
+            ax.xaxis.grid(True, alpha=0.2, color=BORDER)
             plt.tight_layout()
             st.pyplot(fig, use_container_width=True); plt.close()
 
     with col_b:
         st.markdown(f"""
-        <div class="ent-card">
+        <div class="insight-card">
           <h4>⚖️ Model B — Litigation Risk</h4>
           <p><strong>Algorithm:</strong> XGBoost Classifier<br>
-          <strong>Label:</strong> Expert-rule MACT escalation proxy (label-leakage-safe)<br>
-          <strong>Design:</strong> Proxy features excluded from training set<br>
-          <strong>Business Use:</strong> Early fight-or-settle signal at FNOL — routes high-risk
-          cases to ADR before MACT filing, reducing litigation cost per claim</p>
+          <strong>Label:</strong> Expert-rule MACT escalation proxy · label-leakage-safe<br>
+          <strong>Design:</strong> Proxy-building features excluded from training<br>
+          <strong>Business use:</strong> Fight-or-settle signal at FNOL — routes high-risk cases
+          to ADR before MACT filing, reducing litigation cost per claim</p>
         </div>
         """, unsafe_allow_html=True)
-        labels  = ['Fast Track','Standard','ADR / Legal','SIU']
-        sizes   = [62, 22, 10, 6]
-        colors  = [FASTTRACK, ACCENT, HIGH, CRITICAL]
+        labels = ['Fast Track','Standard','ADR / Legal','SIU']
+        sizes  = [62, 22, 10, 6]
+        colors = [FASTTRACK, ACCENT, HIGH, CRITICAL]
         fig2, ax2 = plt.subplots(figsize=(5, 3.8))
         fig2.patch.set_facecolor(CARD)
-        wedges, texts, autos = ax2.pie(sizes, labels=labels, colors=colors,
-            autopct='%1.0f%%', startangle=140, pctdistance=0.72,
-            wedgeprops=dict(width=0.52, edgecolor='white', linewidth=2))
-        for t in texts:  t.set_fontsize(8);  t.set_color(INK2)
-        for a in autos:  a.set_fontsize(8);  a.set_color('white'); a.set_fontweight('bold')
+        _, texts, autos = ax2.pie(sizes, labels=labels, colors=colors, autopct='%1.0f%%',
+            startangle=140, pctdistance=0.72, wedgeprops=dict(width=0.52,edgecolor='white',linewidth=2))
+        for t in texts: t.set_fontsize(8); t.set_color(INK2)
+        for a in autos: a.set_fontsize(8); a.set_color('white'); a.set_fontweight('bold')
         ax2.set_title("Expected Routing Distribution", fontsize=10, fontweight='bold', color=INK, pad=10)
         plt.tight_layout()
         st.pyplot(fig2, use_container_width=True); plt.close()
 
-    st.markdown('<div class="section-label">Engine Architecture</div>', unsafe_allow_html=True)
-    arch_steps = [
-        ("FNOL","Claim In",ACCENT),
-        ("Data Spine","Features","#1E3A8A"),
-        ("Model A+B","Fraud·Lit","#4338CA"),
-        ("SHAP","Explain","#0F766E"),
-        ("Routing","Decision",FASTTRACK),
-    ]
-    flow_html = ""
-    for i,(t,s,c) in enumerate(arch_steps):
-        flow_html += f'<div class="flow-step" style="background:{c};"><div class="t">{t}</div><div class="s">{s}</div></div>'
-        if i < len(arch_steps)-1:
-            flow_html += '<div class="flow-arrow">→</div>'
+    st.markdown("<div style='height:0.6rem'></div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='font-size:0.78rem;font-weight:700;color:{INK};margin-bottom:0.6rem;'>Engine Architecture</div>", unsafe_allow_html=True)
+    arch = [("FNOL","Claim In",ACCENT),("Data Spine","Features","#1E3A8A"),
+            ("Model A+B","Fraud · Lit","#4338CA"),("SHAP","Explain","#0F766E"),
+            ("Routing","Decision",FASTTRACK)]
+    fh = "".join(f'<div class="flow-step" style="background:{c};"><div class="ft">{t}</div><div class="fs">{s}</div></div>{"<div class=\'flow-arr\'>→</div>" if i<4 else ""}' for i,(t,s,c) in enumerate(arch))
     st.markdown(f"""
-    <div class="ent-card">
-      <div class="flow">{flow_html}</div>
-      <div style="margin-top:0.9rem;font-size:0.74rem;color:{INK2};text-align:center;">
-        Single-insurer · No consortium dependency · Human-in-the-loop on every high-risk flag
+    <div class="insight-card">
+      <div class="flow">{fh}</div>
+      <div style="margin-top:0.85rem;font-size:0.73rem;color:{INK2};text-align:center;">
+        Single-insurer · No IIB consortium dependency · Human-in-the-loop on every P1 and P2 flag
       </div>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="section-label">Projected Financial Impact · per ₹1,000 Cr TP Claims</div>', unsafe_allow_html=True)
+    st.markdown("<div style='height:0.6rem'></div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='font-size:0.78rem;font-weight:700;color:{INK};margin-bottom:0.6rem;'>Projected Financial Impact · per ₹1,000 Cr TP Claims</div>", unsafe_allow_html=True)
     fin = pd.DataFrame({
-        'Scenario':          ['🐻 Bear','📊 Base','🐂 Bull'],
-        'Leakage Recovered': ['₹5 Cr','₹15 Cr','₹30 Cr'],
-        'Litigation Saving': ['₹1 Cr','₹3 Cr','₹6 Cr'],
-        'Total Benefit':     ['₹6 Cr','₹18 Cr','₹36 Cr'],
-        'Build Cost':        ['₹3.5 Cr','₹3.5 Cr','₹3.5 Cr'],
-        'Payback':           ['~7 mo','~5 mo','~3 mo'],
+        'Scenario':['🐻 Bear','📊 Base','🐂 Bull'],
+        'Leakage Recovered':['₹5 Cr','₹15 Cr','₹30 Cr'],
+        'Litigation Saving':['₹1 Cr','₹3 Cr','₹6 Cr'],
+        'Total Benefit':['₹6 Cr','₹18 Cr','₹36 Cr'],
+        'Build Cost':['₹3.5 Cr','₹3.5 Cr','₹3.5 Cr'],
+        'Payback':['~7 mo','~5 mo','~3 mo'],
     }).set_index('Scenario')
     st.dataframe(fin, use_container_width=True)
-    st.caption("Build cost held constant across scenarios. Normalised to ₹1,000 Cr to avoid over-claiming Sundaram Finance figures.")
+    st.caption("Build cost held constant. Normalised to ₹1,000 Cr to avoid over-claiming Sundaram Finance figures.")
 
 # ══════════════════════════════════════════════════════════════════════════════
 #  TAB 4 — ABOUT
 # ══════════════════════════════════════════════════════════════════════════════
 with tab4:
-    st.markdown('<div class="eyebrow">Sundaram Pitch Fest 2026</div>', unsafe_allow_html=True)
-    st.markdown('<div class="h-title">About the Engine</div>', unsafe_allow_html=True)
-    st.markdown('<div class="h-sub">A single-insurer AI platform that scores, explains, and routes every Motor TP claim at First Notice of Loss.</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="sec-head">
+      <div class="eye">Sundaram Pitch Fest 2026</div>
+      <h2>About the Engine</h2>
+      <p>A single-insurer AI platform that scores, explains, and routes every Motor TP claim at FNOL.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    st.markdown("<div style='height:0.6rem'></div>", unsafe_allow_html=True)
     col1, col2 = st.columns(2, gap="large")
     with col1:
         for ic, title, body in [
             ("🎯","The Problem",
              "India's Motor TP book carries ₹96,257 Cr of pending liability across 10.73 lakh open MACT cases (2025-26), "
-             "rising to ~₹1.05 lakh Cr with accruals. Fraud leakage, MACT litigation overload, and manual triage drain margin — "
-             "the motor incurred-claims ratio has hit 78% industry-wide, and 108% for some PSUs."),
+             "rising to ~₹1.05 lakh Cr with accruals. Motor incurred-claims ratio: 78% industry-wide; 108% for some PSUs."),
             ("⚙️","Our Solution",
-             "A single-insurer AI Claim Decisioning Engine: two XGBoost models scoring fraud probability and litigation risk "
-             "at FNOL, combined into a cost-sensitive composite score that auto-routes every claim to the cheapest correct path."),
+             "Two XGBoost models score fraud and litigation risk at FNOL, combined into a composite score that "
+             "auto-routes every claim — SIU, ADR, Standard, or Fast Track — to the cheapest correct resolution path."),
             ("🏛️","Why Single-Insurer",
-             "Deployable on Sundaram Finance's own historical data — no IIB consortium dependency, no competitor coordination. "
-             "The graph network layer deepens with every claim processed, creating a proprietary, compounding moat."),
-            ("🗓️","Implementation Roadmap",
-             "Phased 24-month rollout: P0 data foundation → P1 fraud shadow mode (6 mo) → P2 litigation model (12 mo) "
-             "→ P3 network/graph layer → P4 live routing with drift monitoring and feedback loop."),
+             "Deployable on Sundaram Finance's own claim history — no IIB consortium dependency, no competitor coordination. "
+             "The graph network layer deepens with every processed claim, creating a proprietary compounding moat."),
+            ("🗓️","Deployment Roadmap",
+             "P0 data audit → P1 fraud shadow mode (6 mo) → P2 litigation model (12 mo) "
+             "→ P3 graph/network layer → P4 live routing with drift monitoring."),
         ]:
-            st.markdown(f'<div class="ent-card"><h4>{ic} {title}</h4><p>{body}</p></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="about-card"><h4>{ic} {title}</h4><p>{body}</p></div>', unsafe_allow_html=True)
 
     with col2:
         for ic, title, body in [
             ("🔍","Explainability",
-             "Every flag carries SHAP-derived top-3 reasons in plain language — so SIU officers, claims managers, "
-             "and MACT tribunals can act on the output. No black box; every decision is fully auditable."),
+             "SHAP TreeExplainer produces top-3 plain-language reasons per claim — SIU officers, claims managers, "
+             "and MACT tribunals can act on outputs. No black box. Every decision is fully auditable."),
             ("📈","Business Value",
-             "Normalised to ₹1,000 Cr of TP claims, the base case recovers ~₹18 Cr of annual benefit against a one-time "
-             "₹3.5 Cr build — a payback period of roughly five months, with leakage recovery and litigation savings compounding."),
+             "Base case: ~₹18 Cr annual benefit on a ₹1,000 Cr TP book vs ₹3.5 Cr one-time build. "
+             "Payback inside five months. Even at 30% of base-case benefit, ROI is positive within Year 1."),
             ("🚀","Future Vision",
-             "Phase 3+: graph neural networks over garage–lawyer entity graph, underwriting-stage risk pricing "
-             "via Vahan/MoRTH signals, and federated cross-insurer learning without sharing raw claim data."),
+             "Phase 3+: graph neural networks over the garage–lawyer entity graph, Vahan/MoRTH risk signals at "
+             "underwriting, federated cross-insurer learning without sharing raw claim data."),
             ("🏗️","Architecture",
-             "FNOL → Data Spine → dual XGBoost (fraud + litigation) → SHAP explainer → composite risk score → routing. "
-             "A clean, auditable pipeline with a human-in-the-loop checkpoint on every high-risk decision."),
+             "FNOL → Data Spine → Model A (fraud) + Model B (litigation) → SHAP → composite score → routing. "
+             "Clean, auditable, human-in-the-loop checkpoint on every high-risk flag."),
         ]:
-            st.markdown(f'<div class="ent-card"><h4>{ic} {title}</h4><p>{body}</p></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="about-card"><h4>{ic} {title}</h4><p>{body}</p></div>', unsafe_allow_html=True)
 
     # Tech stack
-    tech_tags = ['XGBoost','SHAP','scikit-learn','Streamlit','Python 3.14','pandas','matplotlib','joblib']
-    tech_html = "".join(
-        f'<span style="background:{BG};border:1px solid {BORDER};border-radius:8px;padding:0.35rem 0.8rem;font-size:0.78rem;font-weight:600;color:{INK};">{t}</span>'
-        for t in tech_tags)
-    st.markdown(f'<div class="ent-card"><h4>🛠️ Technology Stack</h4><div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.6rem;">{tech_html}</div></div>', unsafe_allow_html=True)
+    tech = ['XGBoost','SHAP','scikit-learn','Streamlit','Python 3.14','pandas','matplotlib','joblib']
+    chips = "".join(f'<span style="background:{BG};border:1px solid {BORDER};border-radius:7px;padding:0.32rem 0.75rem;font-size:0.77rem;font-weight:600;color:{INK};">{t}</span>' for t in tech)
+    st.markdown(f'<div class="about-card" style="border-top-color:#7C3AED;"><h4>🛠️ Technology Stack</h4><div style="display:flex;gap:0.45rem;flex-wrap:wrap;margin-top:0.5rem;">{chips}</div></div>', unsafe_allow_html=True)
 
-    # Team panel
-    team_html = "".join(
-        f'<div style="flex:1;min-width:160px;"><div style="font-weight:700;font-size:0.92rem;color:#fff;">{n}</div><div style="font-size:0.74rem;color:rgba(255,255,255,0.5);">IIT Kharagpur · School of Law</div></div>'
-        for n in ['Arunadithyan S','Azhagappan G','G Abiimukeshwar'])
+    # Team
+    members = "".join(f'<div style="flex:1;min-width:150px;"><div style="font-weight:700;font-size:0.9rem;color:#fff;">{n}</div><div style="font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:2px;">IIT Kharagpur · School of Law</div></div>' for n in ['Arunadithyan S','Azhagappan G','G Abiimukeshwar'])
     st.markdown(f"""
-    <div style="background:linear-gradient(135deg,#0B1220,#1E293B);border-radius:18px;padding:1.6rem 1.8rem;margin-top:0.4rem;">
-      <div style="font-size:0.64rem;letter-spacing:1.6px;text-transform:uppercase;color:{WARNING};font-weight:700;margin-bottom:1.1rem;">
-        Team Apex Counsel · IIT Kharagpur
-      </div>
-      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">{team_html}</div>
-      <div style="margin-top:1.2rem;font-size:0.74rem;color:rgba(255,255,255,0.4);">
+    <div style="background:linear-gradient(135deg,#0F172A,{SLATE});border-radius:16px;padding:1.6rem 1.8rem;margin-top:0.2rem;border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:0.6rem;letter-spacing:1.8px;text-transform:uppercase;color:{WARNING};font-weight:700;margin-bottom:1rem;">Team Apex Counsel · IIT Kharagpur</div>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">{members}</div>
+      <div style="margin-top:1rem;font-size:0.72rem;color:rgba(255,255,255,0.35);">
         Operations · Risk &amp; Process Excellence Track &nbsp;|&nbsp; Sundaram Pitch Fest 2026 · Round 2
       </div>
     </div>
