@@ -610,14 +610,11 @@ def load_example(name):
 # ══════════════════════════════════════════════════════════════════════════════
 #  TOP NAV
 # ══════════════════════════════════════════════════════════════════════════════
-logo ="1OgrQt6YTB4Ibq21SuhXcUoMEe-uGFJ-z"
-st.markdown("""
+
+st.markdown(f"""
 <div class="topnav">
     <div class="topnav-brand">
         <div class="topnav-logo">
-            <img src="data:image/png;base64,{logo}">
-        </div>
-
         <div>
             <div class="topnav-name">Claim Decisioning Model</div>
             <div class="topnav-sub">
