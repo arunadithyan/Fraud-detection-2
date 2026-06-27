@@ -617,7 +617,6 @@ st.markdown("""
         <div class="topnav-logo">
             <img src="data:image/png;base64,{logo}">
         </div>
-        </div>
 
         <div>
             <div class="topnav-name">Claim Decisioning Model</div>
