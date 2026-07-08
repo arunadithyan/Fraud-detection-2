@@ -556,7 +556,7 @@ EXAMPLE_CLAIMS = {
             vehicle_category="Private Car", vehicle_make="Volkswagen India",
             vehicle_price="Above ₹30 Lakh", vehicle_age="6 years", base_policy="Own Damage",
             deductible_inr=33000, driver_rating=4, sex="Male", marital_status="Single", age=26,
-            prior_claims="2–4", accident_area="Urban", fault="Insured Driver",
+            prior_claims="1", accident_area="Urban", fault="Insured Driver",
             fnol_delay="more than 30", claim_delay="more than 30", fir_filed="No",
             witness="No", intermediary="Broker / POSP Agent", address_change="no change",
             supp_reports="1–2", vehicles_in_pol="1",
