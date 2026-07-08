@@ -574,7 +574,7 @@ EXAMPLE_CLAIMS = {
             prior_claims="2–4", accident_area="Urban", fault="Insured Driver",
             fnol_delay="more than 30", claim_delay="more than 30", fir_filed="No",
             witness="No", intermediary="Broker / POSP Agent", address_change="no change",
-            supp_reports="0", vehicles_in_pol="1",
+            supp_reports="1-2", vehicles_in_pol="1",
         ),
     },
 }
